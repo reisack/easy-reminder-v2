@@ -19,13 +19,23 @@ package rek.remindme.ui.reminder
 import rek.remindme.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +49,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.data.local.database.Reminder
 
 @Composable
-fun ReminderListScreen(modifier: Modifier = Modifier, viewModel: ReminderListViewModel = hiltViewModel()) {
+fun ReminderListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ReminderListViewModel = hiltViewModel()
+) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
     if (items is ReminderUiState.Success) {
         ReminderListScreenContent(
@@ -51,6 +64,7 @@ fun ReminderListScreen(modifier: Modifier = Modifier, viewModel: ReminderListVie
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun ReminderListScreenContent(
     items: List<Reminder>,
@@ -58,60 +72,79 @@ internal fun ReminderListScreenContent(
     modifier: Modifier = Modifier,
     reminderEdit: ReminderEdit
 ) {
-    Column(modifier) {
-        var title by remember { mutableStateOf("") }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                value = title,
-                onValueChange = {
-                    title = it
-                    reminderEdit.title = it
-                }
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = { Text("TODO Ma liste") }
             )
-        }
-
-        var description by remember { mutableStateOf("") }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                value = description,
-                onValueChange = {
-                    description = it
-                    reminderEdit.description = it
+        },
+        floatingActionButton = { 
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "TODO Créer un rappel")
+            }
+        },
+        content = { innerPadding ->
+            Column(
+                modifier = modifier
+                    .consumeWindowInsets(innerPadding)
+                    .padding(innerPadding)
+            ) {
+                var title by remember { mutableStateOf("") }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    TextField(
+                        value = title,
+                        onValueChange = {
+                            title = it
+                            reminderEdit.title = it
+                        }
+                    )
                 }
-            )
-        }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Button(modifier = Modifier.width(96.dp), onClick = {
-                onSave(
-                    reminderEdit.title,
-                    reminderEdit.description,
-                    reminderEdit.unixTimestamp,
-                    reminderEdit.alreadyNotified)
-            }) {
-                Text("Save")
+                var description by remember { mutableStateOf("") }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    TextField(
+                        value = description,
+                        onValueChange = {
+                            description = it
+                            reminderEdit.description = it
+                        }
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Button(modifier = Modifier.width(96.dp), onClick = {
+                        onSave(
+                            reminderEdit.title,
+                            reminderEdit.description,
+                            reminderEdit.unixTimestamp,
+                            reminderEdit.alreadyNotified)
+                    }) {
+                        Text("Save")
+                    }
+                }
+
+                items.forEach {
+                    Text("Saved item: ${it.title} | ${it.description}")
+                }
             }
         }
-
-        items.forEach {
-            Text("Saved item: ${it.title} | ${it.description}")
-        }
-    }
+    )
 }
 
 // Previews
