@@ -23,14 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import rek.remindme.ui.reminder.ReminderScreen
+import rek.remindme.ui.reminder.ReminderListScreen
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { ReminderScreen(modifier = Modifier.padding(16.dp)) }
+        composable("main") { ReminderListScreen(modifier = Modifier.padding(16.dp)) }
         // TODO: Add more destinations
     }
 }

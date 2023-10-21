@@ -39,10 +39,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.data.local.database.Reminder
 
 @Composable
-fun ReminderScreen(modifier: Modifier = Modifier, viewModel: ReminderViewModel = hiltViewModel()) {
+fun ReminderListScreen(modifier: Modifier = Modifier, viewModel: ReminderListViewModel = hiltViewModel()) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
     if (items is ReminderUiState.Success) {
-        ReminderScreenContent(
+        ReminderListScreenContent(
             items = (items as ReminderUiState.Success).data,
             onSave = viewModel::addReminder,
             modifier = modifier,
@@ -52,7 +52,7 @@ fun ReminderScreen(modifier: Modifier = Modifier, viewModel: ReminderViewModel =
 }
 
 @Composable
-internal fun ReminderScreenContent(
+internal fun ReminderListScreenContent(
     items: List<Reminder>,
     onSave: (name: String, description: String, unixTimestamp: Long, alreadyNotified: Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +120,7 @@ internal fun ReminderScreenContent(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        ReminderScreenContent(
+        ReminderListScreenContent(
             items = listOf(
                 Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
                 Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
@@ -136,7 +136,7 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        ReminderScreenContent(
+        ReminderListScreenContent(
             items = listOf(
                 Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
                 Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),

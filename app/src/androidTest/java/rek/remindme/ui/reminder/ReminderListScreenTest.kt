@@ -28,10 +28,10 @@ import org.junit.runner.RunWith
 import rek.remindme.data.local.database.Reminder
 
 /**
- * UI tests for [ReminderScreen].
+ * UI tests for [ReminderListScreen].
  */
 @RunWith(AndroidJUnit4::class)
-class ReminderScreenTest {
+class ReminderListScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -39,7 +39,7 @@ class ReminderScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ReminderScreenContent(items = fakeData, onSave = { _, _, _, _ -> }, reminderEdit =  ReminderEdit())
+            ReminderListScreenContent(items = fakeData, onSave = { _, _, _, _ -> }, reminderEdit =  ReminderEdit())
         }
     }
 

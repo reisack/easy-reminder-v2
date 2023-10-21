@@ -33,16 +33,16 @@ import rek.remindme.data.local.database.Reminder
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class ReminderViewModelTest {
+class ReminderListViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
-        val viewModel = ReminderViewModel(FakeReminderRepository())
+        val viewModel = ReminderListViewModel(FakeReminderRepository())
         assertEquals(viewModel.uiState.first(), ReminderUiState.Loading)
     }
 
     @Test
     fun uiState_onItemSaved_isDisplayed() = runTest {
-        val viewModel = ReminderViewModel(FakeReminderRepository())
+        val viewModel = ReminderListViewModel(FakeReminderRepository())
         assertEquals(viewModel.uiState.first(), ReminderUiState.Loading)
     }
 }

@@ -41,7 +41,7 @@ data class ReminderEdit(
 )
 
 @HiltViewModel
-class ReminderViewModel @Inject constructor(
+class ReminderListViewModel @Inject constructor(
     private val reminderRepository: ReminderRepository
 ) : ViewModel() {
 
