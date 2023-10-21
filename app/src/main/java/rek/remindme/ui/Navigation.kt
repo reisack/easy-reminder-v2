@@ -45,6 +45,9 @@ fun MainNavigation() {
                 modifier = Modifier.padding(16.dp),
                 onReminderSaved = {
                     navController.navigate("main")
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }
