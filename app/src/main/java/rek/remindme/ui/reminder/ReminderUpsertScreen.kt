@@ -1,6 +1,5 @@
 package rek.remindme.ui.reminder
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -13,28 +12,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import rek.remindme.ui.components.TimePickerDialog
+import rek.remindme.ui.components.ReminderDateField
+import rek.remindme.ui.components.ReminderTimeField
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -162,87 +156,6 @@ internal fun ReminderUpsertScreenContent(
             Button(modifier = Modifier.width(96.dp), onClick = onSave) {
                 Text("TODO Save")
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ReminderTimeField(
-    onTimeChanged: (Int, Int) -> Unit,
-    reminderEditUiState: ReminderEditUiState
-) {
-    val timePickerDialogOpened = remember { mutableStateOf(false) }
-
-    TextField(
-        modifier = Modifier.clickable { timePickerDialogOpened.value = true },
-        placeholder = {
-            Text(text = "TODO Heure")
-        },
-        value = "${reminderEditUiState.hour} : ${reminderEditUiState.minute}",
-        onValueChange = {},
-        enabled = false
-    )
-
-    if (timePickerDialogOpened.value) {
-        TimePickerDialog(
-            onCancel = {
-                timePickerDialogOpened.value = false
-            },
-            onConfirm = { hour, minute ->
-                onTimeChanged(hour, minute)
-                timePickerDialogOpened.value = false
-            },
-            initialHour = reminderEditUiState.hour,
-            initialMinute = reminderEditUiState.minute
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ReminderDateField(
-    onDateChanged: (Long) -> Unit,
-    reminderEditUiState: ReminderEditUiState
-) {
-    val datePickerDialogOpened = remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-
-    TextField(
-        modifier = Modifier.clickable { datePickerDialogOpened.value = true },
-        placeholder = {
-            Text(text = "TODO Date")
-        },
-        value = if (reminderEditUiState.unixTimestampDate != null) reminderEditUiState.unixTimestampDate.toString() else "",
-        onValueChange = {},
-        enabled = false
-    )
-
-    if (datePickerDialogOpened.value) {
-        DatePickerDialog(
-            onDismissRequest = {
-                datePickerDialogOpened.value = false
-            },
-            confirmButton = {
-                Button(onClick = {
-                    if (datePickerState.selectedDateMillis != null) {
-                        onDateChanged(datePickerState.selectedDateMillis!!)
-                    }
-
-                    datePickerDialogOpened.value = false
-                }) {
-                    Text(text = "TODO Valider")
-                }
-            },
-            dismissButton = {
-                Button(onClick = {
-                    datePickerDialogOpened.value = false
-                }) {
-                    Text(text = "TODO Annuler")
-                }
-            }
-        ) {
-            DatePicker(state = datePickerState)
         }
     }
 }
