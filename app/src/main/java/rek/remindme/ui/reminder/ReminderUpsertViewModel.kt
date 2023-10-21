@@ -14,6 +14,7 @@ import javax.inject.Inject
 data class ReminderEditUiState(
     val title: String = "",
     val description: String = "",
+    val unixTimestampDate: Long? = null,
     val unixTimestamp: Long = System.currentTimeMillis(),
     val alreadyNotified: Boolean = false,
     val isSaved: Boolean = false
@@ -38,6 +39,12 @@ class ReminderUpsertViewModel @Inject constructor(
     fun updateDescription(newDescription: String) {
         _uiState.update {
             it.copy(description = newDescription)
+        }
+    }
+
+    fun updateDate(newUnixTimestamp: Long) {
+        _uiState.update {
+            it.copy(unixTimestampDate = newUnixTimestamp)
         }
     }
 

@@ -70,6 +70,7 @@ fun ReminderUpsertScreen(
                 onSave = viewModel::save,
                 onTitleChanged = viewModel::updateTitle,
                 onDescriptionChanged = viewModel::updateDescription,
+                onDateChanged = viewModel::updateDate,
                 reminderEditUiState = uiState
             )
 
@@ -88,6 +89,7 @@ internal fun ReminderUpsertScreenContent(
     modifier: Modifier = Modifier,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
+    onDateChanged: (Long) -> Unit,
     onSave: () -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
@@ -130,42 +132,10 @@ internal fun ReminderUpsertScreenContent(
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            val datePickerDialogOpened = remember { mutableStateOf(false) }
-            val datePickerState = rememberDatePickerState()
-
-            TextField(
-                modifier = Modifier.clickable { datePickerDialogOpened.value = true },
-                placeholder = {
-                    Text(text = "TODO Date")
-                },
-                value = datePickerState.selectedDateMillis.toString(),
-                onValueChange = {},
-                enabled = false
+            ReminderDateField(
+                onDateChanged = onDateChanged,
+                reminderEditUiState = reminderEditUiState
             )
-
-            if (datePickerDialogOpened.value) {
-                DatePickerDialog(
-                    onDismissRequest = {
-                        datePickerDialogOpened.value = false
-                    },
-                    confirmButton = {
-                        Button(onClick = {
-                            datePickerDialogOpened.value = false
-                        }) {
-                            Text(text = "TODO Valider")
-                        }
-                    },
-                    dismissButton = {
-                        Button(onClick = {
-                            datePickerDialogOpened.value = false
-                        }) {
-                            Text(text = "TODO Annuler")
-                        }
-                    }
-                ) {
-                    DatePicker(state = datePickerState)
-                }
-            }
         }
 
         Row(
@@ -181,6 +151,54 @@ internal fun ReminderUpsertScreenContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReminderDateField(
+    onDateChanged: (Long) -> Unit,
+    reminderEditUiState: ReminderEditUiState
+) {
+    val datePickerDialogOpened = remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+
+    TextField(
+        modifier = Modifier.clickable { datePickerDialogOpened.value = true },
+        placeholder = {
+            Text(text = "TODO Date")
+        },
+        value = if (reminderEditUiState.unixTimestampDate != null) reminderEditUiState.unixTimestampDate.toString() else "",
+        onValueChange = {},
+        enabled = false
+    )
+
+    if (datePickerDialogOpened.value) {
+        DatePickerDialog(
+            onDismissRequest = {
+                datePickerDialogOpened.value = false
+            },
+            confirmButton = {
+                Button(onClick = {
+                    if (datePickerState.selectedDateMillis != null) {
+                        onDateChanged(datePickerState.selectedDateMillis!!)
+                    }
+
+                    datePickerDialogOpened.value = false
+                }) {
+                    Text(text = "TODO Valider")
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    datePickerDialogOpened.value = false
+                }) {
+                    Text(text = "TODO Annuler")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
@@ -188,6 +206,7 @@ private fun DefaultPreview() {
         ReminderUpsertScreenContent(
             onTitleChanged = { _ -> },
             onDescriptionChanged = { _ -> },
+            onDateChanged = { _ -> },
             onSave = {},
             reminderEditUiState = ReminderEditUiState()
         )
@@ -201,6 +220,7 @@ private fun PortraitPreview() {
         ReminderUpsertScreenContent(
             onTitleChanged = { _ -> },
             onDescriptionChanged = { _ -> },
+            onDateChanged = { _ -> },
             onSave = {},
             reminderEditUiState = ReminderEditUiState()
         )
