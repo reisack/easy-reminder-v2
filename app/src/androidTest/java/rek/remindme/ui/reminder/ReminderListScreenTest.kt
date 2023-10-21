@@ -39,7 +39,7 @@ class ReminderListScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ReminderListScreenContent(items = fakeData, onSave = { _, _, _, _ -> }, reminderEdit =  ReminderEdit())
+            ReminderListScreenContent(items = fakeData)
         }
     }
 

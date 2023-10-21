@@ -24,21 +24,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import rek.remindme.data.ReminderRepository
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.reminder.ReminderUiState.Error
 import rek.remindme.ui.reminder.ReminderUiState.Loading
 import rek.remindme.ui.reminder.ReminderUiState.Success
 import javax.inject.Inject
-
-// TODO : Will be moved to an upcoming ReminderUpsertScreen
-data class ReminderEdit(
-    var title: String = "",
-    var description: String = "",
-    var unixTimestamp: Long = System.currentTimeMillis(),
-    val alreadyNotified: Boolean = false
-)
 
 @HiltViewModel
 class ReminderListViewModel @Inject constructor(
@@ -49,14 +40,6 @@ class ReminderListViewModel @Inject constructor(
         .reminders.map<List<Reminder>, ReminderUiState>(::Success)
         .catch { emit(Error(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
-
-    val reminderEdit: ReminderEdit = ReminderEdit()
-
-    fun addReminder(title: String, description: String, unixTimestamp: Long, alreadyNotified: Boolean) {
-        viewModelScope.launch {
-            reminderRepository.add(title, description, unixTimestamp, alreadyNotified)
-        }
-    }
 }
 
 sealed interface ReminderUiState {
