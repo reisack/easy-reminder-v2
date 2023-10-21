@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.ReminderRepository
 import javax.inject.Inject
 
@@ -17,7 +18,6 @@ data class ReminderEditUiState(
     val unixTimestampDate: Long? = null,
     val hour: Int? = null,
     val minute: Int? = null,
-    val unixTimestamp: Long = System.currentTimeMillis(),
     val alreadyNotified: Boolean = false,
     val isSaved: Boolean = false
 )
@@ -57,7 +57,11 @@ class ReminderUpsertViewModel @Inject constructor(
     }
 
     fun save() {
-        if (uiState.value.title.isEmpty() || uiState.value.description.isEmpty()) {
+        if (uiState.value.title.isBlank()
+            || uiState.value.description.isBlank()
+            || uiState.value.unixTimestampDate == null
+            || uiState.value.hour == null
+            || uiState.value.minute == null) {
             // TODO : Handle error message
             return
         }
@@ -67,10 +71,17 @@ class ReminderUpsertViewModel @Inject constructor(
 
     private fun addReminder() {
         viewModelScope.launch {
+
+            val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
+                uiState.value.unixTimestampDate!!,
+                uiState.value.hour!!,
+                uiState.value.minute!!
+            )
+
             reminderRepository.add(
                 uiState.value.title,
                 uiState.value.description,
-                uiState.value.unixTimestamp,
+                reminderDateTimeInMillis,
                 uiState.value.alreadyNotified
             )
 

@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import rek.remindme.common.DisplayHelper
+import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
 
@@ -29,7 +29,7 @@ fun ReminderTimeField(
         placeholder = {
             Text(text = "TODO Heure")
         },
-        value = DisplayHelper.displayHour(reminderEditUiState.hour, reminderEditUiState.minute),
+        value = DateTimeHelper.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
         onValueChange = {},
         enabled = false
     )
@@ -63,7 +63,7 @@ fun ReminderDateField(
         placeholder = {
             Text(text = "TODO Date")
         },
-        value = DisplayHelper.displayDate(reminderEditUiState.unixTimestampDate),
+        value = DateTimeHelper.getReadableDate(reminderEditUiState.unixTimestampDate),
         onValueChange = {},
         enabled = false
     )

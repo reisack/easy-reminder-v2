@@ -80,7 +80,7 @@ internal fun ReminderListScreenContent(
         modifier = modifier
     ) {
         items.forEach {
-            Text("Saved item: ${it.title} | ${it.description}")
+            Text("Saved item: ${it.title} | ${it.description} | ${it.unixTimestamp}")
         }
     }
 }
