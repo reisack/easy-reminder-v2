@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -12,16 +13,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,6 +82,7 @@ fun ReminderUpsertScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ReminderUpsertScreenContent(
     modifier: Modifier = Modifier,
@@ -92,7 +100,10 @@ internal fun ReminderUpsertScreenContent(
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TextField(
+            OutlinedTextField(
+                placeholder = {
+                    Text(text = "TODO Titre")
+                },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged
             )
@@ -104,10 +115,57 @@ internal fun ReminderUpsertScreenContent(
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TextField(
+            OutlinedTextField(
+                placeholder = {
+                    Text(text = "TODO Description")
+                },
                 value = reminderEditUiState.description,
                 onValueChange = onDescriptionChanged
             )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            val datePickerDialogOpened = remember { mutableStateOf(false) }
+            val datePickerState = rememberDatePickerState()
+
+            TextField(
+                modifier = Modifier.clickable { datePickerDialogOpened.value = true },
+                placeholder = {
+                    Text(text = "TODO Date")
+                },
+                value = datePickerState.selectedDateMillis.toString(),
+                onValueChange = {},
+                enabled = false
+            )
+
+            if (datePickerDialogOpened.value) {
+                DatePickerDialog(
+                    onDismissRequest = {
+                        datePickerDialogOpened.value = false
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            datePickerDialogOpened.value = false
+                        }) {
+                            Text(text = "TODO Valider")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = {
+                            datePickerDialogOpened.value = false
+                        }) {
+                            Text(text = "TODO Annuler")
+                        }
+                    }
+                ) {
+                    DatePicker(state = datePickerState)
+                }
+            }
         }
 
         Row(
