@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import rek.remindme.ui.components.TimePickerDialog
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -71,6 +72,7 @@ fun ReminderUpsertScreen(
                 onTitleChanged = viewModel::updateTitle,
                 onDescriptionChanged = viewModel::updateDescription,
                 onDateChanged = viewModel::updateDate,
+                onTimeChanged = viewModel::updateTime,
                 reminderEditUiState = uiState
             )
 
@@ -90,6 +92,7 @@ internal fun ReminderUpsertScreenContent(
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onDateChanged: (Long) -> Unit,
+    onTimeChanged: (Int, Int) -> Unit,
     onSave: () -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
@@ -144,10 +147,55 @@ internal fun ReminderUpsertScreenContent(
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            ReminderTimeField(
+                onTimeChanged = onTimeChanged,
+                reminderEditUiState = reminderEditUiState
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             Button(modifier = Modifier.width(96.dp), onClick = onSave) {
                 Text("TODO Save")
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReminderTimeField(
+    onTimeChanged: (Int, Int) -> Unit,
+    reminderEditUiState: ReminderEditUiState
+) {
+    val timePickerDialogOpened = remember { mutableStateOf(false) }
+
+    TextField(
+        modifier = Modifier.clickable { timePickerDialogOpened.value = true },
+        placeholder = {
+            Text(text = "TODO Heure")
+        },
+        value = "${reminderEditUiState.hour} : ${reminderEditUiState.minute}",
+        onValueChange = {},
+        enabled = false
+    )
+
+    if (timePickerDialogOpened.value) {
+        TimePickerDialog(
+            onCancel = {
+                timePickerDialogOpened.value = false
+            },
+            onConfirm = { hour, minute ->
+                onTimeChanged(hour, minute)
+                timePickerDialogOpened.value = false
+            },
+            initialHour = reminderEditUiState.hour,
+            initialMinute = reminderEditUiState.minute
+        )
     }
 }
 
@@ -207,6 +255,7 @@ private fun DefaultPreview() {
             onTitleChanged = { _ -> },
             onDescriptionChanged = { _ -> },
             onDateChanged = { _ -> },
+            onTimeChanged = { _, _ -> },
             onSave = {},
             reminderEditUiState = ReminderEditUiState()
         )
@@ -221,6 +270,7 @@ private fun PortraitPreview() {
             onTitleChanged = { _ -> },
             onDescriptionChanged = { _ -> },
             onDateChanged = { _ -> },
+            onTimeChanged = { _, _ -> },
             onSave = {},
             reminderEditUiState = ReminderEditUiState()
         )

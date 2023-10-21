@@ -15,6 +15,8 @@ data class ReminderEditUiState(
     val title: String = "",
     val description: String = "",
     val unixTimestampDate: Long? = null,
+    val hour: Int? = null,
+    val minute: Int? = null,
     val unixTimestamp: Long = System.currentTimeMillis(),
     val alreadyNotified: Boolean = false,
     val isSaved: Boolean = false
@@ -45,6 +47,12 @@ class ReminderUpsertViewModel @Inject constructor(
     fun updateDate(newUnixTimestamp: Long) {
         _uiState.update {
             it.copy(unixTimestampDate = newUnixTimestamp)
+        }
+    }
+
+    fun updateTime(hour: Int, minute: Int) {
+        _uiState.update {
+            it.copy(hour = hour, minute = minute)
         }
     }
 
