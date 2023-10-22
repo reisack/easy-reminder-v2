@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.theme.MyApplicationTheme
 
@@ -80,7 +81,9 @@ internal fun ReminderListScreenContent(
         modifier = modifier
     ) {
         items.forEach {
-            Text("Saved item: ${it.title} | ${it.description} | ${it.unixTimestamp}")
+            Text("${
+                DateTimeHelper.getReadableDate(it.unixTimestamp)}\n${DateTimeHelper.getReadableTime(it.unixTimestamp)}\n" +
+                    "${DateTimeHelper.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${it.description}")
         }
     }
 }
