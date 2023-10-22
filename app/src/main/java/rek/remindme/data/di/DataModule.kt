@@ -42,12 +42,8 @@ interface DataModule {
 class FakeReminderRepository @Inject constructor() : ReminderRepository {
     override val reminders: Flow<List<Reminder>> = flowOf(fakeReminders)
 
-    override suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean) {
-        throw NotImplementedError()
-    }
-
-    override suspend fun update(
-        id: Int,
+    override suspend fun upsert(
+        id: Int?,
         title: String,
         description: String,
         unixTimestamp: Long,

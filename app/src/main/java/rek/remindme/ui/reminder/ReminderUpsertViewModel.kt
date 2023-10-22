@@ -94,37 +94,10 @@ class ReminderUpsertViewModel @Inject constructor(
             return
         }
 
-        if (uiState.value.isUpdateMode) {
-            updateReminder()
-        }
-        else {
-            addReminder()
-        }
+        upsertReminder()
     }
 
-    private fun addReminder() {
-        viewModelScope.launch {
-
-            val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
-                uiState.value.unixTimestampDate!!,
-                uiState.value.hour!!,
-                uiState.value.minute!!
-            )
-
-            reminderRepository.add(
-                uiState.value.title,
-                uiState.value.description,
-                reminderDateTimeInMillis,
-                uiState.value.notified
-            )
-
-            _uiState.update {
-                it.copy(isSaved = true)
-            }
-        }
-    }
-
-    private fun updateReminder() {
+    private fun upsertReminder() {
         viewModelScope.launch {
             val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
                 uiState.value.unixTimestampDate!!,
@@ -132,8 +105,8 @@ class ReminderUpsertViewModel @Inject constructor(
                 uiState.value.minute!!
             )
 
-            reminderRepository.update(
-                _reminderId!!,
+            reminderRepository.upsert(
+                _reminderId,
                 uiState.value.title,
                 uiState.value.description,
                 reminderDateTimeInMillis,
