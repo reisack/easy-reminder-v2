@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.Flow
 @Entity
 data class Reminder(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-    @ColumnInfo(name = "title") var title: String,
-    @ColumnInfo(name = "description") var description: String,
-    @ColumnInfo(name = "unixTimestamp") var unixTimestamp: Long,
-    @ColumnInfo(name = "alreadyNotified") var alreadyNotified: Boolean
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "unixTimestamp") val unixTimestamp: Long,
+    @ColumnInfo(name = "notified") val notified: Boolean
 )
 
 @Dao

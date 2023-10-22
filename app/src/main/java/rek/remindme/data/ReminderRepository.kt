@@ -25,7 +25,7 @@ import javax.inject.Inject
 interface ReminderRepository {
     val reminders: Flow<List<Reminder>>
 
-    suspend fun add(title: String, description: String, unixTimestamp: Long, alreadyNotified: Boolean)
+    suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean)
 }
 
 class DefaultReminderRepository @Inject constructor(
@@ -39,18 +39,18 @@ class DefaultReminderRepository @Inject constructor(
                     title = it.title,
                     description = it.description,
                     unixTimestamp = it.unixTimestamp,
-                    alreadyNotified = it.alreadyNotified
+                    notified = it.notified
                 )
             }
         }
 
-    override suspend fun add(title: String, description: String, unixTimestamp: Long, alreadyNotified: Boolean) {
+    override suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean) {
         reminderDao.insertReminder(Reminder
             (
                 title = title,
                 description = description,
                 unixTimestamp = unixTimestamp,
-                alreadyNotified = alreadyNotified
+                notified = notified
             )
         )
     }

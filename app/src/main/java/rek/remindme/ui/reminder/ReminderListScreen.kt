@@ -93,9 +93,9 @@ private fun DefaultPreview() {
     MyApplicationTheme {
         ReminderListScreenContent(
             items = listOf(
-                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
-                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
-                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false)
+                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
+                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
+                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
             )
         )
     }
@@ -107,9 +107,9 @@ private fun PortraitPreview() {
     MyApplicationTheme {
         ReminderListScreenContent(
             items = listOf(
-                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
-                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false),
-                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, alreadyNotified = false)
+                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
+                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
+                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
             )
         )
     }

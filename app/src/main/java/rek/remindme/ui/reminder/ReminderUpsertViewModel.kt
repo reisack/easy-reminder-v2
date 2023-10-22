@@ -18,7 +18,7 @@ data class ReminderEditUiState(
     val unixTimestampDate: Long? = null,
     val hour: Int? = null,
     val minute: Int? = null,
-    val alreadyNotified: Boolean = false,
+    val notified: Boolean = false,
     val isSaved: Boolean = false
 )
 
@@ -82,7 +82,7 @@ class ReminderUpsertViewModel @Inject constructor(
                 uiState.value.title,
                 uiState.value.description,
                 reminderDateTimeInMillis,
-                uiState.value.alreadyNotified
+                uiState.value.notified
             )
 
             _uiState.update {

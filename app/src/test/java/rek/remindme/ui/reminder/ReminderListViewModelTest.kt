@@ -54,12 +54,12 @@ private class FakeReminderRepository : ReminderRepository {
     override val reminders: Flow<List<Reminder>>
         get() = flow { emit(data.toList()) }
 
-    override suspend fun add(title: String, description: String, unixTimestamp: Long, alreadyNotified: Boolean) {
+    override suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean) {
         data.add(0, Reminder(
             title = title,
             description = description,
             unixTimestamp = unixTimestamp,
-            alreadyNotified = alreadyNotified
+            notified = notified
         ))
     }
 }
