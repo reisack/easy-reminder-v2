@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,25 +42,34 @@ fun ReminderUpsertScreen(
     onBack: () -> Unit,
     viewModel: ReminderUpsertViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("TODO Edition") },
-                actions = {
+                title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
+                navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back_desc)
                         )
                     }
+                },
+                actions = {
+                    if (uiState.isUpdateMode) {
+                        IconButton(onClick = {}) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = stringResource(R.string.delete_reminder_desc)
+                            )
+                        }
+                    }
                 }
             )
         },
         content = { innerPadding ->
-
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
             ReminderUpsertScreenContent(
                 modifier = modifier
                     .consumeWindowInsets(innerPadding)

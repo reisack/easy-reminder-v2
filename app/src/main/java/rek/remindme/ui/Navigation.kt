@@ -20,9 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import rek.remindme.ui.reminder.ReminderListScreen
 import rek.remindme.ui.reminder.ReminderUpsertScreen
 
@@ -30,21 +32,45 @@ import rek.remindme.ui.reminder.ReminderUpsertScreen
 fun MainNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") {
+    val listReminderRoute = "list"
+    val addReminderRoute = "add"
+
+    val prefixEditReminderRoute = "edit"
+    val editReminderRoute = "edit/{reminderId}"
+
+    NavHost(navController = navController, startDestination = listReminderRoute) {
+        composable(route = listReminderRoute) {
             ReminderListScreen(
                 modifier = Modifier.padding(16.dp),
                 onNewReminder = {
-                    navController.navigate("upsert")
+                    navController.navigate(addReminderRoute)
+                },
+                onReminderClick = { reminderId -> navController.navigate("$prefixEditReminderRoute/$reminderId") }
+            )
+        }
+
+        composable(route = addReminderRoute) {
+            ReminderUpsertScreen(
+                modifier = Modifier.padding(16.dp),
+                onReminderSaved = {
+                    navController.navigate(listReminderRoute)
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }
 
-        composable("upsert") {
+        composable(route = editReminderRoute, arguments = listOf(
+            navArgument("reminderId") {
+                type = NavType.IntType
+                nullable = false
+            }
+        )) {
             ReminderUpsertScreen(
                 modifier = Modifier.padding(16.dp),
                 onReminderSaved = {
-                    navController.navigate("main")
+                    navController.navigate(listReminderRoute)
                 },
                 onBack = {
                     navController.popBackStack()

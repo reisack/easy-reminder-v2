@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,18 +20,31 @@ data class ReminderEditUiState(
     val hour: Int? = null,
     val minute: Int? = null,
     val notified: Boolean = false,
+    val isUpdateMode: Boolean = false,
     val isSaved: Boolean = false
 )
 
 @HiltViewModel
 class ReminderUpsertViewModel @Inject constructor(
-    private val reminderRepository: ReminderRepository
+    private val reminderRepository: ReminderRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val _reminderId: Int? = savedStateHandle["reminderId"]
+
     // A MutableStateFlow needs to be created in this ViewModel. The source of truth of the current
     // editable Task is the ViewModel, we need to mutate the UI state directly in methods such as
     // `updateTitle` or `updateDescription`
     private val _uiState = MutableStateFlow(ReminderEditUiState())
     val uiState: StateFlow<ReminderEditUiState> = _uiState.asStateFlow()
+
+    init {
+        if (_reminderId != null) {
+            _uiState.update {
+                it.copy(isUpdateMode = true)
+            }
+        }
+    }
 
     fun updateTitle(newTitle: String) {
         _uiState.update {

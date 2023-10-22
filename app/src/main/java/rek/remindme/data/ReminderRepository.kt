@@ -36,6 +36,7 @@ class DefaultReminderRepository @Inject constructor(
         reminderDao.getReminders().map {
             items -> items.map {
                 Reminder(
+                    uid = it.uid,
                     title = it.title,
                     description = it.description,
                     unixTimestamp = it.unixTimestamp,

@@ -16,6 +16,7 @@
 
 package rek.remindme.ui.reminder
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -46,6 +47,7 @@ import rek.remindme.ui.theme.MyApplicationTheme
 fun ReminderListScreen(
     modifier: Modifier = Modifier,
     onNewReminder: () -> Unit,
+    onReminderClick: (Int) -> Unit,
     viewModel: ReminderListViewModel = hiltViewModel()
 ) {
     Scaffold(
@@ -68,6 +70,7 @@ fun ReminderListScreen(
                     modifier = modifier
                         .consumeWindowInsets(innerPadding)
                         .padding(innerPadding),
+                    onReminderClick = onReminderClick
                 )
             }
         }
@@ -78,14 +81,18 @@ fun ReminderListScreen(
 internal fun ReminderListScreenContent(
     items: List<Reminder>,
     modifier: Modifier = Modifier,
+    onReminderClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
     ) {
         items.forEach {
-            Text("${
+            Text(
+                modifier = Modifier.clickable { onReminderClick(it.uid) },
+                text = "${
                 DateTimeHelper.getReadableDate(it.unixTimestamp)}\n${DateTimeHelper.getReadableTime(it.unixTimestamp)}\n" +
-                    "${DateTimeHelper.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${it.description}")
+                    "${DateTimeHelper.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${it.description}\nuid : ${it.uid}"
+            )
         }
     }
 }
@@ -101,7 +108,8 @@ private fun DefaultPreview() {
                 Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
                 Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
                 Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
-            )
+            ),
+            onReminderClick = {}
         )
     }
 }
@@ -115,7 +123,8 @@ private fun PortraitPreview() {
                 Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
                 Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
                 Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
-            )
+            ),
+            onReminderClick = {}
         )
     }
 }

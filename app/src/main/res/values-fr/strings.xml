@@ -37,4 +37,7 @@
     <string name="select_picker_mode_desc">Sélectionner le mode picker</string>
     <string name="back_desc">Retour</string>
     <string name="save_button_label">Sauvegarder</string>
+    <string name="new_reminder_label">Nouveau rappel</string>
+    <string name="update_reminder_label">Modification</string>
+    <string name="delete_reminder_desc">Supprimer</string>
 </resources>
