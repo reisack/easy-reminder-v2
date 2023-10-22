@@ -32,9 +32,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.theme.MyApplicationTheme
@@ -50,7 +52,7 @@ fun ReminderListScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("TODO Ma liste") }
+                title = { Text(text = stringResource(R.string.reminder_list_title)) }
             )
         },
         floatingActionButton = {

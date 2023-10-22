@@ -15,6 +15,6 @@
   -->
 
 <resources>
-    <string name="app_name">Easy Reminder</string>
-    <string name="reminder_list_title">Reminders</string>
+    <string name="app_name">Rappel facile</string>
+    <string name="reminder_list_title">Rappels</string>
 </resources>
