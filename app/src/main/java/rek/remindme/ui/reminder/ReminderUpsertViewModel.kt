@@ -21,7 +21,8 @@ data class ReminderEditUiState(
     val minute: Int? = null,
     val notified: Boolean = false,
     val isUpdateMode: Boolean = false,
-    val isSaved: Boolean = false
+    val isSaved: Boolean = false,
+    val isDeleted: Boolean = false
 )
 
 @HiltViewModel
@@ -81,6 +82,19 @@ class ReminderUpsertViewModel @Inject constructor(
     fun updateTime(hour: Int, minute: Int) {
         _uiState.update {
             it.copy(hour = hour, minute = minute)
+        }
+    }
+
+    fun delete() {
+        // TODO : Add a dialog modal for confirmation
+        viewModelScope.launch {
+            if (_reminderId != null) {
+                reminderRepository.deleteById(_reminderId)
+            }
+
+            _uiState.update {
+                it.copy(isDeleted = true)
+            }
         }
     }
 

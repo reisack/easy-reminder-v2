@@ -55,6 +55,10 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     override suspend fun getById(id: Int): Reminder? {
         throw NotImplementedError()
     }
+
+    override suspend fun deleteById(id: Int) {
+        throw NotImplementedError()
+    }
 }
 
 val fakeReminders = listOf(

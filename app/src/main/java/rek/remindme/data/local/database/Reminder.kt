@@ -43,4 +43,7 @@ interface ReminderDao {
 
     @Upsert
     suspend fun upsert(item: Reminder)
+
+    @Query("DELETE FROM reminder WHERE uid = :id")
+    suspend fun deleteById(id: Int)
 }

@@ -55,6 +55,9 @@ fun MainNavigation() {
                 onReminderSaved = {
                     navController.navigate(listReminderRoute)
                 },
+                onReminderDeleted = {
+                    navController.navigate(listReminderRoute)
+                },
                 onBack = {
                     navController.popBackStack()
                 }
@@ -70,6 +73,9 @@ fun MainNavigation() {
             ReminderUpsertScreen(
                 modifier = Modifier.padding(16.dp),
                 onReminderSaved = {
+                    navController.navigate(listReminderRoute)
+                },
+                onReminderDeleted = {
                     navController.navigate(listReminderRoute)
                 },
                 onBack = {

@@ -39,6 +39,7 @@ import rek.remindme.ui.theme.MyApplicationTheme
 fun ReminderUpsertScreen(
     modifier: Modifier = Modifier,
     onReminderSaved: () -> Unit,
+    onReminderDeleted: () -> Unit,
     onBack: () -> Unit,
     viewModel: ReminderUpsertViewModel = hiltViewModel()
 ) {
@@ -59,7 +60,7 @@ fun ReminderUpsertScreen(
                 },
                 actions = {
                     if (uiState.isUpdateMode) {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = viewModel::delete) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = stringResource(R.string.delete_reminder_desc)
@@ -87,11 +88,16 @@ fun ReminderUpsertScreen(
                     onReminderSaved()
                 }
             }
+
+            LaunchedEffect(uiState.isDeleted) {
+                if (uiState.isDeleted) {
+                    onReminderDeleted()
+                }
+            }
         }
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ReminderUpsertScreenContent(
     modifier: Modifier = Modifier,
