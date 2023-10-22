@@ -51,12 +51,23 @@ class DateTimeHelper {
                 return ""
             }
 
-            val daysInAYearCount = 365.2425f
-            val daysInAMonthCount = 30.436874f
-
             val currentUtcTime = Date().time
             val span = currentUtcTime - unixTimestampDate
             val isReminderPast = currentUtcTime > unixTimestampDate
+
+            val (timeNumber: Int, timeUnit: String) = calculateRemainingOrPastTime(span)
+
+            // TODO : Handle i18n
+            return if (isReminderPast) {
+                "$timeNumber $timeUnit"
+            } else {
+                "$timeNumber $timeUnit"
+            }
+        }
+
+        private fun calculateRemainingOrPastTime(span: Long): Pair<Int, String> {
+            val daysInAYearCount = 365.2425f
+            val daysInAMonthCount = 30.436874f
 
             val absDays = abs(span / (1000 * 60 * 60 * 24))
             val absHours = abs(span / (1000 * 60 * 60) % 24)
@@ -74,8 +85,7 @@ class DateTimeHelper {
                 if (absDays % daysInAYearCount >= 182) {
                     timeNumber++
                 }
-            }
-            else if (absDays > 30) {
+            } else if (absDays > 30) {
                 timeNumber = (absDays / daysInAMonthCount).toInt()
                 timeUnit = "TODO month"
 
@@ -89,8 +99,7 @@ class DateTimeHelper {
                         timeUnit = "TODO year"
                     }
                 }
-            }
-            else if (absDays >= 1) {
+            } else if (absDays >= 1) {
                 timeNumber = absDays.toInt()
                 timeUnit = "TODO day"
 
@@ -104,8 +113,7 @@ class DateTimeHelper {
                         timeUnit = "TODO month"
                     }
                 }
-            }
-            else if (absHours >= 1) {
+            } else if (absHours >= 1) {
                 timeNumber = absHours.toInt()
                 timeUnit = "TODO hour"
 
@@ -119,8 +127,7 @@ class DateTimeHelper {
                         timeUnit = "TODO day"
                     }
                 }
-            }
-            else if (absMinutes >= 1) {
+            } else if (absMinutes >= 1) {
                 timeNumber = absMinutes.toInt()
                 timeUnit = "TODO minute"
 
@@ -134,23 +141,22 @@ class DateTimeHelper {
                         timeUnit = "TODO hour"
                     }
                 }
-            }
-            else {
+            } else {
                 timeNumber = absSeconds.toInt()
                 timeUnit = "TODO second"
             }
 
+            timeUnit = getPluralIfNeeded(timeNumber, timeUnit)
+
+            return Pair(timeNumber, timeUnit)
+        }
+
+        private fun getPluralIfNeeded(timeNumber: Int, timeUnit: String): String {
             if (timeNumber > 1 && !timeUnit.endsWith("s")) {
-                timeUnit += "s"
+                return timeUnit + "s"
             }
 
-            // TODO : Handle i18n
-            if (isReminderPast) {
-                return "$timeNumber $timeUnit"
-            }
-            else {
-                return "$timeNumber $timeUnit"
-            }
+            return timeUnit
         }
     }
 }
