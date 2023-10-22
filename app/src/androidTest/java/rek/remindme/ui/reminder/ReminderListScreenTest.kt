@@ -39,7 +39,7 @@ class ReminderListScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ReminderListScreenContent(items = fakeData)
+            ReminderListScreenContent(items = fakeData, onReminderClick = {})
         }
     }
 

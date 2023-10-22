@@ -17,7 +17,6 @@
 package rek.remindme.ui.reminder
 
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -32,7 +31,6 @@ import rek.remindme.data.local.database.Reminder
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class ReminderListViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
@@ -50,16 +48,46 @@ class ReminderListViewModelTest {
 private class FakeReminderRepository : ReminderRepository {
 
     private val data = mutableListOf<Reminder>()
+    private var index: Int = 0
 
     override val reminders: Flow<List<Reminder>>
         get() = flow { emit(data.toList()) }
 
-    override suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean) {
-        data.add(0, Reminder(
-            title = title,
-            description = description,
-            unixTimestamp = unixTimestamp,
-            notified = notified
-        ))
+    override suspend fun upsert(
+        id: Int?,
+        title: String,
+        description: String,
+        unixTimestamp: Long,
+        notified: Boolean
+    ) {
+        val reminder = data.find { reminder -> reminder.uid == id }
+        if (reminder != null) {
+            val index = data.indexOf(reminder)
+            data.removeAt(index)
+            data.add(index, Reminder(
+                uid = id!!,
+                title = title,
+                description = description,
+                unixTimestamp = unixTimestamp,
+                notified = notified
+            ))
+        }
+        else {
+            data.add(index++, Reminder(
+                title = title,
+                description = description,
+                unixTimestamp = unixTimestamp,
+                notified = notified
+            ))
+        }
+    }
+
+    override suspend fun getById(id: Int): Reminder? {
+        return data.find { reminder -> reminder.uid == id }
+    }
+
+    override suspend fun deleteById(id: Int) {
+        val reminder = data.find { reminder -> reminder.uid == id }
+        data.remove(reminder)
     }
 }

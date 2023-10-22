@@ -16,7 +16,6 @@
 
 package rek.remindme.data
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -29,14 +28,13 @@ import rek.remindme.data.local.database.ReminderDao
 /**
  * Unit tests for [DefaultReminderRepository].
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class DefaultReminderRepositoryTest {
 
     @Test
     fun reminders_newItemSaved_itemIsReturned() = runTest {
         val repository = DefaultReminderRepository(FakeReminderDao())
 
-        repository.add("title 1", "desc", System.currentTimeMillis(), false)
+        repository.upsert(0,"title 1", "desc", System.currentTimeMillis(), false)
 
         assertEquals(repository.reminders.first().size, 1)
     }
@@ -46,12 +44,30 @@ class DefaultReminderRepositoryTest {
 private class FakeReminderDao : ReminderDao {
 
     private val data = mutableListOf<Reminder>()
+    private var index: Int = 0
 
     override fun getReminders(): Flow<List<Reminder>> = flow {
         emit(data)
     }
 
-    override suspend fun insertReminder(item: Reminder) {
-        data.add(0, item)
+    override suspend fun getById(id: Int): Reminder? {
+        return data.find { reminder -> reminder.uid == id }
+    }
+
+    override suspend fun upsert(item: Reminder) {
+        val reminder = data.find { reminder -> reminder.uid == item.uid }
+        if (reminder != null) {
+            val index = data.indexOf(reminder)
+            data.removeAt(index)
+            data.add(index, item)
+        }
+        else {
+            data.add(index++, item)
+        }
+    }
+
+    override suspend fun deleteById(id: Int) {
+        val reminder = data.find { reminder -> reminder.uid == id }
+        data.remove(reminder)
     }
 }
