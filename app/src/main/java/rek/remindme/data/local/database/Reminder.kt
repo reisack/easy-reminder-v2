@@ -19,9 +19,9 @@ package rek.remindme.data.local.database
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Entity
-import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Entity
@@ -38,6 +38,9 @@ interface ReminderDao {
     @Query("SELECT * FROM reminder ORDER BY uid DESC LIMIT 10")
     fun getReminders(): Flow<List<Reminder>>
 
-    @Insert
-    suspend fun insertReminder(item: Reminder)
+    @Query("SELECT * FROM reminder WHERE uid = :id")
+    suspend fun getById(id: Int): Reminder?
+
+    @Upsert
+    suspend fun upsert(item: Reminder)
 }

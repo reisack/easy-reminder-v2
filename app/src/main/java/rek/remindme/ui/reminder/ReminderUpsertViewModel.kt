@@ -40,8 +40,22 @@ class ReminderUpsertViewModel @Inject constructor(
 
     init {
         if (_reminderId != null) {
-            _uiState.update {
-                it.copy(isUpdateMode = true)
+            viewModelScope.launch {
+                val reminder = reminderRepository.getById(_reminderId)
+                if (reminder != null) {
+                    // TODO : Complete DateTimeHelper
+                    _uiState.update {
+                        it.copy(
+                            title = reminder.title,
+                            description = reminder.description,
+                            notified = reminder.notified,
+                            isUpdateMode = true
+                        )
+                    }
+                }
+                else {
+                    // TODO : Display a toast to inform user that reminder couldn't be found. "New reminder" mode
+                }
             }
         }
     }
@@ -80,7 +94,12 @@ class ReminderUpsertViewModel @Inject constructor(
             return
         }
 
-        addReminder()
+        if (uiState.value.isUpdateMode) {
+            updateReminder()
+        }
+        else {
+            addReminder()
+        }
     }
 
     private fun addReminder() {
@@ -93,6 +112,28 @@ class ReminderUpsertViewModel @Inject constructor(
             )
 
             reminderRepository.add(
+                uiState.value.title,
+                uiState.value.description,
+                reminderDateTimeInMillis,
+                uiState.value.notified
+            )
+
+            _uiState.update {
+                it.copy(isSaved = true)
+            }
+        }
+    }
+
+    private fun updateReminder() {
+        viewModelScope.launch {
+            val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
+                uiState.value.unixTimestampDate!!,
+                uiState.value.hour!!,
+                uiState.value.minute!!
+            )
+
+            reminderRepository.update(
+                _reminderId!!,
                 uiState.value.title,
                 uiState.value.description,
                 reminderDateTimeInMillis,

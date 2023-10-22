@@ -26,6 +26,8 @@ interface ReminderRepository {
     val reminders: Flow<List<Reminder>>
 
     suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean)
+    suspend fun update(id: Int, title: String, description: String, unixTimestamp: Long, notified: Boolean)
+    suspend fun getById(id: Int): Reminder?
 }
 
 class DefaultReminderRepository @Inject constructor(
@@ -46,7 +48,7 @@ class DefaultReminderRepository @Inject constructor(
         }
 
     override suspend fun add(title: String, description: String, unixTimestamp: Long, notified: Boolean) {
-        reminderDao.insertReminder(Reminder
+        reminderDao.upsert(Reminder
             (
                 title = title,
                 description = description,
@@ -54,5 +56,32 @@ class DefaultReminderRepository @Inject constructor(
                 notified = notified
             )
         )
+    }
+
+    override suspend fun update(
+        id: Int,
+        title: String,
+        description: String,
+        unixTimestamp: Long,
+        notified: Boolean
+    ) {
+        val reminder = getById(id)
+
+        // In case id doesn't exist in database
+        if (reminder == null) {
+            add(title, description, unixTimestamp, notified)
+        }
+
+        reminderDao.upsert(Reminder(
+            uid = id,
+            title = title,
+            description = description,
+            unixTimestamp = unixTimestamp,
+            notified = notified
+        ))
+    }
+
+    override suspend fun getById(id: Int): Reminder? {
+        return reminderDao.getById(id)
     }
 }
