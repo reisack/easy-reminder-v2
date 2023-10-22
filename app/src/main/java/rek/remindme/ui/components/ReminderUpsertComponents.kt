@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
@@ -27,7 +29,7 @@ fun ReminderTimeField(
     TextField(
         modifier = Modifier.clickable { timePickerDialogOpened.value = true },
         placeholder = {
-            Text(text = "TODO Heure")
+            Text(text = stringResource(R.string.time_field_title))
         },
         value = DateTimeHelper.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
         onValueChange = {},
@@ -61,7 +63,7 @@ fun ReminderDateField(
     TextField(
         modifier = Modifier.clickable { datePickerDialogOpened.value = true },
         placeholder = {
-            Text(text = "TODO Date")
+            Text(text = stringResource(R.string.date_field_title))
         },
         value = DateTimeHelper.getReadableDate(reminderEditUiState.unixTimestampDate),
         onValueChange = {},
@@ -81,14 +83,14 @@ fun ReminderDateField(
 
                     datePickerDialogOpened.value = false
                 }) {
-                    Text(text = "TODO Valider")
+                    Text(text = stringResource(R.string.confirm_button_label))
                 }
             },
             dismissButton = {
                 Button(onClick = {
                     datePickerDialogOpened.value = false
                 }) {
-                    Text(text = "TODO Annuler")
+                    Text(text = stringResource(R.string.cancel_button_label))
                 }
             }
         ) {

@@ -17,4 +17,24 @@
 <resources>
     <string name="app_name">Rappel facile</string>
     <string name="reminder_list_title">Rappels</string>
+    <string name="year">an</string>
+    <string name="month">mois</string>
+    <string name="day">jour</string>
+    <string name="hour">heure</string>
+    <string name="minute">minute</string>
+    <string name="second">seconde</string>
+    <string name="time_future">Dans %1$d %2$s</string>
+    <string name="time_past">Il y a %1$d %2$s</string>
+    <string name="add_reminder_desc">Ajouter un rappel</string>
+    <string name="title_field_title">Titre</string>
+    <string name="description_field_title">Description</string>
+    <string name="time_field_title">Heure</string>
+    <string name="date_field_title">Date</string>
+    <string name="confirm_button_label">Valider</string>
+    <string name="cancel_button_label">Annuler</string>
+    <string name="select_time_label">Sélectionner une heure</string>
+    <string name="select_input_mode_desc">Sélectionner le mode de saisie manuelle</string>
+    <string name="select_picker_mode_desc">Sélectionner le mode picker</string>
+    <string name="back_desc">Retour</string>
+    <string name="save_button_label">Sauvegarder</string>
 </resources>

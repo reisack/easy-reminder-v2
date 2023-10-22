@@ -43,8 +43,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import rek.remindme.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,7 +72,7 @@ fun TimePickerDialog(
     PickerDialog(
         modifier = modifier,
         onDismissRequest = onCancel,
-        title = { Text("TODO Select hour") },
+        title = { Text(text = stringResource(R.string.select_time_label)) },
         buttons = {
             DisplayModeToggleButton(
                 displayMode = mode,
@@ -78,10 +80,10 @@ fun TimePickerDialog(
             )
             Spacer(Modifier.weight(1f))
             TextButton(onClick = onCancel) {
-                Text("TODO Annuler")
+                Text(stringResource(R.string.cancel_button_label))
             }
             TextButton(onClick = ::onConfirmClicked) {
-                Text("TODO OK")
+                Text(stringResource(R.string.confirm_button_label))
             }
         },
     ) {
@@ -107,7 +109,7 @@ private fun DisplayModeToggleButton(
         ) {
             Icon(
                 imageVector = Icons.Filled.Create,
-                contentDescription = "TODO Select input mode",
+                contentDescription = stringResource(R.string.select_input_mode_desc),
             )
         }
         DisplayMode.Input -> IconButton(
@@ -116,7 +118,7 @@ private fun DisplayModeToggleButton(
         ) {
             Icon(
                 imageVector = Icons.Filled.DateRange,
-                contentDescription = "TODO Select picker mode",
+                contentDescription = stringResource(R.string.select_picker_mode_desc),
             )
         }
     }

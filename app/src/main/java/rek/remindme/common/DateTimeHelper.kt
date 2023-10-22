@@ -1,5 +1,8 @@
 package rek.remindme.common
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import rek.remindme.R
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
@@ -46,6 +49,7 @@ class DateTimeHelper {
             return calendar.timeInMillis
         }
 
+        @Composable
         fun getRemainingOrPastTime(unixTimestampDate: Long?): String {
             if (unixTimestampDate == null) {
                 return ""
@@ -57,14 +61,14 @@ class DateTimeHelper {
 
             val (timeNumber: Int, timeUnit: String) = calculateRemainingOrPastTime(span)
 
-            // TODO : Handle i18n
             return if (isReminderPast) {
-                "$timeNumber $timeUnit"
+                stringResource(R.string.time_past, timeNumber, timeUnit)
             } else {
-                "$timeNumber $timeUnit"
+                stringResource(R.string.time_future, timeNumber, timeUnit)
             }
         }
 
+        @Composable
         private fun calculateRemainingOrPastTime(span: Long): Pair<Int, String> {
             val daysInAYearCount = 365.2425f
             val daysInAMonthCount = 30.436874f
@@ -79,7 +83,7 @@ class DateTimeHelper {
 
             if (absDays > 365) {
                 timeNumber = (absDays / daysInAYearCount).toInt()
-                timeUnit = "TODO year"
+                timeUnit = stringResource(R.string.year)
 
                 // Nearer to next year
                 if (absDays % daysInAYearCount >= 182) {
@@ -87,7 +91,7 @@ class DateTimeHelper {
                 }
             } else if (absDays > 30) {
                 timeNumber = (absDays / daysInAMonthCount).toInt()
-                timeUnit = "TODO month"
+                timeUnit = stringResource(R.string.month)
 
                 // Nearer to next month
                 if (absDays % daysInAMonthCount >= 15) {
@@ -96,12 +100,12 @@ class DateTimeHelper {
                     // 12 months => 1 year
                     if (timeNumber >= 12) {
                         timeNumber = 1
-                        timeUnit = "TODO year"
+                        timeUnit = stringResource(R.string.year)
                     }
                 }
             } else if (absDays >= 1) {
                 timeNumber = absDays.toInt()
-                timeUnit = "TODO day"
+                timeUnit = stringResource(R.string.day)
 
                 // Nearer to next day
                 if (absHours >= 12) {
@@ -110,12 +114,12 @@ class DateTimeHelper {
                     // 30 days => 1 month
                     if (timeNumber > 30) {
                         timeNumber = 1
-                        timeUnit = "TODO month"
+                        timeUnit = stringResource(R.string.month)
                     }
                 }
             } else if (absHours >= 1) {
                 timeNumber = absHours.toInt()
-                timeUnit = "TODO hour"
+                timeUnit = stringResource(R.string.hour)
 
                 // Nearer to next hour
                 if (absMinutes >= 30) {
@@ -124,12 +128,12 @@ class DateTimeHelper {
                     // 24 hours => 1 day
                     if (timeNumber >= 24) {
                         timeNumber = 1
-                        timeUnit = "TODO day"
+                        timeUnit = stringResource(R.string.day)
                     }
                 }
             } else if (absMinutes >= 1) {
                 timeNumber = absMinutes.toInt()
-                timeUnit = "TODO minute"
+                timeUnit = stringResource(R.string.minute)
 
                 // Nearer to next minute
                 if (absSeconds >= 30) {
@@ -138,12 +142,12 @@ class DateTimeHelper {
                     //60 minutes => 1 hour
                     if (timeNumber >= 60) {
                         timeNumber = 1
-                        timeUnit = "TODO hour"
+                        timeUnit = stringResource(R.string.hour)
                     }
                 }
             } else {
                 timeNumber = absSeconds.toInt()
-                timeUnit = "TODO second"
+                timeUnit = stringResource(R.string.second)
             }
 
             timeUnit = getPluralIfNeeded(timeNumber, timeUnit)

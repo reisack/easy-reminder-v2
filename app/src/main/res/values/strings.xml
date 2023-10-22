@@ -17,4 +17,24 @@
 <resources>
     <string name="app_name">Easy Reminder</string>
     <string name="reminder_list_title">Reminders</string>
+    <string name="year">year</string>
+    <string name="month">month</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="second">second</string>
+    <string name="time_future">%1$d %2$s left</string>
+    <string name="time_past">%1$d %2$s ago</string>
+    <string name="add_reminder_desc">Add a reminder</string>
+    <string name="title_field_title">Title</string>
+    <string name="description_field_title">Description</string>
+    <string name="time_field_title">Time</string>
+    <string name="date_field_title">Date</string>
+    <string name="confirm_button_label">Confirm</string>
+    <string name="cancel_button_label">Cancel</string>
+    <string name="select_time_label">Select time</string>
+    <string name="select_input_mode_desc">Select input mode</string>
+    <string name="select_picker_mode_desc">Select picker mode</string>
+    <string name="back_desc">Back</string>
+    <string name="save_button_label">Save</string>
 </resources>

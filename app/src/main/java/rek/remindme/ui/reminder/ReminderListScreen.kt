@@ -57,7 +57,7 @@ fun ReminderListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNewReminder) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "TODO Créer un rappel")
+                Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
             }
         },
         content = { innerPadding ->
