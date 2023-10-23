@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import rek.remindme.common.Consts
 import rek.remindme.ui.reminder.ReminderListScreen
 import rek.remindme.ui.reminder.ReminderUpsertScreen
 
@@ -36,7 +37,7 @@ fun MainNavigation() {
     val addReminderRoute = "add"
 
     val prefixEditReminderRoute = "edit"
-    val editReminderRoute = "edit/{reminderId}"
+    val editReminderRoute = "edit/{${Consts.REMINDER_ID_NAV_ARG}}"
 
     NavHost(navController = navController, startDestination = listReminderRoute) {
         composable(route = listReminderRoute) {
@@ -65,7 +66,7 @@ fun MainNavigation() {
         }
 
         composable(route = editReminderRoute, arguments = listOf(
-            navArgument("reminderId") {
+            navArgument(name = Consts.REMINDER_ID_NAV_ARG) {
                 type = NavType.IntType
                 nullable = false
             }

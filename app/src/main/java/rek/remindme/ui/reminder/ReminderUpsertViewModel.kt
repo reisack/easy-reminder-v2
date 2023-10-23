@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.ReminderRepository
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class ReminderUpsertViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reminderId: Int? = savedStateHandle["reminderId"]
+    private val _reminderId: Int? = savedStateHandle[Consts.REMINDER_ID_NAV_ARG]
 
     // A MutableStateFlow needs to be created in this ViewModel. The source of truth of the current
     // editable Task is the ViewModel, we need to mutate the UI state directly in methods such as
