@@ -70,4 +70,8 @@ private class FakeReminderDao : ReminderDao {
         val reminder = data.find { reminder -> reminder.uid == id }
         data.remove(reminder)
     }
+
+    override suspend fun deleteNotified() {
+        data.removeAll { reminder -> reminder.notified }
+    }
 }
