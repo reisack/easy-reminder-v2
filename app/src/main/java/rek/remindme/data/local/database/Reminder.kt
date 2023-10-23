@@ -35,7 +35,23 @@ data class Reminder(
 
 @Dao
 interface ReminderDao {
-    @Query("SELECT * FROM reminder ORDER BY uid DESC LIMIT 10")
+    @Query("""
+        SELECT * FROM
+        (
+           SELECT *
+           FROM Reminder 
+           WHERE unixTimestamp >= strftime('%s','now') * 1000
+           ORDER BY unixTimestamp ASC, Title ASC
+        ) AS T1
+        UNION ALL
+        SELECT * FROM
+        (
+           SELECT *
+           FROM Reminder 
+           WHERE unixTimestamp < strftime('%s','now') * 1000
+           ORDER BY unixTimestamp DESC, Title ASC
+        ) AS T2
+              """)
     fun getReminders(): Flow<List<Reminder>>
 
     @Query("SELECT * FROM reminder WHERE uid = :id")
