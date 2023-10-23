@@ -49,6 +49,9 @@ class ReminderUpsertViewModel @Inject constructor(
                         it.copy(
                             title = reminder.title,
                             description = reminder.description,
+                            unixTimestampDate = reminder.unixTimestamp,
+                            hour = DateTimeHelper.getHourFromTimestamp((reminder.unixTimestamp)),
+                            minute = DateTimeHelper.getMinuteFromTimestamp((reminder.unixTimestamp)),
                             notified = reminder.notified,
                             isUpdateMode = true
                         )

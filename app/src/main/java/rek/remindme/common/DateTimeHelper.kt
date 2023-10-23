@@ -40,13 +40,30 @@ class DateTimeHelper {
             return DateFormat.getDateInstance(DateFormat.FULL).format(date)
         }
 
+        fun getHourFromTimestamp(unixTimestamp: Long): Int {
+            val calendar = getCalendarWithTimestamp(unixTimestamp)
+            return calendar.get(Calendar.HOUR_OF_DAY)
+        }
+
+        fun getMinuteFromTimestamp(unixTimestamp: Long): Int {
+            val calendar = getCalendarWithTimestamp(unixTimestamp)
+            return calendar.get(Calendar.MINUTE)
+        }
+
         fun getUtcDatetimeInMillis(unixTimestampDate: Long, hour: Int, minute: Int): Long {
-            val calendar = Calendar.getInstance()
-            calendar.time = Date(unixTimestampDate)
+            val calendar = getCalendarWithTimestamp(unixTimestampDate)
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.MINUTE, minute)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
 
             return calendar.timeInMillis
+        }
+
+        private fun getCalendarWithTimestamp(unixTimestamp: Long): Calendar {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(unixTimestamp)
+            return calendar
         }
 
         @Composable
