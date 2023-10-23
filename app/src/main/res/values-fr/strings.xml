@@ -40,4 +40,6 @@
     <string name="new_reminder_label">Nouveau rappel</string>
     <string name="update_reminder_label">Modification</string>
     <string name="delete_reminder_desc">Supprimer</string>
+    <string name="clear_notified_reminders">Supprimer les anciens rappels</string>
+    <string name="options_desc">Options</string>
 </resources>

@@ -17,21 +17,31 @@
 package rek.remindme.ui.reminder
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +52,7 @@ import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.theme.MyApplicationTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderListScreen(
     modifier: Modifier = Modifier,
@@ -53,9 +63,7 @@ fun ReminderListScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.reminder_list_title)) }
-            )
+            ReminderListTopAppBar(clearNotified = viewModel::clearNotified)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNewReminder) {
@@ -72,6 +80,37 @@ fun ReminderListScreen(
                         .padding(innerPadding),
                     onReminderClick = onReminderClick
                 )
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReminderListTopAppBar(clearNotified: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(R.string.reminder_list_title)) },
+        actions = {
+            var expanded by remember { mutableStateOf(false) }
+            Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = stringResource(R.string.back_desc)
+                    )
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false}
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(R.string.clear_notified_reminders)) },
+                        onClick = {
+                            clearNotified()
+                            expanded = false
+                        }
+                    )
+                }
             }
         }
     )

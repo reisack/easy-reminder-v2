@@ -28,6 +28,7 @@ interface ReminderRepository {
     suspend fun upsert(id: Int?, title: String, description: String, unixTimestamp: Long, notified: Boolean)
     suspend fun getById(id: Int): Reminder?
     suspend fun deleteById(id: Int)
+    suspend fun deleteNotified()
 }
 
 class DefaultReminderRepository @Inject constructor(
@@ -69,5 +70,9 @@ class DefaultReminderRepository @Inject constructor(
 
     override suspend fun deleteById(id: Int) {
         reminderDao.deleteById(id)
+    }
+
+    override suspend fun deleteNotified() {
+        reminderDao.deleteNotified()
     }
 }

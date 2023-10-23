@@ -40,4 +40,6 @@
     <string name="new_reminder_label">New Reminder</string>
     <string name="update_reminder_label">Update</string>
     <string name="delete_reminder_desc">Delete</string>
+    <string name="clear_notified_reminders">Clear notified reminders</string>
+    <string name="options_desc">Options</string>
 </resources>

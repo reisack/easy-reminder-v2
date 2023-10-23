@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import rek.remindme.data.ReminderRepository
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.reminder.ReminderUiState.Error
@@ -40,6 +41,13 @@ class ReminderListViewModel @Inject constructor(
         .reminders.map<List<Reminder>, ReminderUiState>(::Success)
         .catch { emit(Error(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
+
+    fun clearNotified() {
+        // TODO : Add a dialog Modal for confirmation
+        viewModelScope.launch {
+            reminderRepository.deleteNotified()
+        }
+    }
 }
 
 sealed interface ReminderUiState {
