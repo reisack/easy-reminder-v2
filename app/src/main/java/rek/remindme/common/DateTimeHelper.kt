@@ -8,7 +8,7 @@ import java.util.Calendar
 import java.util.Date
 import kotlin.math.abs
 
-open class DateTimeHelper {
+class DateTimeHelper {
 
     companion object {
 

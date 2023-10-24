@@ -48,7 +48,6 @@ class DateTimeHelperComposableTest {
 
     private fun testRemainingOrPastTime(unixTimestamp: Long, displayedTime: String, displayedTimeInFr: String) {
         composeTestRule.setContent {
-            // Tuesday 24 October 2023 12:58:29 UTC => should round to : 2 minutes ago
             Text(
                 text = DateTimeHelper.getRemainingOrPastTime(
                     unixTimestamp = unixTimestamp,
