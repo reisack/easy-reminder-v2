@@ -3,13 +3,20 @@ package rek.remindme.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import rek.remindme.R
+import rek.remindme.common.interfaces.ITestableCurrentDate
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.abs
 
 class DateTimeHelper {
-    companion object {
+
+    companion object : ITestableCurrentDate {
+
+        override fun getCurrentDate(): Date {
+            return Date()
+        }
+
         fun getReadableTime(unixTimestampDate: Long?): String {
             if (unixTimestampDate == null) {
                 return ""
@@ -67,14 +74,14 @@ class DateTimeHelper {
         }
 
         @Composable
-        fun getRemainingOrPastTime(unixTimestampDate: Long?): String {
-            if (unixTimestampDate == null) {
+        fun getRemainingOrPastTime(unixTimestamp: Long?): String {
+            if (unixTimestamp == null) {
                 return ""
             }
 
-            val currentUtcTime = Date().time
-            val span = currentUtcTime - unixTimestampDate
-            val isReminderPast = currentUtcTime > unixTimestampDate
+            val currentUtcTime = getCurrentDate().time
+            val span = currentUtcTime - unixTimestamp
+            val isReminderPast = currentUtcTime > unixTimestamp
 
             val (timeNumber: Int, timeUnit: String) = calculateRemainingOrPastTime(span)
 

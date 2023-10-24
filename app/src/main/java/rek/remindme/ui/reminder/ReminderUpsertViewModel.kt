@@ -45,7 +45,6 @@ class ReminderUpsertViewModel @Inject constructor(
             viewModelScope.launch {
                 val reminder = reminderRepository.getById(_reminderId)
                 if (reminder != null) {
-                    // TODO : Complete DateTimeHelper
                     _uiState.update {
                         it.copy(
                             title = reminder.title,
