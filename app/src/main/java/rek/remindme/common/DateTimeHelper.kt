@@ -6,6 +6,7 @@ import rek.remindme.R
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import kotlin.math.abs
 
 class DateTimeHelper {
@@ -39,7 +40,13 @@ class DateTimeHelper {
             }
 
             val date = Date(unixTimestampDate)
-            return DateFormat.getDateInstance(DateFormat.FULL).format(date)
+            val formattedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date)
+
+            val formattedDateCapitalized = formattedDate.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
+
+            return formattedDateCapitalized
         }
 
         fun getHourFromTimestamp(unixTimestamp: Long): Int {
