@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -18,11 +19,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,14 +42,18 @@ import rek.remindme.ui.theme.MyApplicationTheme
 @Composable
 fun ReminderUpsertScreen(
     modifier: Modifier = Modifier,
-    onReminderSaved: () -> Unit,
-    onReminderDeleted: () -> Unit,
+    onReminderSaved: (Int) -> Unit,
+    onReminderDeleted: (Int) -> Unit,
     onBack: () -> Unit,
-    viewModel: ReminderUpsertViewModel = hiltViewModel()
+    onBackButtonPressed: () -> Unit,
+    viewModel: ReminderUpsertViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    BackHandler(onBack = onBackButtonPressed)
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
@@ -85,13 +93,21 @@ fun ReminderUpsertScreen(
 
             LaunchedEffect(uiState.isSaved) {
                 if (uiState.isSaved) {
-                    onReminderSaved()
+                    onReminderSaved(viewModel.getUpsertMessageRes())
                 }
             }
 
             LaunchedEffect(uiState.isDeleted) {
                 if (uiState.isDeleted) {
-                    onReminderDeleted()
+                    onReminderDeleted(R.string.reminder_deleted)
+                }
+            }
+            
+            uiState.snackbarMessageRes?.let { messageRes ->
+                val message = stringResource(id = messageRes)
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(message)
+                    viewModel.snackbarMessageShown()
                 }
             }
         }

@@ -16,6 +16,8 @@
 
 package rek.remindme.ui.reminder
 
+import androidx.activity.compose.BackHandler
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,9 +36,12 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,12 +60,17 @@ import rek.remindme.ui.theme.MyApplicationTheme
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderListScreen(
+    @StringRes snackbarMessageRes: Int,
     modifier: Modifier = Modifier,
     onNewReminder: () -> Unit,
     onReminderClick: (Int) -> Unit,
-    viewModel: ReminderListViewModel = hiltViewModel()
+    onBackButtonPressed: () -> Unit,
+    viewModel: ReminderListViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
+    BackHandler(onBack = onBackButtonPressed)
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         topBar = {
             ReminderListTopAppBar(clearNotified = viewModel::clearNotified)
@@ -80,6 +90,13 @@ fun ReminderListScreen(
                         .padding(innerPadding),
                     onReminderClick = onReminderClick
                 )
+            }
+
+            if (snackbarMessageRes != 0) {
+                val message = stringResource(id = snackbarMessageRes)
+                LaunchedEffect(snackbarMessageRes) {
+                    snackbarHostState.showSnackbar(message)
+                }
             }
         }
     )

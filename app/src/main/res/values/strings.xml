@@ -42,4 +42,9 @@
     <string name="delete_reminder_desc">Delete</string>
     <string name="clear_notified_reminders">Clear notified reminders</string>
     <string name="options_desc">Options</string>
+    <string name="reminder_created">Reminder created</string>
+    <string name="reminder_updated">Reminder updated</string>
+    <string name="reminder_deleted">Reminder deleted</string>
+    <string name="reminder_error">TODO: Reminder error</string>
+    <string name="reminder_not_found">Reminder cannot be found, you are in creation mode</string>
 </resources>

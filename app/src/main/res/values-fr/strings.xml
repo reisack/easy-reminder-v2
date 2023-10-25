@@ -42,4 +42,9 @@
     <string name="delete_reminder_desc">Supprimer</string>
     <string name="clear_notified_reminders">Supprimer les anciens rappels</string>
     <string name="options_desc">Options</string>
+    <string name="reminder_created">Rappel créé</string>
+    <string name="reminder_updated">Rappel mis à jour</string>
+    <string name="reminder_deleted">Rappel supprimé</string>
+    <string name="reminder_error">TODO: Reminder error</string>
+    <string name="reminder_not_found">Le rappel n\'a pas été trouvé, vous êtes en mode création</string>
 </resources>

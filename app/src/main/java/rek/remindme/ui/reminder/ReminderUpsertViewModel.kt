@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import rek.remindme.R
 import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.ReminderRepository
@@ -23,7 +24,8 @@ data class ReminderEditUiState(
     val notified: Boolean = false,
     val isUpdateMode: Boolean = false,
     val isSaved: Boolean = false,
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
+    val snackbarMessageRes: Int? = null
 )
 
 @HiltViewModel
@@ -58,7 +60,11 @@ class ReminderUpsertViewModel @Inject constructor(
                     }
                 }
                 else {
-                    // TODO : Display a toast to inform user that reminder couldn't be found. "New reminder" mode
+                    _uiState.update {
+                        it.copy(
+                            snackbarMessageRes = R.string.reminder_not_found
+                        )
+                    }
                 }
             }
         }
@@ -107,11 +113,26 @@ class ReminderUpsertViewModel @Inject constructor(
             || uiState.value.unixTimestampDate == null
             || uiState.value.hour == null
             || uiState.value.minute == null) {
-            // TODO : Handle error message
+
+            _uiState.update {
+                it.copy(
+                    snackbarMessageRes = R.string.reminder_error
+                )
+            }
             return
         }
 
         upsertReminder()
+    }
+
+    fun snackbarMessageShown() {
+        _uiState.update {
+            it.copy(snackbarMessageRes = null)
+        }
+    }
+
+    fun getUpsertMessageRes(): Int {
+        return if (uiState.value.isUpdateMode) R.string.reminder_updated else R.string.reminder_created
     }
 
     private fun upsertReminder() {

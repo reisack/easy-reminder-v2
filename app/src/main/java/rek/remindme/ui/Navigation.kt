@@ -33,34 +33,50 @@ import rek.remindme.ui.reminder.ReminderUpsertScreen
 fun MainNavigation() {
     val navController = rememberNavController()
 
-    val listReminderRoute = "list"
+    val prefixListReminderRoute = "list?messageRes"
+    val listReminderRoute = "$prefixListReminderRoute={${Consts.MESSAGE_RES_NAV_ARG}}"
+
     val addReminderRoute = "add"
 
     val prefixEditReminderRoute = "edit"
-    val editReminderRoute = "edit/{${Consts.REMINDER_ID_NAV_ARG}}"
+    val editReminderRoute = "$prefixEditReminderRoute/{${Consts.REMINDER_ID_NAV_ARG}}"
 
     NavHost(navController = navController, startDestination = listReminderRoute) {
-        composable(route = listReminderRoute) {
+        composable(route = listReminderRoute, arguments = listOf(
+            navArgument(name = Consts.MESSAGE_RES_NAV_ARG) {
+                type = NavType.IntType
+                defaultValue = 0
+            }
+        )) {entry ->
             ReminderListScreen(
                 modifier = Modifier.padding(16.dp),
+                snackbarMessageRes = entry.arguments?.getInt(Consts.MESSAGE_RES_NAV_ARG)!!,
                 onNewReminder = {
                     navController.navigate(addReminderRoute)
                 },
-                onReminderClick = { reminderId -> navController.navigate("$prefixEditReminderRoute/$reminderId") }
+                onReminderClick = { reminderId ->
+                    navController.navigate("$prefixEditReminderRoute/$reminderId")
+                },
+                onBackButtonPressed = {
+                    navController.navigate("$prefixListReminderRoute=0")
+                }
             )
         }
 
         composable(route = addReminderRoute) {
             ReminderUpsertScreen(
                 modifier = Modifier.padding(16.dp),
-                onReminderSaved = {
-                    navController.navigate(listReminderRoute)
+                onReminderSaved = { snackbarMessageRes ->
+                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
                 },
-                onReminderDeleted = {
-                    navController.navigate(listReminderRoute)
+                onReminderDeleted = { snackbarMessageRes ->
+                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
                 },
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigate("$prefixListReminderRoute=0")
+                },
+                onBackButtonPressed = {
+                    navController.navigate("$prefixListReminderRoute=0")
                 }
             )
         }
@@ -73,14 +89,17 @@ fun MainNavigation() {
         )) {
             ReminderUpsertScreen(
                 modifier = Modifier.padding(16.dp),
-                onReminderSaved = {
-                    navController.navigate(listReminderRoute)
+                onReminderSaved = { snackbarMessageRes ->
+                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
                 },
-                onReminderDeleted = {
-                    navController.navigate(listReminderRoute)
+                onReminderDeleted = { snackbarMessageRes ->
+                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
                 },
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigate("$prefixListReminderRoute=0")
+                },
+                onBackButtonPressed = {
+                    navController.navigate("$prefixListReminderRoute=0")
                 }
             )
         }
