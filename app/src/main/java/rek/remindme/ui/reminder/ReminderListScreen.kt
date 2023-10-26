@@ -80,26 +80,36 @@ fun ReminderListScreen(
                 Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
             }
         },
-        content = { innerPadding ->
-            val items by viewModel.uiState.collectAsStateWithLifecycle()
-            if (items is ReminderUiState.Success) {
-                ReminderListScreenContent(
-                    items = (items as ReminderUiState.Success).data,
-                    modifier = modifier
-                        .consumeWindowInsets(innerPadding)
-                        .padding(innerPadding),
-                    onReminderClick = onReminderClick
-                )
-            }
-
-            if (snackbarMessageRes != 0) {
-                val message = stringResource(id = snackbarMessageRes)
-                LaunchedEffect(snackbarMessageRes) {
-                    snackbarHostState.showSnackbar(message)
-                }
-            }
+    ) { innerPadding ->
+        val items by viewModel.uiState.collectAsStateWithLifecycle()
+        if (items is ReminderUiState.Success) {
+            ReminderListScreenContent(
+                items = (items as ReminderUiState.Success).data,
+                modifier = modifier
+                    .consumeWindowInsets(innerPadding)
+                    .padding(innerPadding),
+                onReminderClick = onReminderClick
+            )
         }
-    )
+
+        DisplaySnackbarMessageOnLoad(
+            snackbarMessageRes = snackbarMessageRes,
+            snackbarHostState = snackbarHostState
+        )
+    }
+}
+
+@Composable
+private fun DisplaySnackbarMessageOnLoad(
+    @StringRes snackbarMessageRes: Int,
+    snackbarHostState: SnackbarHostState
+) {
+    if (snackbarMessageRes != 0) {
+        val message = stringResource(id = snackbarMessageRes)
+        LaunchedEffect(snackbarMessageRes) {
+            snackbarHostState.showSnackbar(message)
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

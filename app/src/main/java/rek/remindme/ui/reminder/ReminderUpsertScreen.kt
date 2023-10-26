@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +39,7 @@ import rek.remindme.ui.components.ReminderDateField
 import rek.remindme.ui.components.ReminderTimeField
 import rek.remindme.ui.theme.MyApplicationTheme
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderUpsertScreen(
     modifier: Modifier = Modifier,
@@ -56,26 +57,10 @@ fun ReminderUpsertScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_desc)
-                        )
-                    }
-                },
-                actions = {
-                    if (uiState.isUpdateMode) {
-                        IconButton(onClick = viewModel::delete) {
-                            Icon(
-                                imageVector = Icons.Filled.Delete,
-                                contentDescription = stringResource(R.string.delete_reminder_desc)
-                            )
-                        }
-                    }
-                }
+            ReminderUpsertTopAppBar(
+                uiState = uiState,
+                onBack = onBack,
+                onDelete = viewModel::delete
             )
         },
         content = { innerPadding ->
@@ -91,23 +76,79 @@ fun ReminderUpsertScreen(
                 reminderEditUiState = uiState
             )
 
-            LaunchedEffect(uiState.isSaved) {
-                if (uiState.isSaved) {
-                    onReminderSaved(viewModel.getUpsertMessageRes())
-                }
-            }
+            HandleActions(
+                uiState = uiState,
+                onReminderSaved = onReminderSaved,
+                onReminderDeleted = onReminderDeleted
+            )
 
-            LaunchedEffect(uiState.isDeleted) {
-                if (uiState.isDeleted) {
-                    onReminderDeleted(R.string.reminder_deleted)
-                }
+            DisplaySnackbarMessageOnLoad(
+                uiState = uiState,
+                snackbarHostState = snackbarHostState,
+                onSnackbarMessageShow = viewModel::snackbarMessageShown
+            )
+        }
+    )
+}
+
+@Composable
+private fun HandleActions(
+    uiState: ReminderEditUiState,
+    onReminderSaved: (Int) -> Unit,
+    onReminderDeleted: (Int) -> Unit,
+) {
+    LaunchedEffect(uiState.isSaved) {
+        if (uiState.isSaved) {
+            onReminderSaved(if (uiState.isUpdateMode) R.string.reminder_updated else R.string.reminder_created)
+        }
+    }
+
+    LaunchedEffect(uiState.isDeleted) {
+        if (uiState.isDeleted) {
+            onReminderDeleted(R.string.reminder_deleted)
+        }
+    }
+}
+
+@Composable
+private fun DisplaySnackbarMessageOnLoad(
+    uiState: ReminderEditUiState,
+    snackbarHostState: SnackbarHostState,
+    onSnackbarMessageShow: () -> Unit
+) {
+    uiState.snackbarMessageRes?.let { messageRes ->
+        val message = stringResource(id = messageRes)
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(message)
+            onSnackbarMessageShow()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReminderUpsertTopAppBar(
+    uiState: ReminderEditUiState,
+    onBack: () -> Unit,
+    onDelete: () -> Unit
+) {
+    TopAppBar(
+        title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back_desc)
+                )
             }
-            
-            uiState.snackbarMessageRes?.let { messageRes ->
-                val message = stringResource(id = messageRes)
-                LaunchedEffect(message) {
-                    snackbarHostState.showSnackbar(message)
-                    viewModel.snackbarMessageShown()
+        },
+        actions = {
+            if (uiState.isUpdateMode) {
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.delete_reminder_desc)
+                    )
                 }
             }
         }
@@ -127,71 +168,53 @@ internal fun ReminderUpsertScreenContent(
     Column(
         modifier = modifier
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ReminderUpsertScreenContentRow {
             OutlinedTextField(
-                placeholder = {
-                    Text(text = stringResource(R.string.title_field_title))
-                },
+                placeholder = { Text(text = stringResource(R.string.title_field_title)) },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ReminderUpsertScreenContentRow {
             OutlinedTextField(
-                placeholder = {
-                    Text(text = stringResource(R.string.description_field_title))
-                },
+                placeholder = { Text(text = stringResource(R.string.description_field_title)) },
                 value = reminderEditUiState.description,
                 onValueChange = onDescriptionChanged
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ReminderUpsertScreenContentRow {
             ReminderDateField(
                 onDateChanged = onDateChanged,
                 reminderEditUiState = reminderEditUiState
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ReminderUpsertScreenContentRow {
             ReminderTimeField(
                 onTimeChanged = onTimeChanged,
                 reminderEditUiState = reminderEditUiState
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ReminderUpsertScreenContentRow {
             Button(modifier = Modifier.width(96.dp), onClick = onSave) {
                 Text(text = stringResource(R.string.save_button_label))
             }
         }
     }
+}
+
+@Composable
+private fun ReminderUpsertScreenContentRow(content: @Composable RowScope.() -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 24.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        content = content
+    )
 }
 
 @Preview(showBackground = true)

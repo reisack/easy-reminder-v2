@@ -131,10 +131,6 @@ class ReminderUpsertViewModel @Inject constructor(
         }
     }
 
-    fun getUpsertMessageRes(): Int {
-        return if (uiState.value.isUpdateMode) R.string.reminder_updated else R.string.reminder_created
-    }
-
     private fun upsertReminder() {
         viewModelScope.launch {
             val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
