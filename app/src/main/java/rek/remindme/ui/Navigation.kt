@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,13 +35,8 @@ import rek.remindme.ui.reminder.ReminderUpsertScreen
 fun MainNavigation() {
     val navController = rememberNavController()
 
-    val prefixListReminderRoute = "list?messageRes"
-    val listReminderRoute = "$prefixListReminderRoute={${Consts.MESSAGE_RES_NAV_ARG}}"
-
-    val addReminderRoute = "add"
-
-    val prefixEditReminderRoute = "edit"
-    val editReminderRoute = "$prefixEditReminderRoute/{${Consts.REMINDER_ID_NAV_ARG}}"
+    val listReminderRoute = "${Consts.PREFIX_LIST_REMINDER_ROUTE}={${Consts.MESSAGE_RES_NAV_ARG}}"
+    val editReminderRoute = "${Consts.PREFIX_EDIT_REMINDER_ROUTE}/{${Consts.REMINDER_ID_NAV_ARG}}"
 
     NavHost(navController = navController, startDestination = listReminderRoute) {
         composable(route = listReminderRoute, arguments = listOf(
@@ -48,37 +45,14 @@ fun MainNavigation() {
                 defaultValue = 0
             }
         )) {entry ->
-            ReminderListScreen(
-                modifier = Modifier.padding(16.dp),
-                snackbarMessageRes = entry.arguments?.getInt(Consts.MESSAGE_RES_NAV_ARG)!!,
-                onNewReminder = {
-                    navController.navigate(addReminderRoute)
-                },
-                onReminderClick = { reminderId ->
-                    navController.navigate("$prefixEditReminderRoute/$reminderId")
-                },
-                onBackButtonPressed = {
-                    navController.navigate("$prefixListReminderRoute=0")
-                }
+            GetReminderListScreen(
+                navController = navController,
+                entry = entry
             )
         }
 
-        composable(route = addReminderRoute) {
-            ReminderUpsertScreen(
-                modifier = Modifier.padding(16.dp),
-                onReminderSaved = { snackbarMessageRes ->
-                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
-                },
-                onReminderDeleted = { snackbarMessageRes ->
-                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
-                },
-                onBack = {
-                    navController.navigate("$prefixListReminderRoute=0")
-                },
-                onBackButtonPressed = {
-                    navController.navigate("$prefixListReminderRoute=0")
-                }
-            )
+        composable(route = Consts.ADD_REMINDER_ROUTE) {
+            GetReminderUpsertScreen(navController = navController)
         }
 
         composable(route = editReminderRoute, arguments = listOf(
@@ -87,21 +61,43 @@ fun MainNavigation() {
                 nullable = false
             }
         )) {
-            ReminderUpsertScreen(
-                modifier = Modifier.padding(16.dp),
-                onReminderSaved = { snackbarMessageRes ->
-                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
-                },
-                onReminderDeleted = { snackbarMessageRes ->
-                    navController.navigate("$prefixListReminderRoute=$snackbarMessageRes")
-                },
-                onBack = {
-                    navController.navigate("$prefixListReminderRoute=0")
-                },
-                onBackButtonPressed = {
-                    navController.navigate("$prefixListReminderRoute=0")
-                }
-            )
+            GetReminderUpsertScreen(navController = navController)
         }
     }
+}
+
+@Composable
+private fun GetReminderListScreen(navController: NavHostController, entry: NavBackStackEntry) {
+    ReminderListScreen(
+        modifier = Modifier.padding(16.dp),
+        snackbarMessageRes = entry.arguments?.getInt(Consts.MESSAGE_RES_NAV_ARG)!!,
+        onNewReminder = {
+            navController.navigate(Consts.ADD_REMINDER_ROUTE)
+        },
+        onReminderClick = { reminderId ->
+            navController.navigate("${Consts.PREFIX_EDIT_REMINDER_ROUTE}/$reminderId")
+        },
+        onBackButtonPressed = {
+            navController.navigate("${Consts.PREFIX_LIST_REMINDER_ROUTE}=0")
+        }
+    )
+}
+
+@Composable
+private fun GetReminderUpsertScreen(navController: NavHostController) {
+    ReminderUpsertScreen(
+        modifier = Modifier.padding(16.dp),
+        onReminderSaved = { snackbarMessageRes ->
+            navController.navigate("${Consts.PREFIX_LIST_REMINDER_ROUTE}=$snackbarMessageRes")
+        },
+        onReminderDeleted = { snackbarMessageRes ->
+            navController.navigate("${Consts.PREFIX_LIST_REMINDER_ROUTE}=$snackbarMessageRes")
+        },
+        onBack = {
+            navController.navigate("${Consts.PREFIX_LIST_REMINDER_ROUTE}=0")
+        },
+        onBackButtonPressed = {
+            navController.navigate("${Consts.PREFIX_LIST_REMINDER_ROUTE}=0")
+        }
+    )
 }
