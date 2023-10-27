@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import rek.remindme.R
 import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
+import rek.remindme.common.ReminderUpsertValidator
 import rek.remindme.data.ReminderRepository
 import javax.inject.Inject
 
@@ -41,6 +42,8 @@ class ReminderUpsertViewModel @Inject constructor(
     // `updateTitle` or `updateDescription`
     private val _uiState = MutableStateFlow(ReminderEditUiState())
     val uiState: StateFlow<ReminderEditUiState> = _uiState.asStateFlow()
+
+    private val validator: ReminderUpsertValidator = ReminderUpsertValidator()
 
     init {
         if (_reminderId != null) {
@@ -108,21 +111,24 @@ class ReminderUpsertViewModel @Inject constructor(
     }
 
     fun save() {
-        if (uiState.value.title.isBlank()
-            || uiState.value.description.isBlank()
-            || uiState.value.unixTimestampDate == null
-            || uiState.value.hour == null
-            || uiState.value.minute == null) {
 
+        val messageRes: Int = validator.validate(
+            uiState.value.title,
+            uiState.value.unixTimestampDate,
+            uiState.value.hour,
+            uiState.value.minute
+        )
+
+        if (messageRes > 0) {
             _uiState.update {
                 it.copy(
-                    snackbarMessageRes = R.string.reminder_error
+                    snackbarMessageRes = messageRes
                 )
             }
-            return
         }
-
-        upsertReminder()
+        else {
+            upsertReminder()
+        }
     }
 
     fun snackbarMessageShown() {

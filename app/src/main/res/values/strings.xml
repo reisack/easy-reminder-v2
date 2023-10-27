@@ -45,6 +45,7 @@
     <string name="reminder_created">Reminder created</string>
     <string name="reminder_updated">Reminder updated</string>
     <string name="reminder_deleted">Reminder deleted</string>
-    <string name="reminder_error">TODO: Reminder error</string>
+    <string name="reminder_mandatory_fields_not_filled">Mandatory fields are not filled</string>
+    <string name="reminder_set_in_past">Reminder cannot be set in the past</string>
     <string name="reminder_not_found">Reminder cannot be found, you are in creation mode</string>
 </resources>

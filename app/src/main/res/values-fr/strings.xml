@@ -45,6 +45,7 @@
     <string name="reminder_created">Rappel créé</string>
     <string name="reminder_updated">Rappel mis à jour</string>
     <string name="reminder_deleted">Rappel supprimé</string>
-    <string name="reminder_error">TODO: Reminder error</string>
+    <string name="reminder_mandatory_fields_not_filled">Les champs obligatoires ne sont pas remplis</string>
+    <string name="reminder_set_in_past">Le rappel ne peut pas être défini à une date passée</string>
     <string name="reminder_not_found">Le rappel n\'a pas été trouvé, vous êtes en mode création</string>
 </resources>
