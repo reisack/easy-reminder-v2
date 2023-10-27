@@ -31,7 +31,7 @@ fun ReminderTimeField(
         placeholder = {
             Text(text = stringResource(R.string.time_field_title))
         },
-        value = DateTimeHelper.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
+        value = DateTimeHelper.getInstance().getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
         onValueChange = {},
         enabled = false
     )
@@ -65,7 +65,7 @@ fun ReminderDateField(
         placeholder = {
             Text(text = stringResource(R.string.date_field_title))
         },
-        value = DateTimeHelper.getReadableDate(reminderEditUiState.unixTimestampDate),
+        value = DateTimeHelper.getInstance().getReadableDate(reminderEditUiState.unixTimestampDate),
         onValueChange = {},
         enabled = false
     )

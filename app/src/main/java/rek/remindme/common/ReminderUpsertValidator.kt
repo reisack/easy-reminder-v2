@@ -35,7 +35,7 @@ open class ReminderUpsertValidator {
     }
 
     private fun reminderDatetimeBelowNow(unixTimestampDate: Long, hour: Int, minute: Int): Boolean {
-        val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
+        val reminderDateTimeInMillis = DateTimeHelper.getInstance().getUtcDatetimeInMillis(
             unixTimestampDate, hour, minute
         )
 

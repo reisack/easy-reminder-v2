@@ -55,8 +55,8 @@ class ReminderUpsertViewModel @Inject constructor(
                             title = reminder.title,
                             description = reminder.description,
                             unixTimestampDate = reminder.unixTimestamp,
-                            hour = DateTimeHelper.getHourFromTimestamp((reminder.unixTimestamp)),
-                            minute = DateTimeHelper.getMinuteFromTimestamp((reminder.unixTimestamp)),
+                            hour = DateTimeHelper.getInstance().getHourFromTimestamp((reminder.unixTimestamp)),
+                            minute = DateTimeHelper.getInstance().getMinuteFromTimestamp((reminder.unixTimestamp)),
                             notified = reminder.notified,
                             isUpdateMode = true
                         )
@@ -139,7 +139,7 @@ class ReminderUpsertViewModel @Inject constructor(
 
     private fun upsertReminder() {
         viewModelScope.launch {
-            val reminderDateTimeInMillis = DateTimeHelper.getUtcDatetimeInMillis(
+            val reminderDateTimeInMillis = DateTimeHelper.getInstance().getUtcDatetimeInMillis(
                 uiState.value.unixTimestampDate!!,
                 uiState.value.hour!!,
                 uiState.value.minute!!

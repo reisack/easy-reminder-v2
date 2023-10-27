@@ -16,14 +16,14 @@ class DateTimeHelperTest {
     @Test
     fun dateTimeHelper_getReadableTime_timestampIsNull() = runTest {
         val timestamp: Long? = null
-        val result = DateTimeHelper.getReadableTime(timestamp)
+        val result = DateTimeHelper.getInstance().getReadableTime(timestamp)
         Assert.assertEquals("", result)
     }
 
     @Test
     fun dateTimeHelper_getReadableTime_timestampIsNotNull() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getReadableTime(timestamp)
+        val result = DateTimeHelper.getInstance().getReadableTime(timestamp)
         Assert.assertEquals("5:10 PM", result)
     }
 
@@ -32,7 +32,7 @@ class DateTimeHelperTest {
         val hour: Int? = null
         val minute = 42
 
-        val result = DateTimeHelper.getReadableTime(hour, minute)
+        val result = DateTimeHelper.getInstance().getReadableTime(hour, minute)
         Assert.assertEquals("", result)
     }
 
@@ -41,35 +41,35 @@ class DateTimeHelperTest {
         val hour = 16
         val minute = 5
 
-        val result = DateTimeHelper.getReadableTime(hour, minute)
+        val result = DateTimeHelper.getInstance().getReadableTime(hour, minute)
         Assert.assertEquals("4:05 PM", result)
     }
 
     @Test
     fun dateTimeHelper_getReadableDate_timestampIsNull() = runTest {
         val timestamp: Long? = null
-        val result = DateTimeHelper.getReadableDate(timestamp)
+        val result = DateTimeHelper.getInstance().getReadableDate(timestamp)
         Assert.assertEquals("", result)
     }
 
     @Test
     fun dateTimeHelper_getReadableDate_timestampIsNotNull() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getReadableDate(timestamp)
+        val result = DateTimeHelper.getInstance().getReadableDate(timestamp)
         Assert.assertEquals("Tuesday, October 24, 2023", result)
     }
 
     @Test
     fun dateTimeHelper_getHourFromTimestamp() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getHourFromTimestamp(timestamp)
+        val result = DateTimeHelper.getInstance().getHourFromTimestamp(timestamp)
         Assert.assertEquals(17, result)
     }
 
     @Test
     fun dateTimeHelper_getMinuteFromTimestamp() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getMinuteFromTimestamp(timestamp)
+        val result = DateTimeHelper.getInstance().getMinuteFromTimestamp(timestamp)
         Assert.assertEquals(10, result)
     }
 
@@ -79,7 +79,7 @@ class DateTimeHelperTest {
         val hour = 18
         val minute = 46
 
-        val result = DateTimeHelper.getUtcDatetimeInMillis(timestampDate, hour, minute)
+        val result = DateTimeHelper.getInstance().getUtcDatetimeInMillis(timestampDate, hour, minute)
         Assert.assertEquals(1698173160000, result)
     }
 }

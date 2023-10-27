@@ -9,15 +9,19 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Date
 import java.util.Locale
+
+class TestableDateTimeHelper : DateTimeHelper() {
+    override fun getCurrentUnixTimestamp(): Long {
+        // Mock current date to : 24 October 2023 13:00:00 UTC
+        return 1698152400000
+    }
+}
 
 @RunWith(AndroidJUnit4::class)
 class DateTimeHelperComposableTest {
 
-    // Mock current date to : 24 October 2023 13:00:00 UTC
-    private val _currentDate: Long = 1698152400000
-
+    private val dateTimeHelper: TestableDateTimeHelper = TestableDateTimeHelper()
     private lateinit var lang: String
 
     @get:Rule
@@ -79,9 +83,8 @@ class DateTimeHelperComposableTest {
     private fun testRemainingOrPastTime(unixTimestamp: Long, displayedTime: String, displayedTimeInFr: String) {
         composeTestRule.setContent {
             Text(
-                text = DateTimeHelper.getRemainingOrPastTime(
-                    unixTimestamp = unixTimestamp,
-                    mockCurrentDate = Date(_currentDate)
+                text = dateTimeHelper.getRemainingOrPastTime(
+                    unixTimestamp = unixTimestamp
                 )
             )
         }
