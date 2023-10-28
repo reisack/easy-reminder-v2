@@ -1,7 +1,8 @@
-package rek.remindme.common
+package rek.remindme.ui.reminder
 
 import androidx.annotation.StringRes
-import rek.remindme.R
+import rek.remindme.common.Consts
+import rek.remindme.common.DateTimeHelper
 import java.util.Date
 
 open class ReminderUpsertValidator {
@@ -14,11 +15,11 @@ open class ReminderUpsertValidator {
         minute: Int?
     ): Int {
         if (hasEmptyMandatoryFields(title, unixTimestampDate, hour, minute)) {
-            return R.string.reminder_mandatory_fields_not_filled
+            return Consts.Validation.mandatoryFieldsNotFilled
         }
 
         if (reminderDatetimeBelowNow(unixTimestampDate!!, hour!!, minute!!)) {
-            return R.string.reminder_set_in_past
+            return Consts.Validation.setInPast
         }
 
         // Code 0 : no error
@@ -35,7 +36,7 @@ open class ReminderUpsertValidator {
     }
 
     private fun reminderDatetimeBelowNow(unixTimestampDate: Long, hour: Int, minute: Int): Boolean {
-        val reminderDateTimeInMillis = DateTimeHelper.getInstance().getUtcDatetimeInMillis(
+        val reminderDateTimeInMillis = DateTimeHelper.instance.getUtcDatetimeInMillis(
             unixTimestampDate, hour, minute
         )
 

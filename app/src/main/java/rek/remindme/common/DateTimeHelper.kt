@@ -9,22 +9,25 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
-open class DateTimeHelper {
+open class DateTimeHelper protected constructor() {
 
     companion object {
 
         @Volatile
-        private var instance: DateTimeHelper? = null
+        private var internalInstance: DateTimeHelper? = null
 
-        fun getInstance(): DateTimeHelper {
-            if (instance == null) {
+        val instance: DateTimeHelper
+            get() = getInternalInstance()
+
+        private fun getInternalInstance(): DateTimeHelper {
+            if (internalInstance == null) {
                 synchronized(this) {
-                    if (instance == null) {
-                        instance = DateTimeHelper()
+                    if (internalInstance == null) {
+                        internalInstance = DateTimeHelper()
                     }
                 }
             }
-            return instance!!
+            return internalInstance!!
         }
     }
 

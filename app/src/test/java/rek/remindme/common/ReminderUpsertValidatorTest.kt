@@ -2,6 +2,7 @@ package rek.remindme.common
 
 import org.junit.Assert
 import org.junit.Test
+import rek.remindme.ui.reminder.ReminderUpsertValidator
 import java.util.TimeZone
 
 class TestableReminderUpsertValidator : ReminderUpsertValidator() {
@@ -29,8 +30,7 @@ class ReminderUpsertValidatorTest {
 
         val messageRes = validator.validate(title, date, hour, minute)
 
-        // 2131427406 : R.string.reminder_mandatory_fields_not_filled
-        Assert.assertEquals(2131427406, messageRes)
+        Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
 
     @Test
@@ -42,8 +42,7 @@ class ReminderUpsertValidatorTest {
 
         val messageRes = validator.validate(title, date, hour, minute)
 
-        // 2131427406 : R.string.reminder_mandatory_fields_not_filled
-        Assert.assertEquals(2131427406, messageRes)
+        Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
 
     @Test
@@ -55,8 +54,7 @@ class ReminderUpsertValidatorTest {
 
         val messageRes = validator.validate(title, date, hour, minute)
 
-        // 2131427406 : R.string.reminder_mandatory_fields_not_filled
-        Assert.assertEquals(2131427406, messageRes)
+        Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
 
     @Test
@@ -68,8 +66,7 @@ class ReminderUpsertValidatorTest {
 
         val messageRes = validator.validate(title, date, hour, minute)
 
-        // 2131427406 : R.string.reminder_set_in_past
-        Assert.assertEquals(2131427408, messageRes)
+        Assert.assertEquals(Consts.Validation.setInPast, messageRes)
     }
 
     @Test
@@ -81,8 +78,7 @@ class ReminderUpsertValidatorTest {
 
         val messageRes = validator.validate(title, date, hour, minute)
 
-        // 2131427406 : R.string.reminder_set_in_past
-        Assert.assertEquals(2131427408, messageRes)
+        Assert.assertEquals(Consts.Validation.setInPast, messageRes)
     }
 
     @Test

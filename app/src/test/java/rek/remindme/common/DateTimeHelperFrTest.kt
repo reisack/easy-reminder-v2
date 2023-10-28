@@ -16,7 +16,7 @@ class DateTimeHelperFrTest {
     @Test
     fun dateTimeHelper_getReadableTime_timestampIsNotNull() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getInstance().getReadableTime(timestamp)
+        val result = DateTimeHelper.instance.getReadableTime(timestamp)
         Assert.assertEquals("17:10", result)
     }
 
@@ -25,28 +25,28 @@ class DateTimeHelperFrTest {
         val hour = 16
         val minute = 5
 
-        val result = DateTimeHelper.getInstance().getReadableTime(hour, minute)
+        val result = DateTimeHelper.instance.getReadableTime(hour, minute)
         Assert.assertEquals("16:05", result)
     }
 
     @Test
     fun dateTimeHelper_getReadableDate_timestampIsNotNull() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getInstance().getReadableDate(timestamp)
+        val result = DateTimeHelper.instance.getReadableDate(timestamp)
         Assert.assertEquals("Mardi 24 octobre 2023", result)
     }
 
     @Test
     fun dateTimeHelper_getHourFromTimestamp() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getInstance().getHourFromTimestamp(timestamp)
+        val result = DateTimeHelper.instance.getHourFromTimestamp(timestamp)
         Assert.assertEquals(17, result)
     }
 
     @Test
     fun dateTimeHelper_getMinuteFromTimestamp() = runTest {
         val timestamp: Long = 1698167443000
-        val result = DateTimeHelper.getInstance().getMinuteFromTimestamp(timestamp)
+        val result = DateTimeHelper.instance.getMinuteFromTimestamp(timestamp)
         Assert.assertEquals(10, result)
     }
 
@@ -56,7 +56,7 @@ class DateTimeHelperFrTest {
         val hour = 18
         val minute = 46
 
-        val result = DateTimeHelper.getInstance().getUtcDatetimeInMillis(timestampDate, hour, minute)
+        val result = DateTimeHelper.instance.getUtcDatetimeInMillis(timestampDate, hour, minute)
         Assert.assertEquals(1698173160000, result)
     }
 }

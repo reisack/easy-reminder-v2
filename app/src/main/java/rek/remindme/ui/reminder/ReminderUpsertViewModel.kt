@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import rek.remindme.R
 import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
-import rek.remindme.common.ReminderUpsertValidator
 import rek.remindme.data.ReminderRepository
 import javax.inject.Inject
 
@@ -35,7 +34,7 @@ class ReminderUpsertViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reminderId: Int? = savedStateHandle[Consts.REMINDER_ID_NAV_ARG]
+    private val _reminderId: Int? = savedStateHandle[Consts.Route.REMINDER_ID_NAV_ARG]
 
     // A MutableStateFlow needs to be created in this ViewModel. The source of truth of the current
     // editable Task is the ViewModel, we need to mutate the UI state directly in methods such as
@@ -55,8 +54,8 @@ class ReminderUpsertViewModel @Inject constructor(
                             title = reminder.title,
                             description = reminder.description,
                             unixTimestampDate = reminder.unixTimestamp,
-                            hour = DateTimeHelper.getInstance().getHourFromTimestamp((reminder.unixTimestamp)),
-                            minute = DateTimeHelper.getInstance().getMinuteFromTimestamp((reminder.unixTimestamp)),
+                            hour = DateTimeHelper.instance.getHourFromTimestamp((reminder.unixTimestamp)),
+                            minute = DateTimeHelper.instance.getMinuteFromTimestamp((reminder.unixTimestamp)),
                             notified = reminder.notified,
                             isUpdateMode = true
                         )
@@ -139,7 +138,7 @@ class ReminderUpsertViewModel @Inject constructor(
 
     private fun upsertReminder() {
         viewModelScope.launch {
-            val reminderDateTimeInMillis = DateTimeHelper.getInstance().getUtcDatetimeInMillis(
+            val reminderDateTimeInMillis = DateTimeHelper.instance.getUtcDatetimeInMillis(
                 uiState.value.unixTimestampDate!!,
                 uiState.value.hour!!,
                 uiState.value.minute!!
