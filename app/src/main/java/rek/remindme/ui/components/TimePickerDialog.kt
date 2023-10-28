@@ -1,6 +1,6 @@
 // Adapted from https://issuetracker.google.com/issues/288311426
 // There is a DatePickerDialog available on Material 3.
-// But not a TimePickerDialog yet, weird...
+// But no TimePickerDialog yet, weird...
 
 package rek.remindme.ui.components
 

@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import rek.remindme.common.Consts
@@ -22,7 +23,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_titleIsBlank() {
+    fun reminderUpsertValidator_validate_titleIsBlank() = runTest {
         val title = ""
         val date = 1698364800000 // 27 October 2023 00:00:00 UTC
         val hour = 14
@@ -34,7 +35,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_dateIsNull() {
+    fun reminderUpsertValidator_validate_dateIsNull() = runTest {
         val title = "My reminder"
         val date: Long? = null
         val hour = 14
@@ -46,7 +47,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_timeIsNull() {
+    fun reminderUpsertValidator_validate_timeIsNull() = runTest {
         val title = "My reminder"
         val date = 1698364800000 // 27 October 2023 00:00:00 UTC
         val hour: Int? = null
@@ -58,7 +59,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_DateIsPast() {
+    fun reminderUpsertValidator_validate_DateIsPast() = runTest {
         val title = "My reminder"
         val date = 1698364800000 // 27 October 2023 00:00:00 UTC
         val hour = 10
@@ -70,7 +71,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_DateIsRightNow() {
+    fun reminderUpsertValidator_validate_DateIsRightNow() = runTest {
         val title = "My reminder"
         val date = 1698364800000 // 27 October 2023 00:00:00 UTC
         val hour = 11
@@ -82,7 +83,7 @@ class ReminderUpsertValidatorTest {
     }
 
     @Test
-    fun reminderUpsertValidator_validate_Ok() {
+    fun reminderUpsertValidator_validate_Ok() = runTest {
         val title = "My reminder"
         val date = 1698364800000 // 27 October 2023 00:00:00 UTC
         val hour = 11
