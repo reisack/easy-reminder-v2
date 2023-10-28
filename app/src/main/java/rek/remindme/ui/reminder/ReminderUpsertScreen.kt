@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
 import rek.remindme.ui.components.ReminderDateField
 import rek.remindme.ui.components.ReminderTimeField
+import rek.remindme.ui.components.SimpleAlertDialog
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -51,6 +53,7 @@ fun ReminderUpsertScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val alertDialogOpened = remember { mutableStateOf(false) }
 
     BackHandler(onBack = onBackButtonPressed)
     Scaffold(
@@ -60,7 +63,7 @@ fun ReminderUpsertScreen(
             ReminderUpsertTopAppBar(
                 uiState = uiState,
                 onBack = onBack,
-                onDelete = viewModel::delete
+                onDelete = { alertDialogOpened.value = true }
             )
         },
         content = { innerPadding ->
@@ -80,6 +83,12 @@ fun ReminderUpsertScreen(
                 uiState = uiState,
                 onReminderSaved = onReminderSaved,
                 onReminderDeleted = onReminderDeleted
+            )
+
+            SimpleAlertDialog(
+                isDisplayed = alertDialogOpened,
+                textToDisplay = stringResource(R.string.confirm_delete_reminder),
+                onConfirm = viewModel::delete
             )
 
             DisplaySnackbarMessage(

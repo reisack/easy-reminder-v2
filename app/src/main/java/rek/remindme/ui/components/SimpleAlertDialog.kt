@@ -12,14 +12,36 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import rek.remindme.R
+
+@Composable
+fun SimpleAlertDialog(
+    isDisplayed: MutableState<Boolean>,
+    textToDisplay: String,
+    onConfirm: () -> Unit,
+) {
+    if (isDisplayed.value) {
+        SimpleAlertDialogComponent(
+            textToDisplay = textToDisplay,
+            onDismiss = { isDisplayed.value = false },
+            onConfirm = {
+                onConfirm()
+                isDisplayed.value = false
+            }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimpleAlertDialog(
+private fun SimpleAlertDialogComponent(
+    textToDisplay: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -36,12 +58,12 @@ fun SimpleAlertDialog(
                 .fillMaxWidth()
                 .background(Color.LightGray)) {
                 Text(
-                    text = "Attention",
+                    text = stringResource(R.string.warning_title),
                     modifier = Modifier.padding(8.dp), fontSize = 20.sp
                 )
 
                 Text(
-                    text = "êtes-vous sûr de vouloir continuer ?",
+                    text = textToDisplay,
                     modifier = Modifier.padding(8.dp)
                 )
 
@@ -53,7 +75,7 @@ fun SimpleAlertDialog(
                             .padding(8.dp)
                             .weight(1F)
                     ) {
-                        Text(text = "Annuler")
+                        Text(text = stringResource(R.string.cancel_button_label))
                     }
 
                     Button(
@@ -63,7 +85,7 @@ fun SimpleAlertDialog(
                             .padding(8.dp)
                             .weight(1F)
                     ) {
-                        Text(text = "Confirmer")
+                        Text(text = stringResource(R.string.confirm_button_label))
                     }
                 }
             }

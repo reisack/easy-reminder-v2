@@ -45,7 +45,7 @@ import rek.remindme.ui.theme.MyApplicationTheme
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderListScreen(
-    @StringRes snackbarMessageResIncome: Int,
+    @StringRes snackbarMessageResOnLoad: Int,
     modifier: Modifier = Modifier,
     onNewReminder: () -> Unit,
     onReminderClick: (Int) -> Unit,
@@ -80,18 +80,14 @@ fun ReminderListScreen(
             )
         }
 
-        if (alertDialogOpened.value) {
-            SimpleAlertDialog(
-                onDismiss = { alertDialogOpened.value = false },
-                onConfirm = {
-                    viewModel.clearNotified()
-                    alertDialogOpened.value = false
-                }
-            )
-        }
+        SimpleAlertDialog(
+            isDisplayed = alertDialogOpened,
+            textToDisplay = stringResource(R.string.confirm_notified_reminders),
+            onConfirm = viewModel::clearNotified
+        )
 
         DisplaySnackbarMessageOnLoad(
-            snackbarMessageRes = snackbarMessageResIncome,
+            snackbarMessageRes = snackbarMessageResOnLoad,
             snackbarHostState = snackbarHostState
         )
 

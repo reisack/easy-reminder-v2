@@ -48,5 +48,8 @@
     <string name="reminder_mandatory_fields_not_filled">Les champs obligatoires ne sont pas remplis</string>
     <string name="reminder_set_in_past">Le rappel ne peut pas être défini à une date passée</string>
     <string name="reminder_not_found">Le rappel n\'a pas été trouvé, vous êtes en mode création</string>
-    <string name="notified_reminders_cleared">Les rappels notifiés ont été supprimés</string>
+    <string name="notified_reminders_cleared">Les anciens rappels ont été supprimés</string>
+    <string name="warning_title">Attention</string>
+    <string name="confirm_notified_reminders">Êtes-vous sûr de vouloir supprimer les anciens rappels ?</string>
+    <string name="confirm_delete_reminder">Êtes-vous sûr de vouloir supprimer ce rappel ?</string>
 </resources>
