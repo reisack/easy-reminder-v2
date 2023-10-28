@@ -1,8 +1,8 @@
-package rek.remindme.common
+package rek.remindme.ui.reminder
 
 import org.junit.Assert
 import org.junit.Test
-import rek.remindme.ui.reminder.ReminderUpsertValidator
+import rek.remindme.common.Consts
 import java.util.TimeZone
 
 class TestableReminderUpsertValidator : ReminderUpsertValidator() {
