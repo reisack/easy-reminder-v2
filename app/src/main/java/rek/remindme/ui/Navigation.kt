@@ -54,7 +54,7 @@ fun MainNavigation() {
 private fun GetReminderListScreen(navController: NavHostController, entry: NavBackStackEntry) {
     ReminderListScreen(
         modifier = Modifier.padding(16.dp),
-        snackbarMessageRes = entry.arguments?.getInt(Consts.Route.MESSAGE_RES_NAV_ARG)!!,
+        snackbarMessageResIncome = entry.arguments?.getInt(Consts.Route.MESSAGE_RES_NAV_ARG)!!,
         onNewReminder = {
             navController.navigate(Consts.Route.ADD_REMINDER_ROUTE)
         },

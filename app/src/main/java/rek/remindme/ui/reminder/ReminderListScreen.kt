@@ -39,12 +39,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.local.database.Reminder
+import rek.remindme.ui.components.SimpleAlertDialog
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderListScreen(
-    @StringRes snackbarMessageRes: Int,
+    @StringRes snackbarMessageResIncome: Int,
     modifier: Modifier = Modifier,
     onNewReminder: () -> Unit,
     onReminderClick: (Int) -> Unit,
@@ -52,12 +53,15 @@ fun ReminderListScreen(
     viewModel: ReminderListViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
+    val snackbarMessageRes by viewModel.snackbarMessageRes.collectAsStateWithLifecycle()
+    val alertDialogOpened = remember { mutableStateOf(false) }
+
     BackHandler(onBack = onBackButtonPressed)
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         topBar = {
-            ReminderListTopAppBar(clearNotified = viewModel::clearNotified)
+            ReminderListTopAppBar(clearNotified = { alertDialogOpened.value = true })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNewReminder) {
@@ -76,9 +80,25 @@ fun ReminderListScreen(
             )
         }
 
+        if (alertDialogOpened.value) {
+            SimpleAlertDialog(
+                onDismiss = { alertDialogOpened.value = false },
+                onConfirm = {
+                    viewModel.clearNotified()
+                    alertDialogOpened.value = false
+                }
+            )
+        }
+
         DisplaySnackbarMessageOnLoad(
-            snackbarMessageRes = snackbarMessageRes,
+            snackbarMessageRes = snackbarMessageResIncome,
             snackbarHostState = snackbarHostState
+        )
+
+        DisplaySnackbarMessage(
+            snackbarMessageRes = snackbarMessageRes,
+            snackbarHostState = snackbarHostState,
+            onSnackbarMessageShow = viewModel::snackbarMessageShown
         )
     }
 }
@@ -92,6 +112,21 @@ private fun DisplaySnackbarMessageOnLoad(
         val message = stringResource(id = snackbarMessageRes)
         LaunchedEffect(snackbarMessageRes) {
             snackbarHostState.showSnackbar(message)
+        }
+    }
+}
+
+@Composable
+private fun DisplaySnackbarMessage(
+    snackbarMessageRes: Int?,
+    snackbarHostState: SnackbarHostState,
+    onSnackbarMessageShow: () -> Unit
+) {
+    snackbarMessageRes?.let { messageRes ->
+        val message = stringResource(id = messageRes)
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(message)
+            onSnackbarMessageShow()
         }
     }
 }

@@ -82,7 +82,7 @@ fun ReminderUpsertScreen(
                 onReminderDeleted = onReminderDeleted
             )
 
-            DisplaySnackbarMessageOnLoad(
+            DisplaySnackbarMessage(
                 uiState = uiState,
                 snackbarHostState = snackbarHostState,
                 onSnackbarMessageShow = viewModel::snackbarMessageShown
@@ -111,7 +111,7 @@ private fun HandleActions(
 }
 
 @Composable
-private fun DisplaySnackbarMessageOnLoad(
+private fun DisplaySnackbarMessage(
     uiState: ReminderEditUiState,
     snackbarHostState: SnackbarHostState,
     onSnackbarMessageShow: () -> Unit

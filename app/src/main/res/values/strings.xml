@@ -48,4 +48,5 @@
     <string name="reminder_mandatory_fields_not_filled">Mandatory fields are not filled</string>
     <string name="reminder_set_in_past">Reminder cannot be set in the past</string>
     <string name="reminder_not_found">Reminder cannot be found, you are in creation mode</string>
+    <string name="notified_reminders_cleared">Notified reminders cleared</string>
 </resources>
