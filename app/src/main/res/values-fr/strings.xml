@@ -55,4 +55,5 @@
     <string name="confirm_delete_reminder">Êtes-vous sûr de vouloir supprimer ce rappel ?</string>
     <string name="title_validation">Le titre doit faire moins de 50 caractères</string>
     <string name="description_validation">La description doit faire moins de 200 caractères</string>
+    <string name="privacy">Règles de confidentialité</string>
 </resources>

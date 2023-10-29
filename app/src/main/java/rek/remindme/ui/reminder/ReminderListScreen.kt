@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -158,6 +159,15 @@ private fun ReminderListTopAppBar(
                         text = { Text(text = stringResource(R.string.clear_notified_reminders)) },
                         onClick = {
                             canClearNotified(alertDialogOpened)
+                            expanded = false
+                        }
+                    )
+
+                    val uriHandler = LocalUriHandler.current
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(R.string.privacy)) },
+                        onClick = {
+                            uriHandler.openUri("https://reisack.github.io/EasyReminder/privacy.html")
                             expanded = false
                         }
                     )
