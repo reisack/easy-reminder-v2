@@ -18,6 +18,7 @@ import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
+import java.util.Date
 
 @Composable
 fun ReminderTimeField(
@@ -94,7 +95,13 @@ fun ReminderDateField(
                 }
             }
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                state = datePickerState,
+                dateValidator = { timestamp ->
+                    // timestamp >= current timestamp Date (Time 00:00) - milliseconds in 24 hour
+                    timestamp >= Date().time - (1000 * 60 * 60 * 24)
+                }
+            )
         }
     }
 }

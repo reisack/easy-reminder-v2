@@ -30,7 +30,7 @@ class ReminderListViewModel @Inject constructor(
     val snackbarMessageRes: StateFlow<Int?> = _snackbarMessageRes.asStateFlow()
 
     private val _canDeleteNotified: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val canDeleteNotified: StateFlow<Boolean> = _canDeleteNotified.asStateFlow()
+    private val canDeleteNotified: StateFlow<Boolean> = _canDeleteNotified.asStateFlow()
 
     val uiState: StateFlow<ReminderUiState> = reminderRepository
         .reminders.map<List<Reminder>, ReminderUiState>(::Success)
