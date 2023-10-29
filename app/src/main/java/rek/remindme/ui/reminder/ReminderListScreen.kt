@@ -191,7 +191,7 @@ internal fun ReminderListScreenContent(
                 modifier = Modifier.clickable { onReminderClick(it.uid) },
                 text = "${
                 DateTimeHelper.instance.getReadableDate(it.unixTimestamp)}\n${DateTimeHelper.instance.getReadableTime(it.unixTimestamp)}\n" +
-                    "${DateTimeHelper.instance.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${it.description}\nuid : ${it.uid}"
+                    "${DateTimeHelper.instance.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${ReminderListHelper.formatDescription(it.description)}"
             )
         }
     }
