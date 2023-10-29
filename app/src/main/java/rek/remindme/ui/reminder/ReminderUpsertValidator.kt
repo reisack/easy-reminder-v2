@@ -10,6 +10,7 @@ open class ReminderUpsertValidator {
     @StringRes
     fun validate(
         title: String,
+        description: String,
         unixTimestampDate: Long?,
         hour: Int?,
         minute: Int?
@@ -20,6 +21,14 @@ open class ReminderUpsertValidator {
 
         if (reminderDatetimeBelowNow(unixTimestampDate!!, hour!!, minute!!)) {
             return Consts.Validation.setInPast
+        }
+
+        if (title.length > 50) {
+            return Consts.Validation.titleMaxCharactersReached
+        }
+
+        if (description.length > 200) {
+            return Consts.Validation.descMaxCharactersReached
         }
 
         // Code 0 : no error

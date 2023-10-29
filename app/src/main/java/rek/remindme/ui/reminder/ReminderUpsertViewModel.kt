@@ -113,6 +113,7 @@ class ReminderUpsertViewModel @Inject constructor(
 
         val messageRes: Int = validator.validate(
             uiState.value.title,
+            uiState.value.description,
             uiState.value.unixTimestampDate,
             uiState.value.hour,
             uiState.value.minute

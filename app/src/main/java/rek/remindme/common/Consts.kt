@@ -17,6 +17,8 @@ class Consts {
         companion object {
             val mandatoryFieldsNotFilled = R.string.reminder_mandatory_fields_not_filled
             val setInPast = R.string.reminder_set_in_past
+            val titleMaxCharactersReached = R.string.title_validation
+            val descMaxCharactersReached = R.string.description_validation
         }
     }
 }
