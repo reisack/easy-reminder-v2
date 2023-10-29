@@ -73,14 +73,18 @@ class ReminderUpsertViewModel @Inject constructor(
     }
 
     fun updateTitle(newTitle: String) {
-        _uiState.update {
-            it.copy(title = newTitle)
+        if (newTitle.length <= 50) {
+            _uiState.update {
+                it.copy(title = newTitle)
+            }
         }
     }
 
     fun updateDescription(newDescription: String) {
-        _uiState.update {
-            it.copy(description = newDescription)
+        if (newDescription.length <= 200) {
+            _uiState.update {
+                it.copy(description = newDescription)
+            }
         }
     }
 
@@ -97,7 +101,6 @@ class ReminderUpsertViewModel @Inject constructor(
     }
 
     fun delete() {
-        // TODO : Add a dialog modal for confirmation
         viewModelScope.launch {
             if (_reminderId != null) {
                 reminderRepository.deleteById(_reminderId)
