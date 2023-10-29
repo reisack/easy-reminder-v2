@@ -51,5 +51,6 @@
     <string name="notified_reminders_cleared">Les anciens rappels ont été supprimés</string>
     <string name="warning_title">Attention</string>
     <string name="confirm_notified_reminders">Êtes-vous sûr de vouloir supprimer les anciens rappels ?</string>
+    <string name="no_notified_reminders">Il n\'y a pas d\'anciens rappels à supprimer</string>
     <string name="confirm_delete_reminder">Êtes-vous sûr de vouloir supprimer ce rappel ?</string>
 </resources>

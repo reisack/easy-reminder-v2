@@ -51,5 +51,6 @@
     <string name="notified_reminders_cleared">Notified reminders cleared</string>
     <string name="warning_title">Warning</string>
     <string name="confirm_notified_reminders">Are you sure you want to clear notified reminders ?</string>
+    <string name="no_notified_reminders">There is no notified reminders ?</string>
     <string name="confirm_delete_reminder">Are you sure you want to delete this reminder ?</string>
 </resources>

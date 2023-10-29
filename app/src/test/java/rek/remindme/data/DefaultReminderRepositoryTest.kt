@@ -58,4 +58,8 @@ private class FakeReminderDao : ReminderDao {
     override suspend fun deleteNotified() {
         data.removeAll { reminder -> reminder.notified }
     }
+
+    override suspend fun canDeleteNotified(): Boolean {
+        return data.any { reminder -> reminder.notified }
+    }
 }

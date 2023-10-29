@@ -47,6 +47,10 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     override suspend fun deleteNotified() {
         throw NotImplementedError()
     }
+
+    override suspend fun canDeleteNotified(): Boolean {
+        throw NotImplementedError()
+    }
 }
 
 val fakeReminders = listOf(

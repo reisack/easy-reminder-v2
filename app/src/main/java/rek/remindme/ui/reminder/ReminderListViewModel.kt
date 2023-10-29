@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,9 @@ class ReminderListViewModel @Inject constructor(
     private val _snackbarMessageRes: MutableStateFlow<Int?> = MutableStateFlow(null)
     val snackbarMessageRes: StateFlow<Int?> = _snackbarMessageRes.asStateFlow()
 
+    private val _canDeleteNotified: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val canDeleteNotified: StateFlow<Boolean> = _canDeleteNotified.asStateFlow()
+
     val uiState: StateFlow<ReminderUiState> = reminderRepository
         .reminders.map<List<Reminder>, ReminderUiState>(::Success)
         .catch { emit(Error(it)) }
@@ -37,6 +41,19 @@ class ReminderListViewModel @Inject constructor(
         viewModelScope.launch {
             reminderRepository.deleteNotified()
             _snackbarMessageRes.update { R.string.notified_reminders_cleared }
+        }
+    }
+
+    fun canClearNotified(alertDialogOpened: MutableState<Boolean>) {
+        viewModelScope.launch {
+            _canDeleteNotified.update { reminderRepository.canDeleteNotified() }
+
+            if (!canDeleteNotified.value) {
+                _snackbarMessageRes.update { R.string.no_notified_reminders }
+            }
+            else {
+                alertDialogOpened.value = true
+            }
         }
     }
 

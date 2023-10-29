@@ -50,4 +50,8 @@ interface ReminderDao {
     // TODO : For later : @Query("DELETE FROM reminder WHERE notified = 1")
     @Query("DELETE FROM reminder WHERE unixTimestamp < strftime('%s','now') * 1000")
     suspend fun deleteNotified()
+
+    // TODO : For later : @Query("SELECT COUNT(1) > 0 FROM reminder WHERE notified = 1")
+    @Query("SELECT COUNT(1) > 0 FROM reminder WHERE unixTimestamp < strftime('%s','now') * 1000")
+    suspend fun canDeleteNotified(): Boolean
 }

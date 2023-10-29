@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,7 +62,10 @@ fun ReminderListScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         topBar = {
-            ReminderListTopAppBar(clearNotified = { alertDialogOpened.value = true })
+            ReminderListTopAppBar(
+                alertDialogOpened = alertDialogOpened,
+                canClearNotified = { viewModel.canClearNotified(alertDialogOpened) }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNewReminder) {
@@ -129,7 +133,10 @@ private fun DisplaySnackbarMessage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ReminderListTopAppBar(clearNotified: () -> Unit) {
+private fun ReminderListTopAppBar(
+    alertDialogOpened: MutableState<Boolean>,
+    canClearNotified: (MutableState<Boolean>) -> Unit
+) {
     TopAppBar(
         title = { Text(text = stringResource(R.string.reminder_list_title)) },
         actions = {
@@ -148,7 +155,7 @@ private fun ReminderListTopAppBar(clearNotified: () -> Unit) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(R.string.clear_notified_reminders)) },
                         onClick = {
-                            clearNotified()
+                            canClearNotified(alertDialogOpened)
                             expanded = false
                         }
                     )
