@@ -28,8 +28,8 @@
     <string name="add_reminder_desc">Add a reminder</string>
     <string name="title_field_title">Title</string>
     <string name="description_field_title">Description</string>
-    <string name="time_field_title">Time</string>
-    <string name="date_field_title">Date</string>
+    <string name="time_field_title">Select Time</string>
+    <string name="date_field_title">Select date</string>
     <string name="confirm_button_label">Confirm</string>
     <string name="cancel_button_label">Cancel</string>
     <string name="select_time_label">Select time</string>

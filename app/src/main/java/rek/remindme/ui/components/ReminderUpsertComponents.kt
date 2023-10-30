@@ -7,6 +7,7 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +19,7 @@ import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
+import rek.remindme.ui.theme.Red20
 import java.util.Date
 
 @Composable
@@ -30,11 +32,12 @@ fun ReminderTimeField(
     TextField(
         modifier = Modifier.clickable { timePickerDialogOpened.value = true },
         placeholder = {
-            Text(text = stringResource(R.string.time_field_title))
+            Text(text = stringResource(R.string.time_field_title) + " *")
         },
         value = DateTimeHelper.instance.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
         onValueChange = {},
-        enabled = false
+        enabled = false,
+        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
     )
 
     if (timePickerDialogOpened.value) {
@@ -63,12 +66,11 @@ fun ReminderDateField(
 
     TextField(
         modifier = Modifier.clickable { datePickerDialogOpened.value = true },
-        placeholder = {
-            Text(text = stringResource(R.string.date_field_title))
-        },
+        placeholder = { Text(text = stringResource(R.string.date_field_title) + " *") },
         value = DateTimeHelper.instance.getReadableDate(reminderEditUiState.unixTimestampDate),
         onValueChange = {},
-        enabled = false
+        enabled = false,
+        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
     )
 
     if (datePickerDialogOpened.value) {

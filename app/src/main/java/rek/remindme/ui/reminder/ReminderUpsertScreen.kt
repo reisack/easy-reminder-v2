@@ -182,7 +182,7 @@ internal fun ReminderUpsertScreenContent(
         ReminderUpsertScreenContentRow {
             OutlinedTextField(
                 singleLine = true,
-                placeholder = { Text(text = stringResource(R.string.title_field_title)) },
+                placeholder = { Text(text = stringResource(R.string.title_field_title) + " *") },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged
             )
@@ -211,7 +211,7 @@ internal fun ReminderUpsertScreenContent(
         }
 
         ReminderUpsertScreenContentRow {
-            Button(modifier = Modifier.width(96.dp), onClick = onSave) {
+            Button(modifier = Modifier.width(128.dp), onClick = onSave) {
                 Text(text = stringResource(R.string.save_button_label))
             }
         }

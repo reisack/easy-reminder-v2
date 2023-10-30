@@ -28,8 +28,8 @@
     <string name="add_reminder_desc">Ajouter un rappel</string>
     <string name="title_field_title">Titre</string>
     <string name="description_field_title">Description</string>
-    <string name="time_field_title">Heure</string>
-    <string name="date_field_title">Date</string>
+    <string name="time_field_title">Sélectionner l\'heure</string>
+    <string name="date_field_title">Sélectionner la date</string>
     <string name="confirm_button_label">Valider</string>
     <string name="cancel_button_label">Annuler</string>
     <string name="select_time_label">Sélectionner une heure</string>

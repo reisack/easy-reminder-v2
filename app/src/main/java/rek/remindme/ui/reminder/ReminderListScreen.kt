@@ -45,6 +45,7 @@ import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.components.SimpleAlertDialog
 import rek.remindme.ui.theme.MyApplicationTheme
+import rek.remindme.ui.theme.Red80
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -71,7 +72,10 @@ fun ReminderListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onNewReminder) {
+            FloatingActionButton(
+                onClick = onNewReminder,
+                containerColor = Red80
+            ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
             }
         },
