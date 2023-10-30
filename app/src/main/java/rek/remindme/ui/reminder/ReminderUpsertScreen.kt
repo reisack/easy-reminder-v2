@@ -12,21 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,8 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
+import rek.remindme.ui.components.HandleActions
 import rek.remindme.ui.components.ReminderDateField
 import rek.remindme.ui.components.ReminderTimeField
+import rek.remindme.ui.components.ReminderUpsertSnackbarMessage
+import rek.remindme.ui.components.ReminderUpsertTopAppBar
 import rek.remindme.ui.components.SimpleAlertDialog
 import rek.remindme.ui.theme.MyApplicationTheme
 
@@ -92,75 +87,11 @@ fun ReminderUpsertScreen(
                 onConfirm = viewModel::delete
             )
 
-            DisplaySnackbarMessage(
+            ReminderUpsertSnackbarMessage(
                 uiState = uiState,
                 snackbarHostState = snackbarHostState,
                 onSnackbarMessageShow = viewModel::snackbarMessageShown
             )
-        }
-    )
-}
-
-@Composable
-private fun HandleActions(
-    uiState: ReminderEditUiState,
-    onReminderSaved: (Int) -> Unit,
-    onReminderDeleted: (Int) -> Unit,
-) {
-    LaunchedEffect(uiState.isSaved) {
-        if (uiState.isSaved) {
-            onReminderSaved(if (uiState.isUpdateMode) R.string.reminder_updated else R.string.reminder_created)
-        }
-    }
-
-    LaunchedEffect(uiState.isDeleted) {
-        if (uiState.isDeleted) {
-            onReminderDeleted(R.string.reminder_deleted)
-        }
-    }
-}
-
-@Composable
-private fun DisplaySnackbarMessage(
-    uiState: ReminderEditUiState,
-    snackbarHostState: SnackbarHostState,
-    onSnackbarMessageShow: () -> Unit
-) {
-    uiState.snackbarMessageRes?.let { messageRes ->
-        val message = stringResource(id = messageRes)
-        LaunchedEffect(message) {
-            snackbarHostState.showSnackbar(message)
-            onSnackbarMessageShow()
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ReminderUpsertTopAppBar(
-    uiState: ReminderEditUiState,
-    onBack: () -> Unit,
-    onDelete: () -> Unit
-) {
-    TopAppBar(
-        title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back_desc)
-                )
-            }
-        },
-        actions = {
-            if (uiState.isUpdateMode) {
-                IconButton(onClick = onDelete) {
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = stringResource(R.string.delete_reminder_desc)
-                    )
-                }
-            }
         }
     )
 }

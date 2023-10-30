@@ -3,16 +3,24 @@ package rek.remindme.ui.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,7 +34,7 @@ import rek.remindme.ui.theme.MyApplicationTheme
 import java.util.Date
 
 @Composable
-fun ReminderTimeField(
+internal fun ReminderTimeField(
     onTimeChanged: (Int, Int) -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
@@ -55,7 +63,7 @@ fun ReminderTimeField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReminderDateField(
+internal fun ReminderDateField(
     onDateChanged: (Long) -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
@@ -118,6 +126,70 @@ private fun ClickableInputField(
         onValueChange = {},
         enabled = false,
         colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.secondary)
+    )
+}
+
+@Composable
+internal fun HandleActions(
+    uiState: ReminderEditUiState,
+    onReminderSaved: (Int) -> Unit,
+    onReminderDeleted: (Int) -> Unit,
+) {
+    LaunchedEffect(uiState.isSaved) {
+        if (uiState.isSaved) {
+            onReminderSaved(if (uiState.isUpdateMode) R.string.reminder_updated else R.string.reminder_created)
+        }
+    }
+
+    LaunchedEffect(uiState.isDeleted) {
+        if (uiState.isDeleted) {
+            onReminderDeleted(R.string.reminder_deleted)
+        }
+    }
+}
+
+@Composable
+internal fun ReminderUpsertSnackbarMessage(
+    uiState: ReminderEditUiState,
+    snackbarHostState: SnackbarHostState,
+    onSnackbarMessageShow: () -> Unit
+) {
+    uiState.snackbarMessageRes?.let { messageRes ->
+        val message = stringResource(id = messageRes)
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(message)
+            onSnackbarMessageShow()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ReminderUpsertTopAppBar(
+    uiState: ReminderEditUiState,
+    onBack: () -> Unit,
+    onDelete: () -> Unit
+) {
+    TopAppBar(
+        title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back_desc)
+                )
+            }
+        },
+        actions = {
+            if (uiState.isUpdateMode) {
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.delete_reminder_desc)
+                    )
+                }
+            }
+        }
     )
 }
 
