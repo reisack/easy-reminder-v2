@@ -181,7 +181,7 @@ internal fun ReminderUpsertScreenContent(
         ReminderUpsertScreenContentRow {
             OutlinedTextField(
                 singleLine = true,
-                placeholder = { Text(text = stringResource(R.string.title_field_title) + " *") },
+                placeholder = { Text(text = "${stringResource(R.string.title_field_title)} *") },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged,
                 modifier = Modifier.fillMaxSize()

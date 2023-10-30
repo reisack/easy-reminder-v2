@@ -2,25 +2,32 @@ package rek.remindme.ui.reminder
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -37,7 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
@@ -191,12 +200,50 @@ internal fun ReminderListScreenContent(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         items.forEach {
-            Text(
-                modifier = Modifier.clickable { onReminderClick(it.uid) },
-                text = "${
-                DateTimeHelper.instance.getReadableDate(it.unixTimestamp)}\n${DateTimeHelper.instance.getReadableTime(it.unixTimestamp)}\n" +
-                    "${DateTimeHelper.instance.getRemainingOrPastTime(it.unixTimestamp)}\n${it.title}\n${ReminderListHelper.formatDescription(it.description)}"
-            )
+            Card(
+                shape = RoundedCornerShape(4.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .clickable { onReminderClick(it.uid) }
+            ) {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)) {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = DateTimeHelper.instance.getReadableDate(it.unixTimestamp),
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = DateTimeHelper.instance.getReadableTime(it.unixTimestamp),
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = DateTimeHelper.instance.getRemainingOrPastTime(it.unixTimestamp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = it.title,
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = ReminderListHelper.formatDescription(it.description),
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                }
+            }
         }
     }
 }

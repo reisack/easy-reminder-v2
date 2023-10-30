@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -22,7 +23,6 @@ import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
-import rek.remindme.ui.theme.Red20
 import java.util.Date
 
 @Composable
@@ -117,7 +117,7 @@ private fun ClickableInputField(
         value = getValue(),
         onValueChange = {},
         enabled = false,
-        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
+        colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.secondary)
     )
 }
 

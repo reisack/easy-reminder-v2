@@ -53,7 +53,7 @@ fun MainNavigation() {
 @Composable
 private fun GetReminderListScreen(navController: NavHostController, entry: NavBackStackEntry) {
     ReminderListScreen(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(8.dp),
         snackbarMessageResOnLoad = entry.arguments?.getInt(Consts.Route.MESSAGE_RES_NAV_ARG)!!,
         onNewReminder = {
             navController.navigate(Consts.Route.ADD_REMINDER_ROUTE)
@@ -70,7 +70,7 @@ private fun GetReminderListScreen(navController: NavHostController, entry: NavBa
 @Composable
 private fun GetReminderUpsertScreen(navController: NavHostController) {
     ReminderUpsertScreen(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(8.dp),
         onReminderSaved = { snackbarMessageRes ->
             navController.navigate("${Consts.Route.PREFIX_LIST_REMINDER_ROUTE}=$snackbarMessageRes")
         },

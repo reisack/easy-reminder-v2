@@ -7,7 +7,7 @@ class ReminderListHelper {
             val maxLength = 100
 
             if (inlineDescription.length > maxLength) {
-                return inlineDescription.substring(0, maxLength) + "..."
+                return "${inlineDescription.substring(0, maxLength)}..."
             }
 
             return inlineDescription
