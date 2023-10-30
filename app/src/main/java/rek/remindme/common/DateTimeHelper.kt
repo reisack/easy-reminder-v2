@@ -201,7 +201,7 @@ open class DateTimeHelper protected constructor() {
 
     private fun getPluralIfNeeded(timeNumber: Int, timeUnit: String): String {
         if (timeNumber > 1 && !timeUnit.endsWith("s")) {
-            return timeUnit + "s"
+            return "${timeUnit}s"
         }
 
         return timeUnit

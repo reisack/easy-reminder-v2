@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -184,7 +183,8 @@ internal fun ReminderUpsertScreenContent(
                 singleLine = true,
                 placeholder = { Text(text = stringResource(R.string.title_field_title) + " *") },
                 value = reminderEditUiState.title,
-                onValueChange = onTitleChanged
+                onValueChange = onTitleChanged,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -192,7 +192,8 @@ internal fun ReminderUpsertScreenContent(
             OutlinedTextField(
                 placeholder = { Text(text = stringResource(R.string.description_field_title)) },
                 value = reminderEditUiState.description,
-                onValueChange = onDescriptionChanged
+                onValueChange = onDescriptionChanged,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -211,7 +212,7 @@ internal fun ReminderUpsertScreenContent(
         }
 
         ReminderUpsertScreenContentRow {
-            Button(modifier = Modifier.width(128.dp), onClick = onSave) {
+            Button(modifier = Modifier.fillMaxSize(), onClick = onSave) {
                 Text(text = stringResource(R.string.save_button_label))
             }
         }

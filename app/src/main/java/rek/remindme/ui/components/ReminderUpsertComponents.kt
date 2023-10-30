@@ -1,6 +1,8 @@
 package rek.remindme.ui.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -10,6 +12,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -29,15 +32,10 @@ fun ReminderTimeField(
 ) {
     val timePickerDialogOpened = remember { mutableStateOf(false) }
 
-    TextField(
-        modifier = Modifier.clickable { timePickerDialogOpened.value = true },
-        placeholder = {
-            Text(text = stringResource(R.string.time_field_title) + " *")
-        },
-        value = DateTimeHelper.instance.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute),
-        onValueChange = {},
-        enabled = false,
-        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
+    ClickableInputField(
+        dialogOpened = timePickerDialogOpened,
+        placeholderRes = R.string.time_field_title,
+        getValue = { DateTimeHelper.instance.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute) }
     )
 
     if (timePickerDialogOpened.value) {
@@ -64,13 +62,10 @@ fun ReminderDateField(
     val datePickerDialogOpened = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
 
-    TextField(
-        modifier = Modifier.clickable { datePickerDialogOpened.value = true },
-        placeholder = { Text(text = stringResource(R.string.date_field_title) + " *") },
-        value = DateTimeHelper.instance.getReadableDate(reminderEditUiState.unixTimestampDate),
-        onValueChange = {},
-        enabled = false,
-        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
+    ClickableInputField(
+        dialogOpened = datePickerDialogOpened,
+        placeholderRes = R.string.date_field_title,
+        getValue = { DateTimeHelper.instance.getReadableDate(reminderEditUiState.unixTimestampDate) }
     )
 
     if (datePickerDialogOpened.value) {
@@ -106,6 +101,24 @@ fun ReminderDateField(
             )
         }
     }
+}
+
+@Composable
+private fun ClickableInputField(
+    dialogOpened: MutableState<Boolean>,
+    @StringRes placeholderRes: Int,
+    getValue: () -> String
+) {
+    TextField(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { dialogOpened.value = true },
+        placeholder = { Text(text = "${stringResource(placeholderRes)} *") },
+        value = getValue(),
+        onValueChange = {},
+        enabled = false,
+        colors = TextFieldDefaults.colors(disabledContainerColor = Red20)
+    )
 }
 
 @Preview(showBackground = true)
