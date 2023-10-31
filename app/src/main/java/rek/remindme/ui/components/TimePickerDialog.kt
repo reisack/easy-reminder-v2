@@ -44,9 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import rek.remindme.R
+import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,5 +180,16 @@ private fun PickerDialog(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TimePickerDialogPreview() {
+    MyApplicationTheme {
+        TimePickerDialog(
+            onCancel = {},
+            onConfirm = { _, _ -> }
+        )
     }
 }

@@ -163,22 +163,7 @@ private fun ReminderUpsertScreenContentRow(content: @Composable RowScope.() -> U
 
 @Preview(showBackground = true)
 @Composable
-private fun DefaultPreview() {
-    MyApplicationTheme {
-        ReminderUpsertScreenContent(
-            onTitleChanged = { _ -> },
-            onDescriptionChanged = { _ -> },
-            onDateChanged = { _ -> },
-            onTimeChanged = { _, _ -> },
-            onSave = {},
-            reminderEditUiState = ReminderEditUiState()
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 480)
-@Composable
-private fun PortraitPreview() {
+private fun ReminderUpsertScreenContentPreview() {
     MyApplicationTheme {
         ReminderUpsertScreenContent(
             onTitleChanged = { _ -> },

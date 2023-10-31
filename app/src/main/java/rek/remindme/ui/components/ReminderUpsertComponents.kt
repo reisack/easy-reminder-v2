@@ -195,44 +195,12 @@ internal fun ReminderUpsertTopAppBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun TimeFieldDefaultPreview() {
+private fun ReminderUpsertTopAppBarPreview() {
     MyApplicationTheme {
-        ReminderTimeField(
-            onTimeChanged = { _, _ -> },
-            reminderEditUiState = ReminderEditUiState()
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 480)
-@Composable
-private fun TimeFieldPortraitPreview() {
-    MyApplicationTheme {
-        ReminderTimeField(
-            onTimeChanged = { _, _ -> },
-            reminderEditUiState = ReminderEditUiState()
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun DateFieldDefaultPreview() {
-    MyApplicationTheme {
-        ReminderDateField(
-            onDateChanged = { _ -> },
-            reminderEditUiState = ReminderEditUiState()
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 480)
-@Composable
-private fun DateFieldPortraitPreview() {
-    MyApplicationTheme {
-        ReminderDateField(
-            onDateChanged = { _ -> },
-            reminderEditUiState = ReminderEditUiState()
+        ReminderUpsertTopAppBar(
+            uiState = ReminderEditUiState(),
+            onBack = {},
+            onDelete = {}
         )
     }
 }

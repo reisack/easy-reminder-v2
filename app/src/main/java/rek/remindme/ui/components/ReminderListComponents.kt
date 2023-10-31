@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
+import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
 internal fun ReminderListSnackbarMessageOnLoad(
@@ -95,4 +97,15 @@ internal fun ReminderListTopAppBar(
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReminderListTopAppBarPreview() {
+    MyApplicationTheme {
+        ReminderListTopAppBar(
+            alertDialogOpened = remember { mutableStateOf(false) },
+            canClearNotified = {}
+        )
+    }
 }

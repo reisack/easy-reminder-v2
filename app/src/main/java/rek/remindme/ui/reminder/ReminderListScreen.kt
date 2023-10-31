@@ -166,32 +166,15 @@ internal fun ReminderListScreenContent(
     }
 }
 
-// Previews
-
 @Preview(showBackground = true)
 @Composable
-private fun DefaultPreview() {
+private fun ReminderListScreenContentPreview() {
     MyApplicationTheme {
         ReminderListScreenContent(
             items = listOf(
-                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
-                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
-                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
-            ),
-            onReminderClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 480)
-@Composable
-private fun PortraitPreview() {
-    MyApplicationTheme {
-        ReminderListScreenContent(
-            items = listOf(
-                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658, notified = false),
-                Reminder(title = "Title 2", description = "Hello", unixTimestamp = 1697808658, notified = false),
-                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658, notified = false)
+                Reminder(title = "Title 1", description = "Hello", unixTimestamp = 1697808658000, notified = false),
+                Reminder(title = "Title 2", description = "Hello\nMultiline", unixTimestamp = 1697808658000, notified = false),
+                Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658000, notified = true)
             ),
             onReminderClick = {}
         )
