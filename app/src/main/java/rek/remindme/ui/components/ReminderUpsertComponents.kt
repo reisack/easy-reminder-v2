@@ -25,10 +25,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
+import rek.remindme.common.ReminderScheduler
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
 import java.util.Date
@@ -135,14 +137,18 @@ internal fun HandleActions(
     onReminderSaved: (Int) -> Unit,
     onReminderDeleted: (Int) -> Unit,
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(uiState.isSaved) {
         if (uiState.isSaved) {
+            ReminderScheduler.setNextReminder(context)
             onReminderSaved(if (uiState.isUpdateMode) R.string.reminder_updated else R.string.reminder_created)
         }
     }
 
     LaunchedEffect(uiState.isDeleted) {
         if (uiState.isDeleted) {
+            ReminderScheduler.setNextReminder(context)
             onReminderDeleted(R.string.reminder_deleted)
         }
     }

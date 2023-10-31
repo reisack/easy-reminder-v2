@@ -20,10 +20,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
+import rek.remindme.common.ReminderScheduler
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
@@ -45,11 +47,17 @@ internal fun ReminderListSnackbarMessage(
     snackbarHostState: SnackbarHostState,
     onSnackbarMessageShow: () -> Unit
 ) {
+    val context = LocalContext.current
+
     snackbarMessageRes?.let { messageRes ->
         val message = stringResource(id = messageRes)
         LaunchedEffect(message) {
             snackbarHostState.showSnackbar(message)
             onSnackbarMessageShow()
+
+            if (messageRes == R.string.reminder_deleted) {
+                ReminderScheduler.setNextReminder(context)
+            }
         }
     }
 }

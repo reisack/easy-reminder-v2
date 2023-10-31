@@ -3,6 +3,10 @@ package rek.remindme.common
 import rek.remindme.R
 
 class Consts {
+    companion object {
+        const val APP_ID = "rek.remindme"
+    }
+
     class Route {
         companion object {
             const val REMINDER_ID_NAV_ARG = "reminderId"
