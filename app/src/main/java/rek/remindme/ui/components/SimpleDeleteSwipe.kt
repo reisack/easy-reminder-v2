@@ -55,24 +55,28 @@ internal fun SimpleDeleteSwipe(
                 .fillMaxSize()
                 .padding(bottom = 8.dp)
                 .background(swipeBackgroundColor)) {
-                Icon(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(alignment = Alignment.CenterVertically),
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.delete_reminder_desc)
+                SwipeIcon(modifier = Modifier.align(
+                    alignment = Alignment.CenterVertically)
                 )
+
                 Spacer(Modifier.weight(1f))
-                Icon(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(alignment = Alignment.CenterVertically),
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.delete_reminder_desc)
+
+                SwipeIcon(modifier = Modifier.align(
+                    alignment = Alignment.CenterVertically)
                 )
             }
         },
         dismissContent = content
+    )
+}
+
+@Composable
+private fun SwipeIcon(modifier: Modifier) {
+    Icon(
+        modifier = modifier.padding(8.dp),
+        imageVector = Icons.Filled.Delete,
+        tint = Color.White,
+        contentDescription = stringResource(id = R.string.delete_reminder_desc)
     )
 }
 
