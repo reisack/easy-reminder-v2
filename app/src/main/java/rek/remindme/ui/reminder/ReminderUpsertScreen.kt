@@ -84,6 +84,7 @@ fun ReminderUpsertScreen(
             SimpleAlertDialog(
                 isDisplayed = alertDialogOpened,
                 textToDisplay = stringResource(R.string.confirm_delete_reminder),
+                onDismiss = {},
                 onConfirm = viewModel::delete
             )
 

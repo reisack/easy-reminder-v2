@@ -24,12 +24,16 @@ import rek.remindme.ui.theme.MyApplicationTheme
 fun SimpleAlertDialog(
     isDisplayed: MutableState<Boolean>,
     textToDisplay: String,
+    onDismiss: () -> Unit,
     onConfirm: () -> Unit,
 ) {
     if (isDisplayed.value) {
         SimpleAlertDialogComponent(
             textToDisplay = textToDisplay,
-            onDismiss = { isDisplayed.value = false },
+            onDismiss = {
+                onDismiss()
+                isDisplayed.value = false
+                        },
             onConfirm = {
                 onConfirm()
                 isDisplayed.value = false

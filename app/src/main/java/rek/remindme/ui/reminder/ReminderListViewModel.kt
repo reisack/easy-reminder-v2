@@ -57,6 +57,13 @@ class ReminderListViewModel @Inject constructor(
         }
     }
 
+    fun delete(id: Int) {
+        viewModelScope.launch {
+            reminderRepository.deleteById(id)
+            _snackbarMessageRes.update { R.string.reminder_deleted }
+        }
+    }
+
     fun snackbarMessageShown() {
         _snackbarMessageRes.update { null }
     }
