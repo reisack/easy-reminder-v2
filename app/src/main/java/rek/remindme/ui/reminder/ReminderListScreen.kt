@@ -124,7 +124,7 @@ internal fun ReminderListScreenContent(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(bottom = 8.dp)
                     .clickable { onReminderClick(it.uid) }
             ) {
                 Column(modifier = Modifier

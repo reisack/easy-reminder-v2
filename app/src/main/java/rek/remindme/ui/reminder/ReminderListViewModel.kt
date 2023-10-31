@@ -63,7 +63,7 @@ class ReminderListViewModel @Inject constructor(
 }
 
 sealed interface ReminderUiState {
-    object Loading : ReminderUiState
+    data object Loading : ReminderUiState
     data class Error(val throwable: Throwable) : ReminderUiState
     data class Success(val data: List<Reminder>) : ReminderUiState
 }
