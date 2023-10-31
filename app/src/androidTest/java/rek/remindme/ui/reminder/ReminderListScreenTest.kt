@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
 
 /**
@@ -23,7 +24,7 @@ class ReminderListScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ReminderListScreenContent(items = fakeData, onReminderClick = {})
+            ReminderListScreenContent(items = fakeData, onReminderClick = {}, viewModel = ReminderListViewModel(FakeReminderRepository()))
         }
     }
 
