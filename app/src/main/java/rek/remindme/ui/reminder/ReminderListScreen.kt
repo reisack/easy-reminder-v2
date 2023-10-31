@@ -128,7 +128,10 @@ internal fun ReminderListScreenContent(
                 Card(
                     shape = RoundedCornerShape(4.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary,
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -140,13 +143,9 @@ internal fun ReminderListScreenContent(
                         Row(modifier = Modifier.fillMaxSize()) {
                             Text(
                                 text = DateTimeHelper.instance.getReadableDate(it.unixTimestamp),
-                                color = MaterialTheme.colorScheme.onTertiary,
                                 modifier = Modifier.weight(1f)
                             )
-                            Text(
-                                text = DateTimeHelper.instance.getReadableTime(it.unixTimestamp),
-                                color = MaterialTheme.colorScheme.onTertiary
-                            )
+                            Text(text = DateTimeHelper.instance.getReadableTime(it.unixTimestamp))
                         }
                         Row {
                             Text(
@@ -155,17 +154,10 @@ internal fun ReminderListScreenContent(
                             )
                         }
                         Row {
-                            Text(
-                                text = it.title,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                fontWeight = FontWeight.Bold
-                            )
+                            Text(text = it.title, fontWeight = FontWeight.Bold)
                         }
                         Row {
-                            Text(
-                                text = ReminderListHelper.formatDescription(it.description),
-                                color = MaterialTheme.colorScheme.onTertiary
-                            )
+                            Text(text = ReminderListHelper.formatDescription(it.description))
                         }
                     }
                 }
