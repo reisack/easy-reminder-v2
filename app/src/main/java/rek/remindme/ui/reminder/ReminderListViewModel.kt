@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import rek.remindme.R
+import rek.remindme.common.ReminderScheduler
 import rek.remindme.data.ReminderRepository
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.reminder.ReminderUiState.Error
@@ -66,6 +68,15 @@ class ReminderListViewModel @Inject constructor(
 
     fun snackbarMessageShown() {
         _snackbarMessageRes.update { null }
+    }
+
+    fun setNextReminder(context: Context) {
+        viewModelScope.launch {
+            val reminder = reminderRepository.getClosestReminderToNotify()
+            if (reminder != null) {
+                ReminderScheduler.setNextReminder(context, reminder.unixTimestamp)
+            }
+        }
     }
 }
 

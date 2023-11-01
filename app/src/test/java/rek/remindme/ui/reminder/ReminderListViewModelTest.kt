@@ -75,4 +75,19 @@ private class FakeReminderRepository : ReminderRepository {
     override suspend fun canDeleteNotified(): Boolean {
         return data.any { reminder -> reminder.notified }
     }
+
+    override suspend fun getClosestReminderToNotify(): Reminder? {
+        return data.filter { reminder -> !reminder.notified }.minBy { reminder -> reminder.unixTimestamp }
+    }
+
+    override suspend fun updateNotifiedById(id: Int) {
+        val reminder = data.find { reminder -> reminder.uid == id }
+        if (reminder != null) {
+            val newReminder = reminder.copy(notified = true)
+
+            val index = data.indexOf(reminder)
+            data.removeAt(index)
+            data.add(index, newReminder)
+        }
+    }
 }

@@ -78,7 +78,8 @@ fun ReminderUpsertScreen(
             HandleActions(
                 uiState = uiState,
                 onReminderSaved = onReminderSaved,
-                onReminderDeleted = onReminderDeleted
+                onReminderDeleted = onReminderDeleted,
+                handleNotification = viewModel::setNextReminder
             )
 
             SimpleAlertDialog(

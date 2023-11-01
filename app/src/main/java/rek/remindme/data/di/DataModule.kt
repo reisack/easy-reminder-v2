@@ -51,6 +51,14 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     override suspend fun canDeleteNotified(): Boolean {
         throw NotImplementedError()
     }
+
+    override suspend fun getClosestReminderToNotify(): Reminder? {
+        throw NotImplementedError()
+    }
+
+    override suspend fun updateNotifiedById(id: Int) {
+        throw NotImplementedError()
+    }
 }
 
 val fakeReminders = listOf(

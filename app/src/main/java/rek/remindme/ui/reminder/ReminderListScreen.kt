@@ -107,7 +107,8 @@ fun ReminderListScreen(
         ReminderListSnackbarMessage(
             snackbarMessageRes = snackbarMessageRes,
             snackbarHostState = snackbarHostState,
-            onSnackbarMessageShow = viewModel::snackbarMessageShown
+            onSnackbarMessageShow = viewModel::snackbarMessageShown,
+            handleNotification = viewModel::setNextReminder
         )
     }
 }

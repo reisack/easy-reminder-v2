@@ -1,5 +1,6 @@
 package rek.remindme.ui.components
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,7 +26,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
-import rek.remindme.common.ReminderScheduler
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
@@ -45,7 +45,8 @@ internal fun ReminderListSnackbarMessageOnLoad(
 internal fun ReminderListSnackbarMessage(
     snackbarMessageRes: Int?,
     snackbarHostState: SnackbarHostState,
-    onSnackbarMessageShow: () -> Unit
+    onSnackbarMessageShow: () -> Unit,
+    handleNotification: (Context) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -56,7 +57,7 @@ internal fun ReminderListSnackbarMessage(
             onSnackbarMessageShow()
 
             if (messageRes == R.string.reminder_deleted) {
-                ReminderScheduler.setNextReminder(context)
+                handleNotification(context)
             }
         }
     }

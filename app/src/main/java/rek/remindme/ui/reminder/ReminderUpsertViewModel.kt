@@ -1,5 +1,6 @@
 package rek.remindme.ui.reminder
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import rek.remindme.R
 import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
+import rek.remindme.common.ReminderScheduler
 import rek.remindme.data.ReminderRepository
 import javax.inject.Inject
 
@@ -134,12 +136,6 @@ class ReminderUpsertViewModel @Inject constructor(
         }
     }
 
-    fun snackbarMessageShown() {
-        _uiState.update {
-            it.copy(snackbarMessageRes = null)
-        }
-    }
-
     private fun upsertReminder() {
         viewModelScope.launch {
             val reminderDateTimeInMillis = DateTimeHelper.instance.getUtcDatetimeInMillis(
@@ -153,11 +149,26 @@ class ReminderUpsertViewModel @Inject constructor(
                 uiState.value.title,
                 uiState.value.description,
                 reminderDateTimeInMillis,
-                uiState.value.notified
+                false
             )
 
             _uiState.update {
                 it.copy(isSaved = true)
+            }
+        }
+    }
+
+    fun snackbarMessageShown() {
+        _uiState.update {
+            it.copy(snackbarMessageRes = null)
+        }
+    }
+
+    fun setNextReminder(context: Context) {
+        viewModelScope.launch {
+            val reminder = reminderRepository.getClosestReminderToNotify()
+            if (reminder != null) {
+                ReminderScheduler.setNextReminder(context, reminder.unixTimestamp)
             }
         }
     }

@@ -1,5 +1,6 @@
 package rek.remindme.ui.components
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
-import rek.remindme.common.ReminderScheduler
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
 import java.util.Date
@@ -136,19 +136,20 @@ internal fun HandleActions(
     uiState: ReminderEditUiState,
     onReminderSaved: (Int) -> Unit,
     onReminderDeleted: (Int) -> Unit,
+    handleNotification: (Context) -> Unit
 ) {
     val context = LocalContext.current
 
     LaunchedEffect(uiState.isSaved) {
         if (uiState.isSaved) {
-            ReminderScheduler.setNextReminder(context)
+            handleNotification(context)
             onReminderSaved(if (uiState.isUpdateMode) R.string.reminder_updated else R.string.reminder_created)
         }
     }
 
     LaunchedEffect(uiState.isDeleted) {
         if (uiState.isDeleted) {
-            ReminderScheduler.setNextReminder(context)
+            handleNotification(context)
             onReminderDeleted(R.string.reminder_deleted)
         }
     }
