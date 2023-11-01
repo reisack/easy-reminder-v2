@@ -56,4 +56,7 @@
     <string name="title_validation">Le titre doit faire moins de 50 caractères</string>
     <string name="description_validation">La description doit faire moins de 200 caractères</string>
     <string name="privacy">Règles de confidentialité</string>
+    <string name="button_authorize_notifications">Autoriser les notifications</string>
+    <string name="message_authorize_notifications_1">Vous devez autoriser les notifications pour cette app pour avoir vos rappels en notification.</string>
+    <string name="message_authorize_notifications_2">Vous ne recevrez jamais de notification qui n\'est pas un de vos rappels.</string>
 </resources>

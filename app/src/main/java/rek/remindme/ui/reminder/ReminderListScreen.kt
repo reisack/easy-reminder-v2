@@ -40,6 +40,7 @@ import rek.remindme.R
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
+import rek.remindme.ui.components.NotificationPermission
 import rek.remindme.ui.components.ReminderListSnackbarMessage
 import rek.remindme.ui.components.ReminderListSnackbarMessageOnLoad
 import rek.remindme.ui.components.ReminderListTopAppBar
@@ -61,6 +62,7 @@ fun ReminderListScreen(
     val snackbarMessageRes by viewModel.snackbarMessageRes.collectAsStateWithLifecycle()
     val alertDialogOpened = remember { mutableStateOf(false) }
 
+    NotificationPermission()
     BackHandler(onBack = onBackButtonPressed)
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },

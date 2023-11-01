@@ -1,16 +1,29 @@
 package rek.remindme.ui.components
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,7 +37,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat
 import rek.remindme.R
 import rek.remindme.ui.theme.MyApplicationTheme
 
@@ -104,6 +122,55 @@ internal fun ReminderListTopAppBar(
             }
         }
     )
+}
+
+@Composable
+internal fun NotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val context = LocalContext.current
+
+        val hasPermission =
+            ContextCompat.checkSelfPermission(context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+
+        val hasNotificationPermission = remember { mutableStateOf(hasPermission) }
+
+        val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted -> hasNotificationPermission.value = isGranted }
+        )
+
+        if (!hasNotificationPermission.value) {
+            Column(verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .zIndex(10f)
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                Row {
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text = stringResource(id = R.string.message_authorize_notifications_1)
+                    )
+                }
+                Row {
+                    Text(
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        text = stringResource(id = R.string.message_authorize_notifications_2)
+                    )
+                }
+                Row {
+                    Button(onClick = { permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }) {
+                        Text(text = stringResource(id = R.string.button_authorize_notifications))
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)

@@ -17,14 +17,16 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val _darkColorScheme = darkColorScheme(
-    primary = Red80,
-    secondary = Red20,
+    primary = Red80Dark,
+    onPrimary = Color.White,
+    secondary = RedGrey,
     tertiary = Color.DarkGray,
-    onTertiary = Color.LightGray
+    onTertiary = Color.LightGray,
 )
 
 private val _lightColorScheme = lightColorScheme(
     primary = Red80,
+    onPrimary = Color.White,
     secondary = Red20,
     tertiary = Color.White,
     onTertiary = Color.Black
@@ -48,10 +50,11 @@ fun MyApplicationTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        // TODO : First, we fix darkTheme and then, we'll see if we use dynamicColor or not
+        /*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+        }*/
         darkTheme -> _darkColorScheme
         else -> _lightColorScheme
     }
