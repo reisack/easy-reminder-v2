@@ -80,6 +80,10 @@ private class FakeReminderRepository : ReminderRepository {
         return data.filter { reminder -> !reminder.notified }.minBy { reminder -> reminder.unixTimestamp }
     }
 
+    override suspend fun getRemindersToNotify(): List<Reminder> {
+        return data.filter { reminder -> !reminder.notified }
+    }
+
     override suspend fun updateNotifiedById(id: Int) {
         val reminder = data.find { reminder -> reminder.uid == id }
         if (reminder != null) {

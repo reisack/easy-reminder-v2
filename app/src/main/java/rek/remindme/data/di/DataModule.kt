@@ -56,6 +56,10 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
         throw NotImplementedError()
     }
 
+    override suspend fun getRemindersToNotify(): List<Reminder> {
+        throw NotImplementedError()
+    }
+
     override suspend fun updateNotifiedById(id: Int) {
         throw NotImplementedError()
     }

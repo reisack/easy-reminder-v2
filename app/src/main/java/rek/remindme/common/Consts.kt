@@ -3,8 +3,11 @@ package rek.remindme.common
 import rek.remindme.R
 
 class Consts {
-    companion object {
-        const val APP_ID = "rek.remindme"
+    class System {
+        companion object {
+            const val APP_ID = "rek.remindme"
+            const val ALARM_RECEIVER_ID = "rek.remindme.alarm-receiver"
+        }
     }
 
     class Route {
