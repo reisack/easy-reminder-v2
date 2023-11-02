@@ -4,6 +4,7 @@
 
 package rek.remindme.ui.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -186,6 +187,17 @@ private fun PickerDialog(
 @Preview(showBackground = true)
 @Composable
 private fun TimePickerDialogPreview() {
+    MyApplicationTheme {
+        TimePickerDialog(
+            onCancel = {},
+            onConfirm = { _, _ -> }
+        )
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun TimePickerDialogDarkPreview() {
     MyApplicationTheme {
         TimePickerDialog(
             onCancel = {},

@@ -1,5 +1,6 @@
 package rek.remindme.ui.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,46 +62,54 @@ private fun SimpleAlertDialogComponent(
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
+                .padding(16.dp)
             ) {
                 Text(
                     text = stringResource(R.string.warning_title),
-                    modifier = Modifier.padding(8.dp), fontSize = 20.sp
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontSize = 20.sp
                 )
 
                 Text(
                     text = textToDisplay,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(top = 16.dp)
                 )
 
                 Row(Modifier.padding(top = 10.dp)) {
-                    Button(
+                    SimpleAlertDialogButton(
                         onClick = onDismiss,
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = stringResource(R.string.cancel_button_label))
-                    }
+                        textButton = R.string.cancel_button_label,
+                        modifier = Modifier.weight(1f)
+                    )
 
-                    Button(
+                    SimpleAlertDialogButton(
                         onClick = onConfirm,
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = stringResource(R.string.confirm_button_label))
-                    }
+                        textButton = R.string.confirm_button_label,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+private fun SimpleAlertDialogButton(
+    onClick: () -> Unit,
+    @StringRes textButton: Int,
+    modifier: Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().padding(8.dp)
+    ) {
+        Text(text = stringResource(textButton))
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun ReminderUpsertTopAppBarPreview() {
+private fun SimpleAlertDialogComponentPreview() {
     MyApplicationTheme {
         SimpleAlertDialogComponent(
             textToDisplay = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, felis nec vehicula euismod.",

@@ -73,7 +73,10 @@ fun ReminderListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onNewReminder) {
+            FloatingActionButton(
+                onClick = onNewReminder,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
             }
         },
@@ -148,12 +151,8 @@ internal fun ReminderListScreenContent(
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
-                        Row {
-                            Text(text = it.title, fontWeight = FontWeight.Bold)
-                        }
-                        Row {
-                            Text(text = ReminderListHelper.formatDescription(it.description))
-                        }
+                        Row { Text(text = it.title, fontWeight = FontWeight.Bold) }
+                        Row { Text(text = ReminderListHelper.formatDescription(it.description)) }
                     }
                 }
             }
@@ -181,7 +180,10 @@ private fun ReminderListScreenContentPreview() {
 @Composable
 private fun FloatingActionButtonPreview() {
     MyApplicationTheme {
-        FloatingActionButton(onClick = {}) {
+        FloatingActionButton(
+            onClick = {},
+            containerColor = MaterialTheme.colorScheme.primary
+        ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
         }
     }
