@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -74,10 +73,7 @@ fun ReminderListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNewReminder,
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
+            FloatingActionButton(onClick = onNewReminder) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
             }
         },
@@ -131,10 +127,6 @@ internal fun ReminderListScreenContent(
                 Card(
                     shape = RoundedCornerShape(4.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.onTertiary,
-                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -182,5 +174,15 @@ private fun ReminderListScreenContentPreview() {
             onReminderClick = {},
             viewModel = ReminderListViewModel(FakeReminderRepository())
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FloatingActionButtonPreview() {
+    MyApplicationTheme {
+        FloatingActionButton(onClick = {}) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add_reminder_desc))
+        }
     }
 }

@@ -3,7 +3,7 @@ package rek.remindme.ui.components
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -13,11 +13,9 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -121,13 +119,12 @@ private fun ClickableInputField(
 ) {
     TextField(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .clickable { dialogOpened.value = true },
         placeholder = { Text(text = "${stringResource(placeholderRes)} *") },
         value = getValue(),
         onValueChange = {},
-        enabled = false,
-        colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.secondary)
+        enabled = false
     )
 }
 
@@ -208,6 +205,18 @@ private fun ReminderUpsertTopAppBarPreview() {
             uiState = ReminderEditUiState(),
             onBack = {},
             onDelete = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ClickableInputFieldPreview() {
+    MyApplicationTheme {
+        ClickableInputField(
+            dialogOpened = remember { mutableStateOf(false) },
+            placeholderRes = R.string.select_time_label,
+            getValue = { "" }
         )
     }
 }

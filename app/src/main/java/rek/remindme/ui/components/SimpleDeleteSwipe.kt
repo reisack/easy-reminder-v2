@@ -12,6 +12,7 @@ import androidx.compose.material3.DismissState
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -75,7 +76,7 @@ private fun SwipeIcon(modifier: Modifier) {
     Icon(
         modifier = modifier.padding(8.dp),
         imageVector = Icons.Filled.Delete,
-        tint = Color.White,
+        tint = MaterialTheme.colorScheme.onPrimary,
         contentDescription = stringResource(id = R.string.delete_reminder_desc)
     )
 }
@@ -97,5 +98,9 @@ private fun swipeDismissState(isSwiped: MutableState<Boolean>): DismissState {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun swipeBackgroundColor(dismissState: DismissState): Color {
-    return if (dismissState.dismissDirection == null) Color.Transparent else Color.Red
+    return if (dismissState.dismissDirection == null) {
+        Color.Transparent
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
 }
