@@ -24,6 +24,8 @@ import kotlin.coroutines.EmptyCoroutineContext
 @AndroidEntryPoint
 class AlarmReceiver: BroadcastReceiver() {
 
+    // repository is used only inside the class
+    // but Dagger does not support injection into private fields
     @Inject
     lateinit var repository: ReminderRepository
 
@@ -55,7 +57,7 @@ class AlarmReceiver: BroadcastReceiver() {
                     }
                 }
 
-                setNextReminder(p0, repository)
+                setNextReminder(p0)
             }
         }
     }
@@ -92,7 +94,7 @@ class AlarmReceiver: BroadcastReceiver() {
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private suspend fun setNextReminder(context: Context?, repository: ReminderRepository) {
+    private suspend fun setNextReminder(context: Context?) {
         if (context != null) {
             val nextReminder = repository.getClosestReminderToNotify()
             if (nextReminder != null) {

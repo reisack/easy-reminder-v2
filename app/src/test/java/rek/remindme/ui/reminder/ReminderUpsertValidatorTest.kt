@@ -16,7 +16,7 @@ class TestableReminderUpsertValidator : ReminderUpsertValidator() {
 
 class ReminderUpsertValidatorTest {
 
-    private val validator: TestableReminderUpsertValidator = TestableReminderUpsertValidator()
+    private val _validator: TestableReminderUpsertValidator = TestableReminderUpsertValidator()
 
     init {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
@@ -30,7 +30,7 @@ class ReminderUpsertValidatorTest {
         val hour = 14
         val minute = 36
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
@@ -43,7 +43,7 @@ class ReminderUpsertValidatorTest {
         val hour = 14
         val minute = 36
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
@@ -56,7 +56,7 @@ class ReminderUpsertValidatorTest {
         val hour: Int? = null
         val minute: Int? = null
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         Assert.assertEquals(Consts.Validation.mandatoryFieldsNotFilled, messageRes)
     }
@@ -69,7 +69,7 @@ class ReminderUpsertValidatorTest {
         val hour = 10
         val minute = 59
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         Assert.assertEquals(Consts.Validation.setInPast, messageRes)
     }
@@ -82,7 +82,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 0
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         Assert.assertEquals(Consts.Validation.setInPast, messageRes)
     }
@@ -95,7 +95,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 1
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         // No error
         Assert.assertEquals(0, messageRes)
@@ -109,7 +109,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 1
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         // No error
         Assert.assertEquals(0, messageRes)
@@ -123,7 +123,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 1
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         // No error
         Assert.assertEquals(Consts.Validation.titleMaxCharactersReached, messageRes)
@@ -140,7 +140,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 1
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         // No error
         Assert.assertEquals(0, messageRes)
@@ -157,7 +157,7 @@ class ReminderUpsertValidatorTest {
         val hour = 11
         val minute = 1
 
-        val messageRes = validator.validate(title, description, date, hour, minute)
+        val messageRes = _validator.validate(title, description, date, hour, minute)
 
         // No error
         Assert.assertEquals(Consts.Validation.descMaxCharactersReached, messageRes)

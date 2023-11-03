@@ -25,32 +25,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReminderListViewModel @Inject constructor(
-    private val reminderRepository: ReminderRepository
+    private val _reminderRepository: ReminderRepository
 ) : ViewModel() {
 
     private val _snackbarMessageRes: MutableStateFlow<Int?> = MutableStateFlow(null)
     val snackbarMessageRes: StateFlow<Int?> = _snackbarMessageRes.asStateFlow()
 
     private val _canDeleteNotified: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val canDeleteNotified: StateFlow<Boolean> = _canDeleteNotified.asStateFlow()
+    private val _canDeleteNotifiedState: StateFlow<Boolean> = _canDeleteNotified.asStateFlow()
 
-    val uiState: StateFlow<ReminderUiState> = reminderRepository
+    val uiState: StateFlow<ReminderUiState> = _reminderRepository
         .reminders.map<List<Reminder>, ReminderUiState>(::Success)
         .catch { emit(Error(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun clearNotified() {
         viewModelScope.launch {
-            reminderRepository.deleteNotified()
+            _reminderRepository.deleteNotified()
             _snackbarMessageRes.update { R.string.notified_reminders_cleared }
         }
     }
 
     fun canClearNotified(alertDialogOpened: MutableState<Boolean>) {
         viewModelScope.launch {
-            _canDeleteNotified.update { reminderRepository.canDeleteNotified() }
+            _canDeleteNotified.update { _reminderRepository.canDeleteNotified() }
 
-            if (!canDeleteNotified.value) {
+            if (!_canDeleteNotifiedState.value) {
                 _snackbarMessageRes.update { R.string.no_notified_reminders }
             }
             else {
@@ -61,7 +61,7 @@ class ReminderListViewModel @Inject constructor(
 
     fun delete(id: Int) {
         viewModelScope.launch {
-            reminderRepository.deleteById(id)
+            _reminderRepository.deleteById(id)
             _snackbarMessageRes.update { R.string.reminder_deleted }
         }
     }
@@ -72,7 +72,7 @@ class ReminderListViewModel @Inject constructor(
 
     fun setNextReminder(context: Context) {
         viewModelScope.launch {
-            val reminder = reminderRepository.getClosestReminderToNotify()
+            val reminder = _reminderRepository.getClosestReminderToNotify()
             if (reminder != null) {
                 ReminderScheduler.setNextReminder(context, reminder.unixTimestamp)
             }

@@ -24,17 +24,17 @@ class ReminderListScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ReminderListScreenContent(items = fakeData, onReminderClick = {}, viewModel = ReminderListViewModel(FakeReminderRepository()))
+            ReminderListScreenContent(items = _fakeData, onReminderClick = {}, viewModel = ReminderListViewModel(FakeReminderRepository()))
         }
     }
 
     @Test
     fun firstItem_exists() {
-        composeTestRule.onNodeWithText(fakeData.first().title, substring = true).assertExists().performClick()
+        composeTestRule.onNodeWithText(_fakeData.first().title, substring = true).assertExists().performClick()
     }
 }
 
-private val fakeData = listOf(
+private val _fakeData = listOf(
     Reminder(title = "Title 1", description = "Hello 1", unixTimestamp = 1697808658, notified = false),
     Reminder(title = "Title 2", description = "Hello 2", unixTimestamp = 1697808658, notified = false),
     Reminder(title = "Title 3", description = "Hello 3", unixTimestamp = 1697808658, notified = false)

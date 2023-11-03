@@ -32,7 +32,7 @@ data class ReminderEditUiState(
 
 @HiltViewModel
 class ReminderUpsertViewModel @Inject constructor(
-    private val reminderRepository: ReminderRepository,
+    private val _reminderRepository: ReminderRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -44,12 +44,12 @@ class ReminderUpsertViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ReminderEditUiState())
     val uiState: StateFlow<ReminderEditUiState> = _uiState.asStateFlow()
 
-    private val validator: ReminderUpsertValidator = ReminderUpsertValidator()
+    private val _validator: ReminderUpsertValidator = ReminderUpsertValidator()
 
     init {
         if (_reminderId != null) {
             viewModelScope.launch {
-                val reminder = reminderRepository.getById(_reminderId)
+                val reminder = _reminderRepository.getById(_reminderId)
                 if (reminder != null) {
                     _uiState.update {
                         it.copy(
@@ -105,7 +105,7 @@ class ReminderUpsertViewModel @Inject constructor(
     fun delete() {
         viewModelScope.launch {
             if (_reminderId != null) {
-                reminderRepository.deleteById(_reminderId)
+                _reminderRepository.deleteById(_reminderId)
             }
 
             _uiState.update {
@@ -116,7 +116,7 @@ class ReminderUpsertViewModel @Inject constructor(
 
     fun save() {
 
-        val messageRes: Int = validator.validate(
+        val messageRes: Int = _validator.validate(
             uiState.value.title,
             uiState.value.description,
             uiState.value.unixTimestampDate,
@@ -144,7 +144,7 @@ class ReminderUpsertViewModel @Inject constructor(
                 uiState.value.minute!!
             )
 
-            reminderRepository.upsert(
+            _reminderRepository.upsert(
                 _reminderId,
                 uiState.value.title,
                 uiState.value.description,
@@ -166,7 +166,7 @@ class ReminderUpsertViewModel @Inject constructor(
 
     fun setNextReminder(context: Context) {
         viewModelScope.launch {
-            val reminder = reminderRepository.getClosestReminderToNotify()
+            val reminder = _reminderRepository.getClosestReminderToNotify()
             if (reminder != null) {
                 ReminderScheduler.setNextReminder(context, reminder.unixTimestamp)
             }

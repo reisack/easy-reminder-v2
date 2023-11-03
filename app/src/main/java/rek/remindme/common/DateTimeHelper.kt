@@ -14,20 +14,20 @@ open class DateTimeHelper protected constructor() {
     companion object {
 
         @Volatile
-        private var internalInstance: DateTimeHelper? = null
+        private var _instance: DateTimeHelper? = null
 
         val instance: DateTimeHelper
             get() = getInternalInstance()
 
         private fun getInternalInstance(): DateTimeHelper {
-            if (internalInstance == null) {
+            if (_instance == null) {
                 synchronized(this) {
-                    if (internalInstance == null) {
-                        internalInstance = DateTimeHelper()
+                    if (_instance == null) {
+                        _instance = DateTimeHelper()
                     }
                 }
             }
-            return internalInstance!!
+            return _instance!!
         }
     }
 

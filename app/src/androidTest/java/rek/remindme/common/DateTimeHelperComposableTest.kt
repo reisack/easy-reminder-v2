@@ -21,15 +21,15 @@ class TestableDateTimeHelper : DateTimeHelper() {
 @RunWith(AndroidJUnit4::class)
 class DateTimeHelperComposableTest {
 
-    private val dateTimeHelper: TestableDateTimeHelper = TestableDateTimeHelper()
-    private lateinit var lang: String
+    private val _dateTimeHelper: TestableDateTimeHelper = TestableDateTimeHelper()
+    private lateinit var _lang: String
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Before
     fun setup() {
-        lang = Locale.getDefault().language
+        _lang = Locale.getDefault().language
     }
 
     @Test
@@ -83,14 +83,14 @@ class DateTimeHelperComposableTest {
     private fun testRemainingOrPastTime(unixTimestamp: Long, displayedTime: String, displayedTimeInFr: String) {
         composeTestRule.setContent {
             Text(
-                text = dateTimeHelper.getRemainingOrPastTime(
+                text = _dateTimeHelper.getRemainingOrPastTime(
                     unixTimestamp = unixTimestamp
                 )
             )
         }
 
         composeTestRule.onNodeWithText(
-            text = when (lang) {
+            text = when (_lang) {
                 "fr" -> displayedTimeInFr
                 else -> displayedTime
             }

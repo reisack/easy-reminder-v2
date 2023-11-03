@@ -27,58 +27,58 @@ class DefaultReminderRepositoryTest {
 
 private class FakeReminderDao : ReminderDao {
 
-    private val data = mutableListOf<Reminder>()
-    private var index: Int = 0
+    private val _data = mutableListOf<Reminder>()
+    private var _index: Int = 0
 
     override fun getReminders(): Flow<List<Reminder>> = flow {
-        emit(data)
+        emit(_data)
     }
 
     override suspend fun getById(id: Int): Reminder? {
-        return data.find { reminder -> reminder.uid == id }
+        return _data.find { reminder -> reminder.uid == id }
     }
 
     override suspend fun upsert(item: Reminder) {
-        val reminder = data.find { reminder -> reminder.uid == item.uid }
+        val reminder = _data.find { reminder -> reminder.uid == item.uid }
         if (reminder != null) {
-            val index = data.indexOf(reminder)
-            data.removeAt(index)
-            data.add(index, item)
+            val index = _data.indexOf(reminder)
+            _data.removeAt(index)
+            _data.add(index, item)
         }
         else {
-            data.add(index++, item)
+            _data.add(_index++, item)
         }
     }
 
     override suspend fun deleteById(id: Int) {
-        val reminder = data.find { reminder -> reminder.uid == id }
-        data.remove(reminder)
+        val reminder = _data.find { reminder -> reminder.uid == id }
+        _data.remove(reminder)
     }
 
     override suspend fun deleteNotified() {
-        data.removeAll { reminder -> reminder.notified }
+        _data.removeAll { reminder -> reminder.notified }
     }
 
     override suspend fun canDeleteNotified(): Boolean {
-        return data.any { reminder -> reminder.notified }
+        return _data.any { reminder -> reminder.notified }
     }
 
     override suspend fun getClosestReminderToNotify(): Reminder? {
-        return data.filter { reminder -> !reminder.notified }.minBy { reminder -> reminder.unixTimestamp }
+        return _data.filter { reminder -> !reminder.notified }.minBy { reminder -> reminder.unixTimestamp }
     }
 
     override suspend fun getRemindersToNotify(): List<Reminder> {
-        return data.filter { reminder -> !reminder.notified }
+        return _data.filter { reminder -> !reminder.notified }
     }
 
     override suspend fun updateNotifiedById(id: Int) {
-        val reminder = data.find { reminder -> reminder.uid == id }
+        val reminder = _data.find { reminder -> reminder.uid == id }
         if (reminder != null) {
             val newReminder = reminder.copy(notified = true)
 
-            val index = data.indexOf(reminder)
-            data.removeAt(index)
-            data.add(index, newReminder)
+            val index = _data.indexOf(reminder)
+            _data.removeAt(index)
+            _data.add(index, newReminder)
         }
     }
 }

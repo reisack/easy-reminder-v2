@@ -20,11 +20,11 @@ interface ReminderRepository {
 }
 
 class DefaultReminderRepository @Inject constructor(
-    private val reminderDao: ReminderDao
+    private val _reminderDao: ReminderDao
 ) : ReminderRepository {
 
     override val reminders: Flow<List<Reminder>> =
-        reminderDao.getReminders().map {
+        _reminderDao.getReminders().map {
             items -> items.map {
                 Reminder(
                     uid = it.uid,
@@ -43,7 +43,7 @@ class DefaultReminderRepository @Inject constructor(
         unixTimestamp: Long,
         notified: Boolean
     ) {
-        reminderDao.upsert(Reminder(
+        _reminderDao.upsert(Reminder(
             uid = id ?: 0,
             title = title,
             description = description,
@@ -53,30 +53,30 @@ class DefaultReminderRepository @Inject constructor(
     }
 
     override suspend fun getById(id: Int): Reminder? {
-        return reminderDao.getById(id)
+        return _reminderDao.getById(id)
     }
 
     override suspend fun deleteById(id: Int) {
-        reminderDao.deleteById(id)
+        _reminderDao.deleteById(id)
     }
 
     override suspend fun deleteNotified() {
-        reminderDao.deleteNotified()
+        _reminderDao.deleteNotified()
     }
 
     override suspend fun canDeleteNotified(): Boolean {
-        return reminderDao.canDeleteNotified()
+        return _reminderDao.canDeleteNotified()
     }
 
     override suspend fun getClosestReminderToNotify(): Reminder? {
-        return reminderDao.getClosestReminderToNotify()
+        return _reminderDao.getClosestReminderToNotify()
     }
 
     override suspend fun getRemindersToNotify(): List<Reminder> {
-        return reminderDao.getRemindersToNotify()
+        return _reminderDao.getRemindersToNotify()
     }
 
     override suspend fun updateNotifiedById(id: Int) {
-        reminderDao.updateNotifiedById(id)
+        _reminderDao.updateNotifiedById(id)
     }
 }
