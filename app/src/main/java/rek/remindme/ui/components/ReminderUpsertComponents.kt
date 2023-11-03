@@ -5,6 +5,8 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -81,6 +83,7 @@ internal fun ReminderDateField(
 
     if (datePickerDialogOpened.value) {
         DatePickerDialog(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             onDismissRequest = {
                 datePickerDialogOpened.value = false
             },

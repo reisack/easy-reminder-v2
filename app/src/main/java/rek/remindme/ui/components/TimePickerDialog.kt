@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
@@ -73,7 +75,7 @@ fun TimePickerDialog(
     // TimePicker does not provide a default TimePickerDialog, so we use our own PickerDialog:
     // https://issuetracker.google.com/issues/288311426
     PickerDialog(
-        modifier = modifier,
+        modifier = modifier.verticalScroll(rememberScrollState()),
         onDismissRequest = onCancel,
         title = { Text(text = stringResource(R.string.select_time_label)) },
         buttons = {
