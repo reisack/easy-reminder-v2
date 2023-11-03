@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
 import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
+import rek.remindme.ui.components.EmptyReminderList
 import rek.remindme.ui.components.NotificationPermission
 import rek.remindme.ui.components.ReminderCard
 import rek.remindme.ui.components.ReminderListSnackbarMessage
@@ -112,13 +113,18 @@ internal fun ReminderListScreenContent(
     onReminderClick: (Int) -> Unit,
     viewModel: ReminderListViewModel
 ) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-        items.forEach { reminder ->
-            SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
-                ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
+    if(!items.any()) {
+        EmptyReminderList()
+    }
+    else {
+        Column(
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+        ) {
+            items.forEach { reminder ->
+                SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
+                    ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
+                }
             }
         }
     }

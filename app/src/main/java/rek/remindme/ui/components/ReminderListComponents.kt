@@ -2,7 +2,12 @@ package rek.remindme.ui.components
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -24,7 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import rek.remindme.R
 import rek.remindme.ui.theme.MyApplicationTheme
 
@@ -106,6 +114,26 @@ internal fun ReminderListTopAppBar(
     )
 }
 
+@Composable
+internal fun EmptyReminderList() {
+    Column(verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Row {
+            Text(
+                textAlign = TextAlign.Center,
+                fontSize = 24.sp,
+                letterSpacing = 2.sp,
+                lineHeight = 32.sp,
+                text = stringResource(id = R.string.empty_reminder_list_message)
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun ReminderListTopAppBarPreview() {
@@ -114,5 +142,13 @@ private fun ReminderListTopAppBarPreview() {
             alertDialogOpened = remember { mutableStateOf(false) },
             canClearNotified = {}
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyReminderListPreview() {
+    MyApplicationTheme {
+        EmptyReminderList()
     }
 }
