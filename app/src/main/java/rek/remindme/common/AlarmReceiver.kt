@@ -45,7 +45,7 @@ class AlarmReceiver: BroadcastReceiver() {
                                 .setContentIntent(getPendingIntent(p0))
                                 .setAutoCancel(true)
                                 .setTicker("${reminder.title} ${reminder.description}")
-                                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                .setSmallIcon(R.drawable.ic_notification)
                                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                                 .build()
 
