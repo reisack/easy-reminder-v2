@@ -16,6 +16,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -128,6 +129,7 @@ internal fun EmptyReminderList() {
                 fontSize = 24.sp,
                 letterSpacing = 2.sp,
                 lineHeight = 32.sp,
+                color = MaterialTheme.colorScheme.outline,
                 text = stringResource(id = R.string.empty_reminder_list_message)
             )
         }

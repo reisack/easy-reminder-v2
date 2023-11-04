@@ -13,8 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -84,7 +82,7 @@ private fun NotifiedReminderCardComponent(
 ) {
     Card(
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, Color.Gray),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp)
@@ -97,30 +95,30 @@ private fun NotifiedReminderCardComponent(
                 Text(
                     text = DateTimeHelper.instance.getReadableDate(reminder.unixTimestamp),
                     modifier = Modifier.weight(1f),
-                    fontStyle = FontStyle.Italic
+                    color = MaterialTheme.colorScheme.outline
                 )
                 Text(
                     text = DateTimeHelper.instance.getReadableTime(reminder.unixTimestamp),
-                    fontStyle = FontStyle.Italic
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
             Row {
                 Text(
                     text = DateTimeHelper.instance.getRemainingOrPastTime(reminder.unixTimestamp),
-                    fontStyle = FontStyle.Italic
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
             Row {
                 Text(
                     text = reminder.title,
                     fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Italic
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
             Row {
                 Text(
                     text = ReminderListHelper.formatDescription(reminder.description),
-                    fontStyle = FontStyle.Italic
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
         }
