@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,18 +27,10 @@ internal fun ReminderCard(
     reminder: Reminder,
     onReminderClick: (Int) -> Unit
 ) {
-    if (!reminder.notified) {
-        ReminderCardComponent(
-            reminder = reminder,
-            onReminderClick = onReminderClick
-        )
-    }
-    else {
-        NotifiedReminderCardComponent(
-            reminder = reminder,
-            onReminderClick = onReminderClick
-        )
-    }
+    ReminderCardComponent(
+        reminder = reminder,
+        onReminderClick = onReminderClick
+    )
 }
 
 @Composable
@@ -45,82 +38,87 @@ private fun ReminderCardComponent(
     reminder: Reminder,
     onReminderClick: (Int) -> Unit
 ) {
-    Card(
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .clickable { onReminderClick(reminder.uid) }
+    ReminderCardContainer(
+        reminder = reminder,
+        onReminderClick = onReminderClick
     ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = DateTimeHelper.instance.getReadableDate(reminder.unixTimestamp),
-                    modifier = Modifier.weight(1f)
-                )
-                Text(text = DateTimeHelper.instance.getReadableTime(reminder.unixTimestamp))
-            }
-            Row {
-                Text(
-                    text = DateTimeHelper.instance.getRemainingOrPastTime(reminder.unixTimestamp),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            Row { Text(text = reminder.title, fontWeight = FontWeight.Bold) }
-            Row { Text(text = ReminderListHelper.formatDescription(reminder.description)) }
-        }
+        ReminderCardContent(reminder = reminder)
     }
 }
 
 @Composable
-private fun NotifiedReminderCardComponent(
+private fun ReminderCardContainer(
     reminder: Reminder,
-    onReminderClick: (Int) -> Unit
+    onReminderClick: (Int) -> Unit,
+    content: @Composable (ColumnScope.() -> Unit)
 ) {
+    val colorBorder = if (reminder.notified) {
+        MaterialTheme.colorScheme.outline
+    }
+    else {
+        MaterialTheme.colorScheme.primary
+    }
+
     Card(
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, colorBorder),
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp)
-            .clickable { onReminderClick(reminder.uid) }
-    ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = DateTimeHelper.instance.getReadableDate(reminder.unixTimestamp),
-                    modifier = Modifier.weight(1f),
-                    color = MaterialTheme.colorScheme.outline
-                )
-                Text(
-                    text = DateTimeHelper.instance.getReadableTime(reminder.unixTimestamp),
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
-            Row {
-                Text(
-                    text = DateTimeHelper.instance.getRemainingOrPastTime(reminder.unixTimestamp),
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
-            Row {
-                Text(
-                    text = reminder.title,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
-            Row {
-                Text(
-                    text = ReminderListHelper.formatDescription(reminder.description),
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
+            .clickable { onReminderClick(reminder.uid) },
+        content = content
+    )
+}
+
+@Composable
+private fun ReminderCardContent(reminder: Reminder) {
+
+    val textColor = if (reminder.notified) {
+        MaterialTheme.colorScheme.outline
+    }
+    else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    val remainingTimeTextColor = if (reminder.notified) {
+        MaterialTheme.colorScheme.outline
+    }
+    else {
+        MaterialTheme.colorScheme.primary
+    }
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = DateTimeHelper.instance.getReadableDate(reminder.unixTimestamp),
+                modifier = Modifier.weight(1f),
+                color = textColor
+            )
+            Text(
+                text = DateTimeHelper.instance.getReadableTime(reminder.unixTimestamp),
+                color = textColor
+            )
+        }
+        Row {
+            Text(
+                text = DateTimeHelper.instance.getRemainingOrPastTime(reminder.unixTimestamp),
+                color = remainingTimeTextColor
+            )
+        }
+        Row {
+            Text(
+                text = reminder.title,
+                fontWeight = FontWeight.Bold,
+                color = textColor
+            )
+        }
+        Row {
+            Text(
+                text = ReminderListHelper.formatDescription(reminder.description),
+                color = textColor
+            )
         }
     }
 }
