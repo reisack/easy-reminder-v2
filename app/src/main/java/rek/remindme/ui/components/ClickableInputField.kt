@@ -20,12 +20,13 @@ import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
 internal fun ClickableInputField(
+    modifier: Modifier = Modifier,
     dialogOpened: MutableState<Boolean>,
     @StringRes placeholderRes: Int,
     getValue: () -> String
 ) {
     TextField(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { dialogOpened.value = true },
         placeholder = { Text(text = "${stringResource(placeholderRes)} *") },

@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -117,7 +118,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = "${stringResource(R.string.title_field_title)} *") },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().testTag("inputTitleField")
             )
         }
 
@@ -126,7 +127,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = stringResource(R.string.description_field_title)) },
                 value = reminderEditUiState.description,
                 onValueChange = onDescriptionChanged,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().testTag("inputDescriptionField")
             )
         }
 
@@ -145,7 +146,10 @@ internal fun ReminderUpsertScreenContent(
         }
 
         ReminderUpsertScreenContentRow {
-            Button(modifier = Modifier.fillMaxSize(), onClick = onSave) {
+            Button(
+                modifier = Modifier.fillMaxSize().testTag("saveButton"),
+                onClick = onSave
+            ) {
                 Text(text = stringResource(R.string.save_button_label))
             }
         }

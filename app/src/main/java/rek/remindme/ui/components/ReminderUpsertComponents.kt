@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
@@ -38,6 +39,7 @@ internal fun ReminderTimeField(
     val timePickerDialogOpened = remember { mutableStateOf(false) }
 
     ClickableInputField(
+        modifier = Modifier.testTag("inputTimeField"),
         dialogOpened = timePickerDialogOpened,
         placeholderRes = R.string.time_field_title,
         getValue = { DateTimeHelper.instance.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute) }
@@ -68,6 +70,7 @@ internal fun ReminderDateField(
     val datePickerState = rememberDatePickerState()
 
     ClickableInputField(
+        modifier = Modifier.testTag("inputDateField"),
         dialogOpened = datePickerDialogOpened,
         placeholderRes = R.string.date_field_title,
         getValue = { DateTimeHelper.instance.getReadableDate(reminderEditUiState.unixTimestampDate) }
