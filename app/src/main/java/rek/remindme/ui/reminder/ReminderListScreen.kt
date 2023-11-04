@@ -22,11 +22,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.components.EmptyReminderList
@@ -66,6 +68,7 @@ fun ReminderListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
+                modifier = Modifier.testTag(Consts.TestTag.ADD_REMINDER_BUTTON),
                 onClick = onNewReminder,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {

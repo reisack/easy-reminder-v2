@@ -29,12 +29,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
@@ -125,6 +127,7 @@ internal fun EmptyReminderList() {
     ) {
         Row {
             Text(
+                modifier = Modifier.testTag(Consts.TestTag.EMPTY_REMINDER_LIST_MESSAGE),
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
                 letterSpacing = 2.sp,

@@ -28,4 +28,16 @@ class Consts {
             val descMaxCharactersReached = R.string.description_validation
         }
     }
+
+    class TestTag {
+        companion object {
+            const val EMPTY_REMINDER_LIST_MESSAGE = "emptyReminderListMessage"
+            const val ADD_REMINDER_BUTTON = "addReminderButton"
+            const val INPUT_TIME_FIELD = "inputTimeField"
+            const val INPUT_DATE_FIELD = "inputDateField"
+            const val INPUT_TITLE_FIELD = "inputTitleField"
+            const val INPUT_DESCRIPTION_FIELD = "inputDescriptionField"
+            const val SAVE_BUTTON = "saveButton"
+        }
+    }
 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.ui.components.HandleActions
 import rek.remindme.ui.components.ReminderDateField
 import rek.remindme.ui.components.ReminderTimeField
@@ -118,7 +119,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = "${stringResource(R.string.title_field_title)} *") },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged,
-                modifier = Modifier.fillMaxSize().testTag("inputTitleField")
+                modifier = Modifier.fillMaxSize().testTag(Consts.TestTag.INPUT_TITLE_FIELD)
             )
         }
 
@@ -127,7 +128,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = stringResource(R.string.description_field_title)) },
                 value = reminderEditUiState.description,
                 onValueChange = onDescriptionChanged,
-                modifier = Modifier.fillMaxSize().testTag("inputDescriptionField")
+                modifier = Modifier.fillMaxSize().testTag(Consts.TestTag.INPUT_DESCRIPTION_FIELD)
             )
         }
 
@@ -147,7 +148,7 @@ internal fun ReminderUpsertScreenContent(
 
         ReminderUpsertScreenContentRow {
             Button(
-                modifier = Modifier.fillMaxSize().testTag("saveButton"),
+                modifier = Modifier.fillMaxSize().testTag(Consts.TestTag.SAVE_BUTTON),
                 onClick = onSave
             ) {
                 Text(text = stringResource(R.string.save_button_label))

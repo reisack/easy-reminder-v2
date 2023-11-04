@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.common.DateTimeHelper
 import rek.remindme.ui.reminder.ReminderEditUiState
 import rek.remindme.ui.theme.MyApplicationTheme
@@ -39,7 +40,7 @@ internal fun ReminderTimeField(
     val timePickerDialogOpened = remember { mutableStateOf(false) }
 
     ClickableInputField(
-        modifier = Modifier.testTag("inputTimeField"),
+        modifier = Modifier.testTag(Consts.TestTag.INPUT_TIME_FIELD),
         dialogOpened = timePickerDialogOpened,
         placeholderRes = R.string.time_field_title,
         getValue = { DateTimeHelper.instance.getReadableTime(reminderEditUiState.hour, reminderEditUiState.minute) }
@@ -70,7 +71,7 @@ internal fun ReminderDateField(
     val datePickerState = rememberDatePickerState()
 
     ClickableInputField(
-        modifier = Modifier.testTag("inputDateField"),
+        modifier = Modifier.testTag(Consts.TestTag.INPUT_DATE_FIELD),
         dialogOpened = datePickerDialogOpened,
         placeholderRes = R.string.date_field_title,
         getValue = { DateTimeHelper.instance.getReadableDate(reminderEditUiState.unixTimestampDate) }
