@@ -1,7 +1,6 @@
 package rek.remindme.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -9,29 +8,35 @@ import org.junit.Test
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.data.local.database.ReminderDao
 
-/**
- * Unit tests for [DefaultReminderRepository].
- */
 class DefaultReminderRepositoryTest {
 
     @Test
-    fun reminders_newItemSaved_itemIsReturned() = runTest {
+    fun reminderRepository_upsert_ExistingKeepSameId() = runTest {
         val repository = DefaultReminderRepository(FakeReminderDao())
 
-        repository.upsert(0,"title 1", "desc", System.currentTimeMillis(), false)
+        repository.upsert(3,"title 1", "desc", System.currentTimeMillis(), false)
 
-        assertEquals(repository.reminders.first().size, 1)
+        val updatedReminder = repository.getById(3)
+        assertEquals(3, updatedReminder!!.uid)
     }
 
+    @Test
+    fun reminderRepository_upsert_newHasIdZeroOnDao() = runTest {
+        val repository = DefaultReminderRepository(FakeReminderDao())
+
+        repository.upsert(null,"title 1", "desc", System.currentTimeMillis(), false)
+
+        val updatedReminder = repository.getById(0)
+        assertEquals(0, updatedReminder!!.uid)
+    }
 }
 
 private class FakeReminderDao : ReminderDao {
 
     private val _data = mutableListOf<Reminder>()
-    private var _index: Int = 0
 
     override fun getReminders(): Flow<List<Reminder>> = flow {
-        emit(_data)
+        throw NotImplementedError()
     }
 
     override suspend fun getById(id: Int): Reminder? {
@@ -39,46 +44,30 @@ private class FakeReminderDao : ReminderDao {
     }
 
     override suspend fun upsert(item: Reminder) {
-        val reminder = _data.find { reminder -> reminder.uid == item.uid }
-        if (reminder != null) {
-            val index = _data.indexOf(reminder)
-            _data.removeAt(index)
-            _data.add(index, item)
-        }
-        else {
-            _data.add(_index++, item)
-        }
+        _data.add(item)
     }
 
     override suspend fun deleteById(id: Int) {
-        val reminder = _data.find { reminder -> reminder.uid == id }
-        _data.remove(reminder)
+        throw NotImplementedError()
     }
 
     override suspend fun deleteNotified() {
-        _data.removeAll { reminder -> reminder.notified }
+        throw NotImplementedError()
     }
 
     override suspend fun canDeleteNotified(): Boolean {
-        return _data.any { reminder -> reminder.notified }
+        throw NotImplementedError()
     }
 
     override suspend fun getClosestReminderToNotify(): Reminder? {
-        return _data.filter { reminder -> !reminder.notified }.minBy { reminder -> reminder.unixTimestamp }
+        throw NotImplementedError()
     }
 
     override suspend fun getRemindersToNotify(): List<Reminder> {
-        return _data.filter { reminder -> !reminder.notified }
+        throw NotImplementedError()
     }
 
     override suspend fun updateNotifiedById(id: Int) {
-        val reminder = _data.find { reminder -> reminder.uid == id }
-        if (reminder != null) {
-            val newReminder = reminder.copy(notified = true)
-
-            val index = _data.indexOf(reminder)
-            _data.removeAt(index)
-            _data.add(index, newReminder)
-        }
+        throw NotImplementedError()
     }
 }

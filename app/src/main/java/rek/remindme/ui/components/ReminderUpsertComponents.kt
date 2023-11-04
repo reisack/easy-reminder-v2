@@ -1,10 +1,6 @@
 package rek.remindme.ui.components
 
 import android.content.Context
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -16,16 +12,12 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -118,28 +110,6 @@ internal fun ReminderDateField(
 }
 
 @Composable
-private fun ClickableInputField(
-    dialogOpened: MutableState<Boolean>,
-    @StringRes placeholderRes: Int,
-    getValue: () -> String
-) {
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { dialogOpened.value = true },
-        placeholder = { Text(text = "${stringResource(placeholderRes)} *") },
-        value = getValue(),
-        onValueChange = {},
-        enabled = false,
-        colors = TextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.onBackground,
-            disabledContainerColor = MaterialTheme.colorScheme.background,
-            disabledPlaceholderColor = MaterialTheme.colorScheme.onBackground
-        )
-    )
-}
-
-@Composable
 internal fun HandleActions(
     uiState: ReminderEditUiState,
     onReminderSaved: (Int) -> Unit,
@@ -216,30 +186,6 @@ private fun ReminderUpsertTopAppBarPreview() {
             uiState = ReminderEditUiState(),
             onBack = {},
             onDelete = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ClickableInputFieldPreview() {
-    MyApplicationTheme {
-        ClickableInputField(
-            dialogOpened = remember { mutableStateOf(false) },
-            placeholderRes = R.string.select_time_label,
-            getValue = { "" }
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-private fun ClickableInputFieldDarkPreview() {
-    MyApplicationTheme {
-        ClickableInputField(
-            dialogOpened = remember { mutableStateOf(false) },
-            placeholderRes = R.string.select_time_label,
-            getValue = { "" }
         )
     }
 }
