@@ -23,7 +23,7 @@ interface ReminderDao {
         SELECT * FROM
         (
            SELECT *
-           FROM Reminder 
+           FROM reminder 
            WHERE unixTimestamp >= strftime('%s','now') * 1000
            ORDER BY unixTimestamp ASC, Title ASC
         ) AS T1
@@ -31,7 +31,7 @@ interface ReminderDao {
         SELECT * FROM
         (
            SELECT *
-           FROM Reminder 
+           FROM reminder 
            WHERE unixTimestamp < strftime('%s','now') * 1000
            ORDER BY unixTimestamp DESC, Title ASC
         ) AS T2
@@ -53,12 +53,12 @@ interface ReminderDao {
     @Query("SELECT COUNT(1) > 0 FROM reminder WHERE unixTimestamp < strftime('%s','now') * 1000")
     suspend fun canDeleteNotified(): Boolean
 
-    @Query("SELECT * FROM Reminder WHERE unixTimestamp >= strftime('%s','now') * 1000 ORDER BY unixTimestamp LIMIT 1")
+    @Query("SELECT * FROM reminder WHERE unixTimestamp >= strftime('%s','now') * 1000 ORDER BY unixTimestamp LIMIT 1")
     suspend fun getClosestReminderToNotify(): Reminder?
 
-    @Query("SELECT * FROM Reminder WHERE unixTimestamp <= strftime('%s','now') * 1000 AND notified = 0 ORDER BY unixTimestamp, title")
+    @Query("SELECT * FROM reminder WHERE unixTimestamp <= strftime('%s','now') * 1000 AND notified = 0 ORDER BY unixTimestamp, title")
     suspend fun getRemindersToNotify(): List<Reminder>
 
-    @Query("UPDATE Reminder SET notified = 1 WHERE uid = :id")
+    @Query("UPDATE reminder SET notified = 1 WHERE uid = :id")
     suspend fun updateNotifiedById(id: Int)
 }
