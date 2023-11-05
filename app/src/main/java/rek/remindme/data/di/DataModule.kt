@@ -24,8 +24,10 @@ interface DataModule {
 }
 
 class FakeReminderRepository @Inject constructor() : ReminderRepository {
-    private val _fakeReminders = mutableListOf<Reminder>()
-    private var counterId = 0
+    private val _fakeReminders = mutableListOf(
+        Reminder(1, "notified reminder", "", 1699204829000, true)
+    )
+    private var counterId = 1
 
     override var reminders: Flow<List<Reminder>> = flowOf(_fakeReminders)
 

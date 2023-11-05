@@ -35,6 +35,8 @@ class CompleteTest {
 
     @Test
     fun e2e() {
+        checkReminderListIsNotEmpty()
+        checkNotifiedReminderToDelete()
         checkEmptyReminderList()
         checkNoNotifiedReminderToDelete()
         checkCreateReminderWithValidInformation()
@@ -46,10 +48,32 @@ class CompleteTest {
         checkEmptyReminderList()
     }
 
+    private fun checkReminderListIsNotEmpty() {
+        // No reminder yet, we have a message in the middle of the screen
+        composeTestRule.onNodeWithTag(Consts.TestTag.EMPTY_REMINDER_LIST_MESSAGE)
+            .assertDoesNotExist()
+    }
+
     private fun checkEmptyReminderList() {
         // No reminder yet, we have a message in the middle of the screen
         composeTestRule.onNodeWithTag(Consts.TestTag.EMPTY_REMINDER_LIST_MESSAGE)
             .assertExists("${Consts.TestTag.EMPTY_REMINDER_LIST_MESSAGE} should exists")
+    }
+
+    private fun checkNotifiedReminderToDelete() {
+        // Click on the more vert button
+        composeTestRule.onNodeWithTag(Consts.TestTag.MORE_VERT_BUTTON)
+            .assertExists("${Consts.TestTag.MORE_VERT_BUTTON} should exists")
+            .performClick()
+
+        // Click on delete notified reminders menu item
+        composeTestRule.onNodeWithTag(Consts.TestTag.CLEAR_NOTIFIED_REMINDERS_ITEM)
+            .assertExists("${Consts.TestTag.CLEAR_NOTIFIED_REMINDERS_ITEM} should exists")
+            .performClick()
+
+        composeTestRule.onNodeWithTag(Consts.TestTag.CONFIRM_BUTTON)
+            .assertExists("${Consts.TestTag.CONFIRM_BUTTON} should exists")
+            .performClick()
     }
 
     private fun checkNoNotifiedReminderToDelete() {
