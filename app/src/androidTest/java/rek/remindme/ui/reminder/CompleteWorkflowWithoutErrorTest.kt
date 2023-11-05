@@ -1,4 +1,4 @@
-package rek.remindme.ui
+package rek.remindme.ui.reminder
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.hasText
@@ -13,10 +13,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import rek.remindme.common.Consts
+import rek.remindme.ui.MainActivity
+import rek.remindme.ui.TestHelper
 import java.util.Locale
 
 @HiltAndroidTest
-class CompleteTest {
+class CompleteWorkflowWithoutErrorTest {
 
     private lateinit var _lang: String
     private lateinit var _testHelper: TestHelper
@@ -34,7 +36,7 @@ class CompleteTest {
     }
 
     @Test
-    fun e2e() {
+    fun completeWorkflowWithoutError() {
         checkReminderListIsNotEmpty()
         checkNotifiedReminderToDelete()
         checkEmptyReminderList()
