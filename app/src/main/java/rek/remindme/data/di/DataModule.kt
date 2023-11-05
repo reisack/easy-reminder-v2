@@ -5,9 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import rek.remindme.data.ReminderRepository
 import rek.remindme.data.DefaultReminderRepository
+import rek.remindme.data.ReminderRepository
 import rek.remindme.data.local.database.Reminder
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,9 +25,10 @@ interface DataModule {
 }
 
 class FakeReminderRepository @Inject constructor() : ReminderRepository {
-    private val _fakeReminders = listOf<Reminder>()
+    private val _fakeReminders = mutableListOf<Reminder>()
+    private var counterId = 0
 
-    override val reminders: Flow<List<Reminder>> = flowOf(_fakeReminders)
+    override var reminders: Flow<List<Reminder>> = flowOf(_fakeReminders.toList())
 
     override suspend fun upsert(
         id: Int?,
@@ -35,7 +37,17 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
         unixTimestamp: Long,
         notified: Boolean
     ) {
-        throw NotImplementedError()
+        if (id == null) {
+            val reminder = Reminder(++counterId, title, description, unixTimestamp, notified)
+            _fakeReminders.add(reminder)
+        }
+        else {
+            val reminder = Reminder(id, title, description, unixTimestamp, notified)
+            _fakeReminders.removeAll { it.uid == id }
+            _fakeReminders.add(reminder)
+        }
+
+        reminders = flow { emit(_fakeReminders.toList()) }
     }
 
     override suspend fun getById(id: Int): Reminder? {
@@ -47,15 +59,20 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     }
 
     override suspend fun deleteNotified() {
-        throw NotImplementedError()
+        _fakeReminders.removeAll { reminder -> reminder.notified }
+        reminders = flow { emit(_fakeReminders.toList()) }
     }
 
     override suspend fun canDeleteNotified(): Boolean {
-        throw NotImplementedError()
+        return _fakeReminders.any { reminder -> reminder.notified }
     }
 
     override suspend fun getClosestReminderToNotify(): Reminder? {
-        throw NotImplementedError()
+        val notNotifiedReminders = _fakeReminders.filter { !it.notified }
+        return if (notNotifiedReminders.any()) {
+            notNotifiedReminders.minBy { it.unixTimestamp }
+        }
+        else null
     }
 
     override suspend fun getRemindersToNotify(): List<Reminder> {

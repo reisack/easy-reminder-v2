@@ -38,6 +38,10 @@ class Consts {
             const val INPUT_TITLE_FIELD = "inputTitleField"
             const val INPUT_DESCRIPTION_FIELD = "inputDescriptionField"
             const val SAVE_BUTTON = "saveButton"
+            const val MORE_VERT_BUTTON = "moreVertButton"
+            const val CLEAR_NOTIFIED_REMINDERS_ITEM = "clearNotifiedRemindersItem"
+            const val CONFIRM_BUTTON = "confirmButton"
+            const val SELECT_INPUT_MODE = "selectInputMode"
         }
     }
 }

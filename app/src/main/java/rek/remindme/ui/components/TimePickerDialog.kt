@@ -46,11 +46,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +89,10 @@ fun TimePickerDialog(
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.cancel_button_label))
             }
-            TextButton(onClick = ::onConfirmClicked) {
+            TextButton(
+                modifier = Modifier.testTag(Consts.TestTag.CONFIRM_BUTTON),
+                onClick = ::onConfirmClicked
+            ) {
                 Text(stringResource(R.string.confirm_button_label))
             }
         },
@@ -109,7 +114,7 @@ private fun DisplayModeToggleButton(
 ) {
     when (displayMode) {
         DisplayMode.Picker -> IconButton(
-            modifier = modifier,
+            modifier = modifier.testTag(Consts.TestTag.SELECT_INPUT_MODE),
             onClick = { onDisplayModeChange(DisplayMode.Input) },
         ) {
             Icon(

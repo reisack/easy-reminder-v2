@@ -84,13 +84,15 @@ internal fun ReminderDateField(
                 datePickerDialogOpened.value = false
             },
             confirmButton = {
-                Button(onClick = {
-                    if (datePickerState.selectedDateMillis != null) {
-                        onDateChanged(datePickerState.selectedDateMillis!!)
+                Button(
+                    modifier = Modifier.testTag(Consts.TestTag.CONFIRM_BUTTON),
+                    onClick = {
+                        if (datePickerState.selectedDateMillis != null) {
+                            onDateChanged(datePickerState.selectedDateMillis!!)
+                        }
+                        datePickerDialogOpened.value = false
                     }
-
-                    datePickerDialogOpened.value = false
-                }) {
+                ) {
                     Text(text = stringResource(R.string.confirm_button_label))
                 }
             },

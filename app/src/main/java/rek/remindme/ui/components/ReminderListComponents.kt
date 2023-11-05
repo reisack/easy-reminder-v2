@@ -85,7 +85,10 @@ internal fun ReminderListTopAppBar(
         actions = {
             val expanded = remember { mutableStateOf(false) }
             Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
-                IconButton(onClick = { expanded.value = !expanded.value }) {
+                IconButton(
+                    modifier = Modifier.testTag(Consts.TestTag.MORE_VERT_BUTTON),
+                    onClick = { expanded.value = !expanded.value }
+                ) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
                         contentDescription = stringResource(R.string.back_desc)
@@ -96,6 +99,7 @@ internal fun ReminderListTopAppBar(
                     onDismissRequest = { expanded.value = false}
                 ) {
                     DropdownMenuItem(
+                        modifier = Modifier.testTag(Consts.TestTag.CLEAR_NOTIFIED_REMINDERS_ITEM),
                         text = { Text(text = stringResource(R.string.clear_notified_reminders)) },
                         onClick = {
                             canClearNotified(alertDialogOpened)
