@@ -52,15 +52,15 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     }
 
     override suspend fun deleteById(id: Int) {
-        throw NotImplementedError()
+        _fakeReminders.removeAll { it.uid == id }
     }
 
     override suspend fun deleteNotified() {
-        _fakeReminders.removeAll { reminder -> reminder.notified }
+        _fakeReminders.removeAll { it.notified }
     }
 
     override suspend fun canDeleteNotified(): Boolean {
-        return _fakeReminders.any { reminder -> reminder.notified }
+        return _fakeReminders.any { it.notified }
     }
 
     override suspend fun getClosestReminderToNotify(): Reminder? {

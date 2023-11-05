@@ -40,7 +40,9 @@ class Consts {
             const val SAVE_BUTTON = "saveButton"
             const val MORE_VERT_BUTTON = "moreVertButton"
             const val CLEAR_NOTIFIED_REMINDERS_ITEM = "clearNotifiedRemindersItem"
+            const val DELETE_REMINDER_BUTTON = "deleteReminderButton"
             const val CONFIRM_BUTTON = "confirmButton"
+            const val CANCEL_BUTTON = "cancelButton"
             const val SELECT_INPUT_MODE = "selectInputMode"
         }
     }

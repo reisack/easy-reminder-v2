@@ -173,7 +173,7 @@ internal fun ReminderUpsertTopAppBar(
         },
         actions = {
             if (uiState.isUpdateMode) {
-                IconButton(onClick = onDelete) {
+                IconButton(modifier = Modifier.testTag(Consts.TestTag.DELETE_REMINDER_BUTTON), onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.delete_reminder_desc)

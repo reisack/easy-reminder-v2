@@ -15,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rek.remindme.R
+import rek.remindme.common.Consts
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
@@ -79,13 +81,13 @@ private fun SimpleAlertDialogComponent(
                     SimpleAlertDialogButton(
                         onClick = onDismiss,
                         textButton = R.string.cancel_button_label,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.testTag(Consts.TestTag.CANCEL_BUTTON).weight(1f)
                     )
 
                     SimpleAlertDialogButton(
                         onClick = onConfirm,
                         textButton = R.string.confirm_button_label,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.testTag(Consts.TestTag.CONFIRM_BUTTON).weight(1f)
                     )
                 }
             }
