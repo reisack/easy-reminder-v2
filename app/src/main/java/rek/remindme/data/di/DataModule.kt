@@ -4,9 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import rek.remindme.data.DefaultReminderRepository
 import rek.remindme.data.ReminderRepository
 import rek.remindme.data.local.database.Reminder
@@ -28,7 +28,19 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
     private val _fakeReminders = mutableListOf<Reminder>()
     private var counterId = 0
 
-    override var reminders: Flow<List<Reminder>> = flowOf(_fakeReminders.toList())
+    override var reminders: Flow<List<Reminder>> = flow {
+        while (true) {
+            val fakes = getFakeReminders()
+            emit(fakes)
+            delay(200)
+        }
+    }
+
+    private suspend fun getFakeReminders(): List<Reminder> {
+        val newList = mutableListOf<Reminder>()
+        _fakeReminders.forEach { newList.add(it) }
+        return newList.toList()
+    }
 
     override suspend fun upsert(
         id: Int?,
@@ -46,8 +58,6 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
             _fakeReminders.removeAll { it.uid == id }
             _fakeReminders.add(reminder)
         }
-
-        reminders = flow { emit(_fakeReminders.toList()) }
     }
 
     override suspend fun getById(id: Int): Reminder? {
@@ -60,7 +70,6 @@ class FakeReminderRepository @Inject constructor() : ReminderRepository {
 
     override suspend fun deleteNotified() {
         _fakeReminders.removeAll { reminder -> reminder.notified }
-        reminders = flow { emit(_fakeReminders.toList()) }
     }
 
     override suspend fun canDeleteNotified(): Boolean {
