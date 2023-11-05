@@ -18,7 +18,7 @@ interface FakeDataModule {
 
     @Singleton
     @Binds
-    abstract fun bindRepository(
+    fun bindRepository(
         fakeRepository: FakeReminderRepository
     ): ReminderRepository
 }
