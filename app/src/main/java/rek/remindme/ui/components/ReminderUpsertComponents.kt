@@ -164,7 +164,7 @@ internal fun ReminderUpsertTopAppBar(
     TopAppBar(
         title = { if (uiState.isUpdateMode) Text(stringResource(R.string.update_reminder_label)) else Text(stringResource(R.string.new_reminder_label)) },
         navigationIcon = {
-            IconButton(onClick = onBack) {
+            IconButton(modifier = Modifier.testTag(Consts.TestTag.BACK_BUTTON), onClick = onBack) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back_desc)

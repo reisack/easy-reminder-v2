@@ -20,7 +20,6 @@ import java.util.Locale
 @HiltAndroidTest
 class CompleteWorkflowWithoutErrorTest {
 
-    private lateinit var _lang: String
     private lateinit var _testHelper: TestHelper
 
     @get:Rule(order = 0)
@@ -31,8 +30,8 @@ class CompleteWorkflowWithoutErrorTest {
 
     @Before
     fun setup() {
-        _lang = Locale.getDefault().language
-        _testHelper = TestHelper(composeTestRule, _lang)
+        val lang = Locale.getDefault().language
+        _testHelper = TestHelper(composeTestRule, lang)
     }
 
     @Test

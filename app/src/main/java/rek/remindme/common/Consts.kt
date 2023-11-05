@@ -43,6 +43,7 @@ class Consts {
             const val DELETE_REMINDER_BUTTON = "deleteReminderButton"
             const val CONFIRM_BUTTON = "confirmButton"
             const val CANCEL_BUTTON = "cancelButton"
+            const val BACK_BUTTON = "backButton"
             const val SELECT_INPUT_MODE = "selectInputMode"
         }
     }

@@ -57,7 +57,7 @@ internal class TestHelper(
     }
 
     @OptIn(ExperimentalTestApi::class)
-    fun performTimeInput(minutesOffset: Int) {
+    fun performTimeInput(minutesOffset: Int = 0) {
 
         val date = Calendar.getInstance()
         date.time = Date()
@@ -80,7 +80,7 @@ internal class TestHelper(
             .DateFormat.is24HourFormat(_composeTestRule.activity.applicationContext)
 
         if (hour > 11 && !is24HourFormat) {
-            _composeTestRule.onNodeWithText("PM", substring = true)
+            _composeTestRule.onNodeWithText("PM", substring = false)
                 .assertExists("PM should exists")
                 .performClick()
 
