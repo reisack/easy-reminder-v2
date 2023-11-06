@@ -7,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
 
 @RunWith(AndroidJUnit4::class)
@@ -21,8 +20,7 @@ class ReminderListScreenTest {
         composeTestRule.setContent {
             ReminderListScreenContent(
                 items = _fakeData,
-                onReminderClick = {},
-                viewModel = ReminderListViewModel(FakeReminderRepository())
+                onReminderClick = {}
             )
         }
 

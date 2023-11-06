@@ -29,7 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import rek.remindme.R
 import rek.remindme.common.Consts
-import rek.remindme.data.di.FakeReminderRepository
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.components.EmptyReminderList
 import rek.remindme.ui.components.NotificationPermission
@@ -38,7 +37,6 @@ import rek.remindme.ui.components.ReminderListSnackbarMessage
 import rek.remindme.ui.components.ReminderListSnackbarMessageOnLoad
 import rek.remindme.ui.components.ReminderListTopAppBar
 import rek.remindme.ui.components.SimpleAlertDialog
-import rek.remindme.ui.components.SimpleDeleteSwipe
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -83,8 +81,7 @@ fun ReminderListScreen(
                 modifier = modifier
                     .consumeWindowInsets(innerPadding)
                     .padding(innerPadding),
-                onReminderClick = onReminderClick,
-                viewModel = viewModel
+                onReminderClick = onReminderClick
             )
         }
 
@@ -113,8 +110,7 @@ fun ReminderListScreen(
 internal fun ReminderListScreenContent(
     items: List<Reminder>,
     modifier: Modifier = Modifier,
-    onReminderClick: (Int) -> Unit,
-    viewModel: ReminderListViewModel
+    onReminderClick: (Int) -> Unit
 ) {
     if(!items.any()) {
         EmptyReminderList()
@@ -125,9 +121,20 @@ internal fun ReminderListScreenContent(
                 .verticalScroll(rememberScrollState())
         ) {
             items.forEach { reminder ->
-                SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
-                    ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
-                }
+                // ReminderCard should have been encapsulated on a SimpleDeleteSwipe, an example below :
+                //
+                // SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
+                //     ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
+                // }
+                //
+                // Unfortunately, tests revealed the SwipeToDismiss material3 component is impossible to use
+                // because swipe is activated to easily when scrolling (in november 2023)
+                // The problem has been reported here by a user : https://issuetracker.google.com/issues/252334353
+                //
+                // SimpleDeleteSwipe is kept in source code, hoping that a future material3 version
+                // will correct the problem.
+                // Anyway, swipe to dismiss is not a key feature.
+                ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
             }
         }
     }
@@ -143,8 +150,7 @@ private fun ReminderListScreenContentPreview() {
                 Reminder(title = "Title 2", description = "Hello\nMultiline", unixTimestamp = 1697808658000, notified = false),
                 Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658000, notified = true)
             ),
-            onReminderClick = {},
-            viewModel = ReminderListViewModel(FakeReminderRepository())
+            onReminderClick = {}
         )
     }
 }
