@@ -1,8 +1,6 @@
 package rek.remindme.ui.reminder
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
@@ -36,16 +34,12 @@ class ValidationErrorsTest {
     @Test
     fun validationErrors() {
         // Click on the + button => Go to reminder creation mode
-        composeTestRule.onNodeWithTag(Consts.TestTag.ADD_REMINDER_BUTTON)
-            .assertExists("${Consts.TestTag.ADD_REMINDER_BUTTON} should exists")
-            .performClick()
+        _testHelper.getNodeWithTag(Consts.TestTag.ADD_REMINDER_BUTTON).performClick()
         trySaveReminder()
         showMandatoryFieldsError()
 
         // Enter a title
-        composeTestRule.onNodeWithTag(Consts.TestTag.INPUT_TITLE_FIELD)
-            .assertExists("${Consts.TestTag.INPUT_TITLE_FIELD} should exists")
-            .performTextInput("Title test 1")
+        _testHelper.getNodeWithTag(Consts.TestTag.INPUT_TITLE_FIELD).performTextInput("Title test 1")
         trySaveReminder()
         showMandatoryFieldsError()
 
@@ -70,9 +64,7 @@ class ValidationErrorsTest {
         _testHelper.assertExactSnackbarMessage("Reminder created", "Rappel créé")
 
         // Edit the reminder
-        composeTestRule.onNodeWithText("Title test 1")
-            .assertExists("Title test 1 should exists")
-            .performClick()
+        _testHelper.getNodeWithText("Title test 1").performClick()
 
         // Enter a time : right now
         _testHelper.performTimeInput()
@@ -80,17 +72,14 @@ class ValidationErrorsTest {
         showPastReminderError()
 
         // Erase title
-        composeTestRule.onNodeWithTag(Consts.TestTag.INPUT_TITLE_FIELD)
-            .performTextReplacement("")
+        _testHelper.getNodeWithTag(Consts.TestTag.INPUT_TITLE_FIELD).performTextReplacement("")
         trySaveReminder()
         showMandatoryFieldsError()
     }
 
     private fun trySaveReminder() {
         // Save the reminder
-        composeTestRule.onNodeWithTag(Consts.TestTag.SAVE_BUTTON)
-            .assertExists("${Consts.TestTag.SAVE_BUTTON} should exists")
-            .performClick()
+        _testHelper.getNodeWithTag(Consts.TestTag.SAVE_BUTTON).performClick()
     }
 
     private fun showMandatoryFieldsError() {

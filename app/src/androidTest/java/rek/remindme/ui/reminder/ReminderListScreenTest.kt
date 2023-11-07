@@ -8,6 +8,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import rek.remindme.data.local.database.Reminder
+import rek.remindme.ui.TestHelper
 
 @RunWith(AndroidJUnit4::class)
 class ReminderListScreenTest {
@@ -24,10 +25,17 @@ class ReminderListScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithText("Title 1", substring = false).assertExists()
-        composeTestRule.onNodeWithText("This is a really long text This is a really long text This is a really long text This is a really lo...", substring = false).assertExists()
-        composeTestRule.onNodeWithText("Hello 2 test", substring = false).assertExists()
-        composeTestRule.onNodeWithText("Title 3", substring = false).assertExists()
+        composeTestRule.onNodeWithText("Title 1", substring = false)
+            .assertExists("Title 1 ${TestHelper.ASSERT_SUFFIX_MESSAGE}")
+
+        composeTestRule.onNodeWithText("This is a really long text This is a really long text This is a really long text This is a really lo...", substring = false)
+            .assertExists("This is a really long text This is a really long... ${TestHelper.ASSERT_SUFFIX_MESSAGE}")
+
+        composeTestRule.onNodeWithText("Hello 2 test", substring = false)
+            .assertExists("Hello 2 test ${TestHelper.ASSERT_SUFFIX_MESSAGE}")
+
+        composeTestRule.onNodeWithText("Title 3", substring = false)
+            .assertExists("Title 3 ${TestHelper.ASSERT_SUFFIX_MESSAGE}")
     }
 }
 

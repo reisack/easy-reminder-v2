@@ -1,6 +1,7 @@
 package rek.remindme.ui
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasTextExactly
@@ -20,6 +21,21 @@ internal class TestHelper(
     private val _composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>,
     private val _lang: String
 ) {
+
+    companion object {
+        const val ASSERT_SUFFIX_MESSAGE = "should exists"
+    }
+
+    fun getNodeWithTag(tag: String): SemanticsNodeInteraction {
+        return _composeTestRule.onNodeWithTag(tag)
+            .assertExists("$tag $ASSERT_SUFFIX_MESSAGE")
+    }
+
+    fun getNodeWithText(text: String): SemanticsNodeInteraction {
+        return _composeTestRule.onNodeWithText(text, substring = false)
+            .assertExists("$text $ASSERT_SUFFIX_MESSAGE")
+    }
+
     @OptIn(ExperimentalTestApi::class)
     fun assertExactSnackbarMessage(message: String, messageFr: String) {
         val snackbarMessage = if (_lang == "fr") messageFr else message
@@ -42,17 +58,20 @@ internal class TestHelper(
         }
 
         _composeTestRule.onNodeWithTag(Consts.TestTag.INPUT_DATE_FIELD)
-            .assertExists("${Consts.TestTag.INPUT_DATE_FIELD} should exists")
+            .assertExists("${Consts.TestTag.INPUT_DATE_FIELD} $ASSERT_SUFFIX_MESSAGE")
             .performClick()
+
         // Finding the input mode for date
         _composeTestRule.onNodeWithContentDescription("input", substring = true)
             .performClick()
+
         // Finally, enter the date
         _composeTestRule.onNodeWithContentDescription("Date", substring = true)
             .performTextReplacement(dateFormat)
+
         // Confirm
         _composeTestRule.onNodeWithTag(Consts.TestTag.CONFIRM_BUTTON)
-            .assertExists("${Consts.TestTag.CONFIRM_BUTTON} should exists")
+            .assertExists("${Consts.TestTag.CONFIRM_BUTTON} $ASSERT_SUFFIX_MESSAGE")
             .performClick()
     }
 
@@ -66,7 +85,7 @@ internal class TestHelper(
         val minute = date.get(Calendar.MINUTE)
 
         _composeTestRule.onNodeWithTag(Consts.TestTag.INPUT_TIME_FIELD)
-            .assertExists("${Consts.TestTag.INPUT_TIME_FIELD} should exists")
+            .assertExists("${Consts.TestTag.INPUT_TIME_FIELD} $ASSERT_SUFFIX_MESSAGE")
             .performClick()
 
         // Finding the input mode for time
@@ -81,7 +100,7 @@ internal class TestHelper(
 
         if (hour > 11 && !is24HourFormat) {
             _composeTestRule.onNodeWithText("PM", substring = false)
-                .assertExists("PM should exists")
+                .assertExists("PM $ASSERT_SUFFIX_MESSAGE")
                 .performClick()
 
             if (hour > 12) inputHour = hour - 12
@@ -91,11 +110,16 @@ internal class TestHelper(
         if (hour == 0 && !is24HourFormat) inputHour = 12
 
         // Enter the hour
-        _composeTestRule.onNodeWithContentDescription("for hour", substring = true).assertExists("hour input should exists")
+        _composeTestRule.onNodeWithContentDescription("for hour", substring = true)
+            .assertExists("hour input $ASSERT_SUFFIX_MESSAGE")
             .performTextReplacement(inputHour.toString())
+
         // Enter the minute
-        _composeTestRule.onNodeWithContentDescription("for minutes", substring = true).assertExists("minute input should exists")
+        _composeTestRule.onNodeWithContentDescription("for minutes", substring = true)
+            .assertExists("minute input $ASSERT_SUFFIX_MESSAGE")
             .performTextReplacement(minute.toString())
+
+        // Confirm
         _composeTestRule.onNodeWithTag(Consts.TestTag.CONFIRM_BUTTON)
             .assertExists("${Consts.TestTag.CONFIRM_BUTTON} should exists")
             .performClick()
