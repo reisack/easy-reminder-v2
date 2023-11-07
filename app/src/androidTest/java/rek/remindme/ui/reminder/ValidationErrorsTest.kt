@@ -4,18 +4,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Before
 import org.junit.Test
 import rek.remindme.common.Consts
 import rek.remindme.ui.MainActivityTest
 
 @HiltAndroidTest
 class ValidationErrorsTest: MainActivityTest() {
-
-    @Before
-    override fun setup() {
-        super.setup()
-    }
 
     @Test
     fun validationErrors() {

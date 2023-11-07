@@ -2,6 +2,7 @@ package rek.remindme.ui
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dagger.hilt.android.testing.HiltAndroidRule
+import org.junit.Before
 import org.junit.Rule
 import java.util.Locale
 
@@ -15,7 +16,8 @@ abstract class MainActivityTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    open fun setup() {
+    @Before
+    fun setup() {
         val lang = Locale.getDefault().language
         testHelper = TestHelper(composeTestRule, lang)
     }

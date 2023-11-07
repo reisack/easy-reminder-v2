@@ -3,18 +3,12 @@ package rek.remindme.ui.reminder
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Before
 import org.junit.Test
 import rek.remindme.common.Consts
 import rek.remindme.ui.MainActivityTest
 
 @HiltAndroidTest
 class CancelOptionsListScreenTest: MainActivityTest() {
-
-    @Before
-    override fun setup() {
-        super.setup()
-    }
 
     @Test
     fun cancelDeleteNotifiedReminders() {
