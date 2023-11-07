@@ -127,8 +127,8 @@ internal fun ReminderListScreenContent(
                 //     ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
                 // }
                 //
-                // Unfortunately, tests revealed the SwipeToDismiss material3 component is impossible to use
-                // because swipe is activated to easily when scrolling (in november 2023)
+                // Unfortunately, tests revealed that the SwipeToDismiss material3 component is impossible to use
+                // because swipe is activated to easily when scrolling (in november 2023).
                 // The problem has been reported here by a user : https://issuetracker.google.com/issues/252334353
                 //
                 // SimpleDeleteSwipe is kept in source code, hoping that a future material3 version
