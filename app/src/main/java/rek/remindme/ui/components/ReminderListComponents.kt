@@ -47,7 +47,7 @@ internal fun ReminderListSnackbarMessageOnLoad(
     if (snackbarMessageRes != 0) {
         val message = stringResource(id = snackbarMessageRes)
         LaunchedEffect(snackbarMessageRes) {
-            snackbarHostState.showSnackbar(message)
+            snackbarHostState.showSnackbar(message = message, withDismissAction = true)
         }
     }
 }
@@ -64,7 +64,7 @@ internal fun ReminderListSnackbarMessage(
     snackbarMessageRes?.let { messageRes ->
         val message = stringResource(id = messageRes)
         LaunchedEffect(message) {
-            snackbarHostState.showSnackbar(message)
+            snackbarHostState.showSnackbar(message = message, withDismissAction = true)
             onSnackbarMessageShow()
 
             if (messageRes == R.string.reminder_deleted) {

@@ -65,8 +65,8 @@ class ValidationErrorsTest: MainActivityTest() {
     private fun showMandatoryFieldsError() {
         // A snackbar message should appears : Mandatory fields are not filled
         testHelper.assertExactSnackbarMessage(
-            "Mandatory fields are not filled",
-            "Les champs obligatoires ne sont pas remplis"
+            "Mandatory fields are not filled in",
+            "Les champs obligatoires ne sont pas renseignés"
         )
     }
 

@@ -148,7 +148,7 @@ internal fun ReminderUpsertSnackbarMessage(
     uiState.snackbarMessageRes?.let { messageRes ->
         val message = stringResource(id = messageRes)
         LaunchedEffect(message) {
-            snackbarHostState.showSnackbar(message)
+            snackbarHostState.showSnackbar(message = message, withDismissAction = true)
             onSnackbarMessageShow()
         }
     }
