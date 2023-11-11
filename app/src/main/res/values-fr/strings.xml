@@ -34,9 +34,9 @@
     <string name="reminder_not_found">Le rappel n\'a pas été trouvé, vous êtes en mode création</string>
     <string name="notified_reminders_cleared">Les anciens rappels ont été supprimés</string>
     <string name="warning_title">Attention</string>
-    <string name="confirm_notified_reminders">Êtes-vous sûr de vouloir supprimer les anciens rappels ?</string>
+    <string name="confirm_notified_reminders">Êtes-vous sûr(e) de vouloir supprimer les anciens rappels ?</string>
     <string name="no_notified_reminders">Il n\'y a pas d\'anciens rappels à supprimer</string>
-    <string name="confirm_delete_reminder">Êtes-vous sûr de vouloir supprimer ce rappel ?</string>
+    <string name="confirm_delete_reminder">Êtes-vous sûr(e) de vouloir supprimer ce rappel ?</string>
     <string name="title_validation">Le titre doit faire moins de 50 caractères</string>
     <string name="description_validation">La description doit faire moins de 200 caractères</string>
     <string name="privacy">Règles de confidentialité</string>

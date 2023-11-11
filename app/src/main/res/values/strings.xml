@@ -12,7 +12,7 @@
     <string name="add_reminder_desc">Add a reminder</string>
     <string name="title_field_title">Title</string>
     <string name="description_field_title">Description</string>
-    <string name="time_field_title">Select Time</string>
+    <string name="time_field_title">Select time</string>
     <string name="date_field_title">Select date</string>
     <string name="confirm_button_label">Confirm</string>
     <string name="cancel_button_label">Cancel</string>
@@ -21,7 +21,7 @@
     <string name="select_picker_mode_desc">Select picker mode</string>
     <string name="back_desc">Back</string>
     <string name="save_button_label">Save</string>
-    <string name="new_reminder_label">New Reminder</string>
+    <string name="new_reminder_label">New reminder</string>
     <string name="update_reminder_label">Update</string>
     <string name="delete_reminder_desc">Delete</string>
     <string name="clear_notified_reminders">Clear notified reminders</string>
