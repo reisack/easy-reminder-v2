@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-@Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -31,8 +30,8 @@ android {
         applicationId = "rek.remindme.v2"
         minSdk = 21
         targetSdk = 34
-        versionCode = 21
-        versionName = "2.0"
+        versionCode = 22
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "rek.remindme.HiltTestRunner"
         vectorDrawables {
