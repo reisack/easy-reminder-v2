@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -95,7 +96,13 @@ private fun SwipeIcon(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun swipeDismissState(isSwiped: MutableState<Boolean>): SwipeToDismissBoxState {
+    // 20% of the screen for swipe threshold
+    val threshold: Float = with(LocalConfiguration.current) {
+        (this.screenWidthDp * 20).dp.value
+    }
+
     return rememberSwipeToDismissBoxState(
+        positionalThreshold = { threshold },
         confirmValueChange = {
             if (it == SwipeToDismissBoxValue.StartToEnd || it == SwipeToDismissBoxValue.EndToStart) {
                 isSwiped.value = true
@@ -109,7 +116,7 @@ private fun swipeDismissState(isSwiped: MutableState<Boolean>): SwipeToDismissBo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun swipeBackgroundColor(dismissState: SwipeToDismissBoxState): Color {
-    return if (dismissState.dismissDirection == null) {
+    return if (dismissState.dismissDirection == SwipeToDismissBoxValue.Settled) {
         Color.Transparent
     } else {
         MaterialTheme.colorScheme.primary

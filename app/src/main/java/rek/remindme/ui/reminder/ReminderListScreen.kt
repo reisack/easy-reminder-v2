@@ -3,7 +3,6 @@ package rek.remindme.ui.reminder
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -37,9 +36,9 @@ import rek.remindme.ui.components.ReminderListSnackbarMessage
 import rek.remindme.ui.components.ReminderListSnackbarMessageOnLoad
 import rek.remindme.ui.components.ReminderListTopAppBar
 import rek.remindme.ui.components.SimpleAlertDialog
+import rek.remindme.ui.components.SimpleDeleteSwipe
 import rek.remindme.ui.theme.MyApplicationTheme
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderListScreen(
     @StringRes snackbarMessageResOnLoad: Int,
@@ -110,7 +109,8 @@ fun ReminderListScreen(
 internal fun ReminderListScreenContent(
     items: List<Reminder>,
     modifier: Modifier = Modifier,
-    onReminderClick: (Int) -> Unit
+    onReminderClick: (Int) -> Unit,
+    viewModel: ReminderListViewModel = hiltViewModel()
 ) {
     if(!items.any()) {
         EmptyReminderList()
@@ -128,13 +128,18 @@ internal fun ReminderListScreenContent(
                 // }
                 //
                 // Unfortunately, tests revealed that the SwipeToDismiss material3 component is impossible to use
-                // because swipe is activated to easily when scrolling (in november 2023).
+                // because swipe is activated too easily when scrolling (in november 2023).
                 // The problem has been reported here by a user : https://issuetracker.google.com/issues/252334353
                 //
                 // SimpleDeleteSwipe is kept in source code, hoping that a future material3 version
                 // will correct the problem.
                 // Anyway, swipe to dismiss is not a key feature.
-                ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
+
+                // UPDATE OF July 23, 2024 : A big improve has been done on SwipeToDismiss
+                // Currently in internal test phase
+                SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
+                    ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
+                }
             }
         }
     }

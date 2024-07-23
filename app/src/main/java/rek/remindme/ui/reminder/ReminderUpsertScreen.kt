@@ -3,7 +3,6 @@ package rek.remindme.ui.reminder
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -39,7 +38,6 @@ import rek.remindme.ui.components.ReminderUpsertTopAppBar
 import rek.remindme.ui.components.SimpleAlertDialog
 import rek.remindme.ui.theme.MyApplicationTheme
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReminderUpsertScreen(
     modifier: Modifier = Modifier,
