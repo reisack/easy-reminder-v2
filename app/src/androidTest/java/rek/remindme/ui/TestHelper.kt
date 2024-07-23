@@ -62,11 +62,12 @@ class TestHelper(
             .performClick()
 
         // Finding the input mode for date
-        _composeTestRule.onNodeWithContentDescription("input", substring = true)
+        val switchInputModeDesc = if (_lang == "fr") "mode de saisie Texte" else "text input mode"
+        _composeTestRule.onNodeWithContentDescription(switchInputModeDesc, substring = true, ignoreCase = true)
             .performClick()
 
         // Finally, enter the date
-        _composeTestRule.onNodeWithContentDescription("Date", substring = true)
+        _composeTestRule.onNodeWithContentDescription("Date,", substring = true)
             .performTextReplacement(dateFormat)
 
         // Confirm
@@ -92,7 +93,8 @@ class TestHelper(
         _composeTestRule.onNodeWithTag(Consts.TestTag.SELECT_INPUT_MODE)
             .performClick()
 
-        _composeTestRule.waitUntilExactlyOneExists(hasContentDescription("for hour") and hasSetTextAction())
+        val forHourMessage = if (_lang == "fr") "en heures" else "for hour"
+        _composeTestRule.waitUntilExactlyOneExists(hasContentDescription(forHourMessage) and hasSetTextAction())
 
         var inputHour = hour
         val is24HourFormat = android.text.format
@@ -110,12 +112,13 @@ class TestHelper(
         if (hour == 0 && !is24HourFormat) inputHour = 12
 
         // Enter the hour
-        _composeTestRule.onNodeWithContentDescription("for hour", substring = true)
+        _composeTestRule.onNodeWithContentDescription(forHourMessage, substring = true)
             .assertExists("hour input $ASSERT_SUFFIX_MESSAGE")
             .performTextReplacement(inputHour.toString())
 
         // Enter the minute
-        _composeTestRule.onNodeWithContentDescription("for minutes", substring = true)
+        val forMinuteMessage = if (_lang == "fr") "en minutes" else "for minutes"
+        _composeTestRule.onNodeWithContentDescription(forMinuteMessage, substring = true)
             .assertExists("minute input $ASSERT_SUFFIX_MESSAGE")
             .performTextReplacement(minute.toString())
 

@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.DismissState
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwipeToDismiss
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -49,25 +49,36 @@ internal fun SimpleDeleteSwipe(
         }
     )
 
-    SwipeToDismiss(
+    setOf(SwipeToDismissBoxValue.EndToStart,
+        SwipeToDismissBoxValue.StartToEnd
+    )
+    SwipeToDismissBox(
         state = dismissState,
-        background = {
-            Row(modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 8.dp)
-                .background(swipeBackgroundColor)) {
-                SwipeIcon(modifier = Modifier.align(
-                    alignment = Alignment.CenterVertically)
+        backgroundContent = {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 8.dp)
+                    .background(swipeBackgroundColor)
+            ) {
+                SwipeIcon(
+                    modifier = Modifier.align(
+                        alignment = Alignment.CenterVertically
+                    )
                 )
 
                 Spacer(Modifier.weight(1f))
 
-                SwipeIcon(modifier = Modifier.align(
-                    alignment = Alignment.CenterVertically)
+                SwipeIcon(
+                    modifier = Modifier.align(
+                        alignment = Alignment.CenterVertically
+                    )
                 )
             }
         },
-        dismissContent = content
+        enableDismissFromStartToEnd = true,
+        enableDismissFromEndToStart = true,
+        content = content
     )
 }
 
@@ -83,10 +94,10 @@ private fun SwipeIcon(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun swipeDismissState(isSwiped: MutableState<Boolean>): DismissState {
-    return rememberDismissState(
+private fun swipeDismissState(isSwiped: MutableState<Boolean>): SwipeToDismissBoxState {
+    return rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+            if (it == SwipeToDismissBoxValue.StartToEnd || it == SwipeToDismissBoxValue.EndToStart) {
                 isSwiped.value = true
                 true
             }
@@ -97,7 +108,7 @@ private fun swipeDismissState(isSwiped: MutableState<Boolean>): DismissState {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun swipeBackgroundColor(dismissState: DismissState): Color {
+private fun swipeBackgroundColor(dismissState: SwipeToDismissBoxState): Color {
     return if (dismissState.dismissDirection == null) {
         Color.Transparent
     } else {

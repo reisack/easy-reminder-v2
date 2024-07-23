@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -12,6 +12,7 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -67,8 +68,25 @@ internal fun ReminderDateField(
     onDateChanged: (Long) -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
+    val initialTimestamp = if (reminderEditUiState.isUpdateMode) {
+        Date(reminderEditUiState.unixTimestampDate!!).time
+    } else Date().time
+
     val datePickerDialogOpened = remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        selectableDates = object: SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                // timestamp >= current timestamp Date (Time 00:00) - milliseconds in 24 hour
+                return utcTimeMillis >= Date().time - (1000 * 60 * 60 * 24)
+            }
+        }
+    )
+
+    // As the date of July 23, 2024 : We need to set the initial timestamp for DatePicker this way to get it done
+    // Normally, we should set initialSelectedDateMillis and initialDisplayedMonthMillis props in rememberDatePickerState
+    // But why it doesn't work is beyond understanding
+    datePickerState.selectedDateMillis = initialTimestamp
+    datePickerState.displayedMonthMillis = initialTimestamp
 
     ClickableInputField(
         modifier = Modifier.testTag(Consts.TestTag.INPUT_DATE_FIELD),
@@ -104,13 +122,7 @@ internal fun ReminderDateField(
                 }
             }
         ) {
-            DatePicker(
-                state = datePickerState,
-                dateValidator = { timestamp ->
-                    // timestamp >= current timestamp Date (Time 00:00) - milliseconds in 24 hour
-                    timestamp >= Date().time - (1000 * 60 * 60 * 24)
-                }
-            )
+            DatePicker(state = datePickerState)
         }
     }
 }
@@ -166,7 +178,7 @@ internal fun ReminderUpsertTopAppBar(
         navigationIcon = {
             IconButton(modifier = Modifier.testTag(Consts.TestTag.BACK_BUTTON), onClick = onBack) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back_desc)
                 )
             }
