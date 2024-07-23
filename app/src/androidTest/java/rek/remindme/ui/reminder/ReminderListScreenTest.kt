@@ -3,14 +3,13 @@ package rek.remindme.ui.reminder
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import rek.remindme.data.local.database.Reminder
 import rek.remindme.ui.TestHelper
 
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class ReminderListScreenTest {
 
     @get:Rule
@@ -21,7 +20,8 @@ class ReminderListScreenTest {
         composeTestRule.setContent {
             ReminderListScreenContent(
                 items = _fakeData,
-                onReminderClick = {}
+                onReminderClick = {},
+                onReminderDelete = {}
             )
         }
 

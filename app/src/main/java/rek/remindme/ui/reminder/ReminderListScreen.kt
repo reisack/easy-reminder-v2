@@ -80,7 +80,8 @@ fun ReminderListScreen(
                 modifier = modifier
                     .consumeWindowInsets(innerPadding)
                     .padding(innerPadding),
-                onReminderClick = onReminderClick
+                onReminderClick = onReminderClick,
+                onReminderDelete = viewModel::delete
             )
         }
 
@@ -110,7 +111,7 @@ internal fun ReminderListScreenContent(
     items: List<Reminder>,
     modifier: Modifier = Modifier,
     onReminderClick: (Int) -> Unit,
-    viewModel: ReminderListViewModel = hiltViewModel()
+    onReminderDelete: (Int) -> Unit,
 ) {
     if(!items.any()) {
         EmptyReminderList()
@@ -137,7 +138,7 @@ internal fun ReminderListScreenContent(
 
                 // UPDATE OF July 23, 2024 : A big improve has been done on SwipeToDismiss
                 // Currently in internal test phase
-                SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
+                SimpleDeleteSwipe(onConfirm = { onReminderDelete(reminder.uid) }) {
                     ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
                 }
             }
@@ -155,7 +156,8 @@ private fun ReminderListScreenContentPreview() {
                 Reminder(title = "Title 2", description = "Hello\nMultiline", unixTimestamp = 1697808658000, notified = false),
                 Reminder(title = "Title 3", description = "Hello", unixTimestamp = 1697808658000, notified = true)
             ),
-            onReminderClick = {}
+            onReminderClick = {},
+            onReminderDelete = {}
         )
     }
 }
