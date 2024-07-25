@@ -30,8 +30,8 @@ android {
         applicationId = "rek.remindme.v2"
         minSdk = 21
         targetSdk = 34
-        versionCode = 22
-        versionName = "2.0.1"
+        versionCode = 23
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "rek.remindme.HiltTestRunner"
         vectorDrawables {
