@@ -68,8 +68,8 @@ internal fun ReminderDateField(
     onDateChanged: (Long) -> Unit,
     reminderEditUiState: ReminderEditUiState
 ) {
-    val initialTimestamp = if (reminderEditUiState.isUpdateMode) {
-        Date(reminderEditUiState.unixTimestampDate!!).time
+    val initialTimestamp = if (reminderEditUiState.unixTimestampDate != null) {
+        Date(reminderEditUiState.unixTimestampDate).time
     } else Date().time
 
     val datePickerDialogOpened = remember { mutableStateOf(false) }
@@ -82,7 +82,7 @@ internal fun ReminderDateField(
         }
     )
 
-    // As the date of July 23, 2024 : We need to set the initial timestamp for DatePicker this way to get it done
+    // Bug in version 1.2.1 of Material3 : We need to set the initial timestamp for DatePicker this way to get it done.
     // Normally, we should set initialSelectedDateMillis and initialDisplayedMonthMillis props in rememberDatePickerState
     // But why it doesn't work is beyond understanding
     datePickerState.selectedDateMillis = initialTimestamp
