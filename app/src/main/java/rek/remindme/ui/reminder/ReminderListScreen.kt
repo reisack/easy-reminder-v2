@@ -36,7 +36,6 @@ import rek.remindme.ui.components.ReminderListSnackbarMessage
 import rek.remindme.ui.components.ReminderListSnackbarMessageOnLoad
 import rek.remindme.ui.components.ReminderListTopAppBar
 import rek.remindme.ui.components.SimpleAlertDialog
-import rek.remindme.ui.components.SimpleDeleteSwipe
 import rek.remindme.ui.theme.MyApplicationTheme
 
 @Composable
@@ -111,7 +110,7 @@ internal fun ReminderListScreenContent(
     items: List<Reminder>,
     modifier: Modifier = Modifier,
     onReminderClick: (Int) -> Unit,
-    onReminderDelete: (Int) -> Unit,
+    @Suppress("UNUSED_PARAMETER") onReminderDelete: (Int) -> Unit,
 ) {
     if(!items.any()) {
         EmptyReminderList()
@@ -124,7 +123,7 @@ internal fun ReminderListScreenContent(
             items.forEach { reminder ->
                 // ReminderCard should have been encapsulated on a SimpleDeleteSwipe, an example below :
                 //
-                // SimpleDeleteSwipe(onConfirm = { viewModel.delete(reminder.uid) }) {
+                // SimpleDeleteSwipe(onConfirm = { onReminderDelete(reminder.uid) }) {
                 //     ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
                 // }
                 //
@@ -137,10 +136,10 @@ internal fun ReminderListScreenContent(
                 // Anyway, swipe to dismiss is not a key feature.
 
                 // UPDATE OF July 23, 2024 : A big improve has been done on SwipeToDismiss
-                // Currently in internal test phase
-                SimpleDeleteSwipe(onConfirm = { onReminderDelete(reminder.uid) }) {
-                    ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
-                }
+                // The SwipeToDismissBoxState exposes positionalThreshold, which gives better results
+                // But still not OK as velocityThreshold is not exposed
+                // It's still too easily triggered on a scroll
+                ReminderCard(reminder = reminder, onReminderClick = onReminderClick)
             }
         }
     }
