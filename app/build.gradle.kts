@@ -24,14 +24,14 @@ plugins {
 
 android {
     namespace = "rek.remindme"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "rek.remindme.v2"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 23
-        versionName = "2.1.0"
+        targetSdk = 35
+        versionCode = 24
+        versionName = "2.1.1"
 
         testInstrumentationRunner = "rek.remindme.HiltTestRunner"
         vectorDrawables {
