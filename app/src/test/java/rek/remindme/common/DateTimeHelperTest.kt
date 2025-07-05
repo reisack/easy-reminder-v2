@@ -24,7 +24,7 @@ class DateTimeHelperTest {
     fun dateTimeHelper_getReadableTime_timestampIsNotNull() = runTest {
         val timestamp: Long = 1698167443000
         val result = DateTimeHelper.instance.getReadableTime(timestamp)
-        Assert.assertEquals("5:10 PM", result)
+        Assert.assertEquals("5:10 PM", result)
     }
 
     @Test
@@ -42,7 +42,7 @@ class DateTimeHelperTest {
         val minute = 5
 
         val result = DateTimeHelper.instance.getReadableTime(hour, minute)
-        Assert.assertEquals("4:05 PM", result)
+        Assert.assertEquals("4:05 PM", result)
     }
 
     @Test
