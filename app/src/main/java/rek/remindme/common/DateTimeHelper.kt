@@ -125,73 +125,80 @@ open class DateTimeHelper protected constructor() {
         var timeNumber: Int
         var timeUnit: String
 
-        if (absDays > 365) {
-            timeNumber = (absDays / daysInAYearCount).toInt()
-            timeUnit = stringResource(R.string.year)
+        when {
+            absDays > 365 -> {
+                timeNumber = (absDays / daysInAYearCount).toInt()
+                timeUnit = stringResource(R.string.year)
 
-            // Nearer to next year
-            if (absDays % daysInAYearCount >= 182) {
-                timeNumber++
-            }
-        } else if (absDays > 30) {
-            timeNumber = (absDays / daysInAMonthCount).toInt()
-            timeUnit = stringResource(R.string.month)
-
-            // Nearer to next month
-            if (absDays % daysInAMonthCount >= 15) {
-                timeNumber++
-
-                // 12 months => 1 year
-                if (timeNumber >= 12) {
-                    timeNumber = 1
-                    timeUnit = stringResource(R.string.year)
+                // Nearer to next year
+                if (absDays % daysInAYearCount >= 182) {
+                    timeNumber++
                 }
             }
-        } else if (absDays >= 1) {
-            timeNumber = absDays.toInt()
-            timeUnit = stringResource(R.string.day)
+            absDays > 30 -> {
+                timeNumber = (absDays / daysInAMonthCount).toInt()
+                timeUnit = stringResource(R.string.month)
 
-            // Nearer to next day
-            if (absHours >= 12) {
-                timeNumber++
+                // Nearer to next month
+                if (absDays % daysInAMonthCount >= 15) {
+                    timeNumber++
 
-                // 30 days => 1 month
-                if (timeNumber > 30) {
-                    timeNumber = 1
-                    timeUnit = stringResource(R.string.month)
+                    // 12 months => 1 year
+                    if (timeNumber >= 12) {
+                        timeNumber = 1
+                        timeUnit = stringResource(R.string.year)
+                    }
                 }
             }
-        } else if (absHours >= 1) {
-            timeNumber = absHours.toInt()
-            timeUnit = stringResource(R.string.hour)
+            absDays >= 1 -> {
+                timeNumber = absDays.toInt()
+                timeUnit = stringResource(R.string.day)
 
-            // Nearer to next hour
-            if (absMinutes >= 30) {
-                timeNumber++
+                // Nearer to next day
+                if (absHours >= 12) {
+                    timeNumber++
 
-                // 24 hours => 1 day
-                if (timeNumber >= 24) {
-                    timeNumber = 1
-                    timeUnit = stringResource(R.string.day)
+                    // 30 days => 1 month
+                    if (timeNumber > 30) {
+                        timeNumber = 1
+                        timeUnit = stringResource(R.string.month)
+                    }
                 }
             }
-        } else if (absMinutes >= 1) {
-            timeNumber = absMinutes.toInt()
-            timeUnit = stringResource(R.string.minute)
+            absHours >= 1 -> {
+                timeNumber = absHours.toInt()
+                timeUnit = stringResource(R.string.hour)
 
-            // Nearer to next minute
-            if (absSeconds >= 30) {
-                timeNumber++
+                // Nearer to next hour
+                if (absMinutes >= 30) {
+                    timeNumber++
 
-                //60 minutes => 1 hour
-                if (timeNumber >= 60) {
-                    timeNumber = 1
-                    timeUnit = stringResource(R.string.hour)
+                    // 24 hours => 1 day
+                    if (timeNumber >= 24) {
+                        timeNumber = 1
+                        timeUnit = stringResource(R.string.day)
+                    }
                 }
             }
-        } else {
-            timeNumber = absSeconds.toInt()
-            timeUnit = stringResource(R.string.second)
+            absMinutes >= 1 -> {
+                timeNumber = absMinutes.toInt()
+                timeUnit = stringResource(R.string.minute)
+
+                // Nearer to next minute
+                if (absSeconds >= 30) {
+                    timeNumber++
+
+                    //60 minutes => 1 hour
+                    if (timeNumber >= 60) {
+                        timeNumber = 1
+                        timeUnit = stringResource(R.string.hour)
+                    }
+                }
+            }
+            else -> {
+                timeNumber = absSeconds.toInt()
+                timeUnit = stringResource(R.string.second)
+            }
         }
 
         timeUnit = getPluralIfNeeded(timeNumber, timeUnit)

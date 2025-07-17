@@ -100,13 +100,7 @@ class TestHelper(
         val is24HourFormat = android.text.format
             .DateFormat.is24HourFormat(_composeTestRule.activity.applicationContext)
 
-        if (hour > 11 && !is24HourFormat) {
-            _composeTestRule.onNodeWithText("PM", substring = false)
-                .assertExists("PM $ASSERT_SUFFIX_MESSAGE")
-                .performClick()
-
-            if (hour > 12) inputHour = hour - 12
-        }
+        if (hour > 12 && !is24HourFormat) inputHour = hour - 12
 
         // 12 AM / midnight case
         if (hour == 0 && !is24HourFormat) inputHour = 12
@@ -121,6 +115,12 @@ class TestHelper(
         _composeTestRule.onNodeWithContentDescription(forMinuteMessage, substring = true)
             .assertExists("minute input $ASSERT_SUFFIX_MESSAGE")
             .performTextReplacement(minute.toString())
+
+        if (hour > 11 && !is24HourFormat) {
+            _composeTestRule.onNodeWithText("PM", substring = false)
+                .assertExists("PM $ASSERT_SUFFIX_MESSAGE")
+                .performClick()
+        }
 
         // Confirm
         _composeTestRule.onNodeWithTag(Consts.TestTag.CONFIRM_BUTTON)

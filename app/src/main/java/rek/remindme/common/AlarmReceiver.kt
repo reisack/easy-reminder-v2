@@ -79,13 +79,13 @@ class AlarmReceiver: BroadcastReceiver() {
     }
 
     private fun createNotificationChannel(notificationManager: NotificationManager) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (notificationManager.getNotificationChannel(Consts.System.APP_ID) == null) {
-                val channel = NotificationChannel(Consts.System.APP_ID, Consts.System.APP_ID, NotificationManager.IMPORTANCE_HIGH)
-                channel.enableLights(true)
-                channel.enableVibration(true)
-                notificationManager.createNotificationChannel(channel)
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+            && notificationManager.getNotificationChannel(Consts.System.APP_ID) == null
+        ) {
+            val channel = NotificationChannel(Consts.System.APP_ID, Consts.System.APP_ID, NotificationManager.IMPORTANCE_HIGH)
+            channel.enableLights(true)
+            channel.enableVibration(true)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
