@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -18,29 +20,53 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.sonarqube)
+    jacoco
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "reisack_easy-reminder-v2")
+        property("sonar.organization", "reisack")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.projectName", "Easy Reminder v2")
+
+        property ("sonar.sources", "src/main/java")
+        property ("sonar.tests", "src/test/java,src/androidTest/java")
+        property ("sonar.java.binaries", "build/tmp/kotlin-classes/debug,build/intermediates/javac/debug/classes")
+        property ("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml,build/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml")
+    }
+}
+
+// Enable room auto-migrations
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
 }
 
 android {
     namespace = "rek.remindme"
-    compileSdk = 35
+    compileSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 35
 
     defaultConfig {
         applicationId = "rek.remindme.v2"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 35
         versionCode = 24
         versionName = "2.1.1"
 
         testInstrumentationRunner = "rek.remindme.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
-        }
-
-        // Enable room auto-migrations
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -49,15 +75,15 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -128,4 +154,73 @@ dependencies {
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+val fileFilter = listOf(
+    "**/R.class",
+    "**/R$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*",
+    "android/**/*.*"
+)
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    dependsOn("compileDebugKotlin")
+
+    group = "Reporting"
+    description = "Generate JaCoCo coverage reports for unit tests."
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val buildDirFile = layout.buildDirectory.get().asFile
+
+    val javaClasses = fileTree("${buildDirFile}/intermediates/javac/debug/classes") {
+        exclude(fileFilter)
+    }
+    val kotlinClasses = fileTree("${buildDirFile}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(javaClasses, kotlinClasses))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(fileTree("${buildDirFile}/outputs/unit_test_code_coverage/debugUnitTest") {
+        include("testDebugUnitTest.exec")
+    })
+}
+
+tasks.register<JacocoReport>("jacocoTestDebugReport") {
+    dependsOn("connectedDebugAndroidTest")
+    dependsOn("compileDebugKotlin")
+
+    group = "Reporting"
+    description = "Generate JaCoCo coverage reports for instrumented tests."
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val buildDirFile = layout.buildDirectory.get().asFile
+
+    val javaClasses = fileTree("${buildDirFile}/intermediates/javac/debug/classes") {
+        exclude(fileFilter)
+    }
+    val kotlinClasses = fileTree("${buildDirFile}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(javaClasses, kotlinClasses))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(fileTree("${buildDirFile}/outputs/code_coverage/debugAndroidTest/connected") {
+        include("**/coverage.ec")
+    })
 }
