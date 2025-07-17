@@ -38,7 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run unit tests and generate coverage report
-        run: ./gradlew testDebugUnitTest jacocoTestReport
+        run: ./gradlew testDebugUnitTest
 
       # Running hardware accelerated emulators on Linux runners
       - name: Enable KVM group perms
@@ -59,7 +59,7 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew connectedDebugAndroidTest jacocoTestDebugReport
+            ./gradlew connectedDebugAndroidTest
 
       - name: Build and analyze
         working-directory: app
