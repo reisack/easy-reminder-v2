@@ -30,36 +30,35 @@ class AlarmReceiver: BroadcastReceiver() {
     lateinit var repository: ReminderRepository
 
     override fun onReceive(p0: Context?, p1: Intent?) = goAsync {
-        if (p0 != null && p1 != null) {
-            val validActions = listOf(Intent.ACTION_BOOT_COMPLETED, Consts.System.ALARM_RECEIVER_ID)
+        if (p0 == null || p1 == null) return@goAsync
 
-            if (validActions.contains(p1.action)) {
-                val reminders = repository.getRemindersToNotify()
-                if (reminders.any()) {
-                    reminders.forEach { reminder ->
-                        val notificationManager = p0.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
-                        if (notificationManager != null) {
-                            createNotificationChannel(notificationManager)
+        val validActions = listOf(Intent.ACTION_BOOT_COMPLETED, Consts.System.ALARM_RECEIVER_ID)
+        if (!validActions.contains(p1.action)) return@goAsync
 
-                            val notification = NotificationCompat.Builder(p0, Consts.System.APP_ID)
-                                .setContentTitle(reminder.title)
-                                .setContentText(reminder.description)
-                                .setContentIntent(getPendingIntent(p0))
-                                .setAutoCancel(true)
-                                .setTicker("${reminder.title} ${reminder.description}")
-                                .setSmallIcon(R.drawable.ic_notification)
-                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                .build()
+        val reminders = repository.getRemindersToNotify()
+        if (!reminders.any()) return@goAsync
 
-                            notificationManager.notify(reminder.uid, notification)
-                            repository.updateNotifiedById(reminder.uid)
-                        }
-                    }
-                }
+        reminders.forEach { reminder ->
+            val notificationManager = p0.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            if (notificationManager != null) {
+                createNotificationChannel(notificationManager)
 
-                setNextReminder(p0)
+                val notification = NotificationCompat.Builder(p0, Consts.System.APP_ID)
+                    .setContentTitle(reminder.title)
+                    .setContentText(reminder.description)
+                    .setContentIntent(getPendingIntent(p0))
+                    .setAutoCancel(true)
+                    .setTicker("${reminder.title} ${reminder.description}")
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .build()
+
+                notificationManager.notify(reminder.uid, notification)
+                repository.updateNotifiedById(reminder.uid)
             }
         }
+
+        setNextReminder(p0)
     }
 
     // https://stackoverflow.com/questions/74111692/run-coroutine-functions-on-broadcast-receiver
