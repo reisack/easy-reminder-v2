@@ -122,91 +122,44 @@ open class DateTimeHelper protected constructor() {
         val absMinutes = abs(span / (1000 * 60) % 60)
         val absSeconds = abs(span / 1000 % 60)
 
-        var timeNumber: Int
-        var timeUnit: String
-
-        when {
+        // Compose time logic as a flat sequence
+        val (timeNumber, timeUnit) = when {
             absDays > 365 -> {
-                timeNumber = (absDays / daysInAYearCount).toInt()
-                timeUnit = stringResource(R.string.year)
-
-                // Nearer to next year
-                if (absDays % daysInAYearCount >= 182) {
-                    timeNumber++
-                }
+                var years = (absDays / daysInAYearCount).toInt()
+                if (absDays % daysInAYearCount >= 182) years++
+                years to stringResource(R.string.year)
             }
             absDays > 30 -> {
-                timeNumber = (absDays / daysInAMonthCount).toInt()
-                timeUnit = stringResource(R.string.month)
-
-                // Nearer to next month
-                if (absDays % daysInAMonthCount >= 15) {
-                    timeNumber++
-
-                    // 12 months => 1 year
-                    if (timeNumber >= 12) {
-                        timeNumber = 1
-                        timeUnit = stringResource(R.string.year)
-                    }
-                }
+                var months = (absDays / daysInAMonthCount).toInt()
+                if (absDays % daysInAMonthCount >= 15) months++
+                if (months >= 12) 1 to stringResource(R.string.year)
+                else months to stringResource(R.string.month)
             }
             absDays >= 1 -> {
-                timeNumber = absDays.toInt()
-                timeUnit = stringResource(R.string.day)
-
-                // Nearer to next day
-                if (absHours >= 12) {
-                    timeNumber++
-
-                    // 30 days => 1 month
-                    if (timeNumber > 30) {
-                        timeNumber = 1
-                        timeUnit = stringResource(R.string.month)
-                    }
-                }
+                var days = absDays.toInt()
+                if (absHours >= 12) days++
+                if (days > 30) 1 to stringResource(R.string.month)
+                else days to stringResource(R.string.day)
             }
             absHours >= 1 -> {
-                timeNumber = absHours.toInt()
-                timeUnit = stringResource(R.string.hour)
-
-                // Nearer to next hour
-                if (absMinutes >= 30) {
-                    timeNumber++
-
-                    // 24 hours => 1 day
-                    if (timeNumber >= 24) {
-                        timeNumber = 1
-                        timeUnit = stringResource(R.string.day)
-                    }
-                }
+                var hours = absHours.toInt()
+                if (absMinutes >= 30) hours++
+                if (hours >= 24) 1 to stringResource(R.string.day)
+                else hours to stringResource(R.string.hour)
             }
             absMinutes >= 1 -> {
-                timeNumber = absMinutes.toInt()
-                timeUnit = stringResource(R.string.minute)
-
-                // Nearer to next minute
-                if (absSeconds >= 30) {
-                    timeNumber++
-
-                    //60 minutes => 1 hour
-                    if (timeNumber >= 60) {
-                        timeNumber = 1
-                        timeUnit = stringResource(R.string.hour)
-                    }
-                }
+                var minutes = absMinutes.toInt()
+                if (absSeconds >= 30) minutes++
+                if (minutes >= 60) 1 to stringResource(R.string.hour)
+                else minutes to stringResource(R.string.minute)
             }
-            else -> {
-                timeNumber = absSeconds.toInt()
-                timeUnit = stringResource(R.string.second)
-            }
+            else -> absSeconds.toInt() to stringResource(R.string.second)
         }
 
-        timeUnit = getPluralIfNeeded(timeNumber, timeUnit)
-
-        return Pair(timeNumber, timeUnit)
+        return timeNumber to formatUnit(timeNumber, timeUnit)
     }
 
-    private fun getPluralIfNeeded(timeNumber: Int, timeUnit: String): String {
+    private fun formatUnit(timeNumber: Int, timeUnit: String): String {
         if (timeNumber > 1 && !timeUnit.endsWith("s")) {
             return "${timeUnit}s"
         }
