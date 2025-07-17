@@ -37,7 +37,6 @@ sonar {
         property ("sonar.sources", "src/main/java")
         property ("sonar.tests", "src/test/java,src/androidTest/java")
         property ("sonar.java.binaries", "build/tmp/kotlin-classes/debug,build/intermediates/javac/debug/classes")
-        property ("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml,build/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml")
     }
 }
 
