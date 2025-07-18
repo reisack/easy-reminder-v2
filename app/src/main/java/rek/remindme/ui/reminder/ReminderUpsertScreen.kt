@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -117,6 +119,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = "${stringResource(R.string.title_field_title)} *") },
                 value = reminderEditUiState.title,
                 onValueChange = onTitleChanged,
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 modifier = Modifier.fillMaxSize().testTag(Consts.TestTag.INPUT_TITLE_FIELD)
             )
         }
@@ -126,6 +129,7 @@ internal fun ReminderUpsertScreenContent(
                 placeholder = { Text(text = stringResource(R.string.description_field_title)) },
                 value = reminderEditUiState.description,
                 onValueChange = onDescriptionChanged,
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 modifier = Modifier.fillMaxSize().testTag(Consts.TestTag.INPUT_DESCRIPTION_FIELD)
             )
         }
