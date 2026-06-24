@@ -14,7 +14,6 @@ import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,7 +35,7 @@ internal fun SimpleDeleteSwipe(
 ) {
     val isSwiped = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val dismissState = swipeDismissState(isSwiped)
+    val dismissState = swipeDismissState()
     val swipeBackgroundColor = swipeBackgroundColor(dismissState)
 
     SimpleAlertDialog(
@@ -49,9 +48,6 @@ internal fun SimpleDeleteSwipe(
         }
     )
 
-    setOf(SwipeToDismissBoxValue.EndToStart,
-        SwipeToDismissBoxValue.StartToEnd
-    )
     SwipeToDismissBox(
         state = dismissState,
         backgroundContent = {
@@ -78,6 +74,7 @@ internal fun SimpleDeleteSwipe(
         },
         enableDismissFromStartToEnd = true,
         enableDismissFromEndToStart = true,
+        onDismiss = { isSwiped.value = true },
         content = content
     )
 }
@@ -94,21 +91,14 @@ private fun SwipeIcon(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun swipeDismissState(isSwiped: MutableState<Boolean>): SwipeToDismissBoxState {
+private fun swipeDismissState(): SwipeToDismissBoxState {
     // 20% of the screen for swipe threshold
     val threshold: Float = with(LocalConfiguration.current) {
         (this.screenWidthDp * 20).dp.value
     }
 
     return rememberSwipeToDismissBoxState(
-        positionalThreshold = { threshold },
-        confirmValueChange = {
-            if (it == SwipeToDismissBoxValue.StartToEnd || it == SwipeToDismissBoxValue.EndToStart) {
-                isSwiped.value = true
-                true
-            }
-            else false
-        }
+        positionalThreshold = { threshold }
     )
 }
 
