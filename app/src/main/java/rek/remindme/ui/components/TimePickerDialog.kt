@@ -19,9 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DisplayMode
@@ -47,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -118,7 +116,7 @@ private fun DisplayModeToggleButton(
             onClick = { onDisplayModeChange(DisplayMode.Input) },
         ) {
             Icon(
-                imageVector = Icons.Filled.Create,
+                painter = painterResource(R.drawable.ic_edit),
                 contentDescription = stringResource(R.string.select_input_mode_desc),
             )
         }
@@ -127,7 +125,7 @@ private fun DisplayModeToggleButton(
             onClick = { onDisplayModeChange(DisplayMode.Picker) },
         ) {
             Icon(
-                imageVector = Icons.Filled.DateRange,
+                painter = painterResource(R.drawable.ic_date_range),
                 contentDescription = stringResource(R.string.select_picker_mode_desc),
             )
         }

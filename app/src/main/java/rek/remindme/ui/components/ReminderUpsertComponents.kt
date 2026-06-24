@@ -3,9 +3,6 @@ package rek.remindme.ui.components
 import android.content.Context
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -24,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import rek.remindme.R
@@ -178,7 +176,7 @@ internal fun ReminderUpsertTopAppBar(
         navigationIcon = {
             IconButton(modifier = Modifier.testTag(Consts.TestTag.BACK_BUTTON), onClick = onBack) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    painter = painterResource(R.drawable.ic_arrow_back),
                     contentDescription = stringResource(R.string.back_desc)
                 )
             }
@@ -187,7 +185,7 @@ internal fun ReminderUpsertTopAppBar(
             if (uiState.isUpdateMode) {
                 IconButton(modifier = Modifier.testTag(Consts.TestTag.DELETE_REMINDER_BUTTON), onClick = onDelete) {
                     Icon(
-                        imageVector = Icons.Filled.Delete,
+                        painter = painterResource(R.drawable.ic_delete),
                         contentDescription = stringResource(R.string.delete_reminder_desc)
                     )
                 }

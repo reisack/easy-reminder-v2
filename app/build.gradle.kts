@@ -37,6 +37,10 @@ sonar {
         property ("sonar.sources", "src/main/java")
         property ("sonar.tests", "src/test/java,src/androidTest/java")
         property ("sonar.java.binaries", "build/tmp/kotlin-classes/debug,build/intermediates/javac/debug/classes")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "build/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml"
+        )
     }
 }
 
@@ -46,20 +50,20 @@ ksp {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
 android {
     namespace = "rek.remindme"
-    compileSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 35
+    compileSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 36
 
     defaultConfig {
         applicationId = "rek.remindme.v2"
-        minSdk = 21
-        targetSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 35
+        minSdk = 23
+        targetSdk = System.getenv("CI_COMPILE_SDK")?.toInt() ?: 36
         versionCode = 25
         versionName = "2.1.2"
 
@@ -72,6 +76,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
@@ -81,8 +86,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
@@ -222,4 +227,35 @@ tasks.register<JacocoReport>("jacocoTestDebugReport") {
     executionData.setFrom(fileTree("${buildDirFile}/outputs/code_coverage/debugAndroidTest/connected") {
         include("**/coverage.ec")
     })
+}
+
+tasks.register<JacocoReport>("jacocoCombinedReport") {
+    group = "Reporting"
+    description = "Generate a combined JaCoCo coverage report for unit and instrumented tests."
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val buildDirFile = layout.buildDirectory.get().asFile
+
+    val javaClasses = fileTree("${buildDirFile}/intermediates/javac/debug/classes") {
+        exclude(fileFilter)
+    }
+    val kotlinClasses = fileTree("${buildDirFile}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    val unitTestExecutionData =
+        fileTree("${buildDirFile}/outputs/unit_test_code_coverage/debugUnitTest") {
+            include("testDebugUnitTest.exec")
+        }
+    val instrumentedTestExecutionData =
+        fileTree("${buildDirFile}/outputs/code_coverage/debugAndroidTest/connected") {
+            include("**/coverage.ec")
+        }
+
+    classDirectories.setFrom(files(javaClasses, kotlinClasses))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(files(unitTestExecutionData, instrumentedTestExecutionData))
 }
