@@ -11,3 +11,8 @@ A very easy reminder application for Android.
 - UI : Material 3
 - ORM : Room
 - Database : SQLite
+
+### Documentation
+
+- [Technical guide](docs/TECHNICAL.md)
+- [Repository guidance for coding agents](AGENTS.md)
