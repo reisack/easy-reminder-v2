@@ -1,0 +1,4 @@
+interface:
+  display_name: "Easy Reminder Unit Tests"
+  short_description: "Maximize JVM unit-test branch coverage"
+  default_prompt: "Use $easy-reminder-unit-tests to add focused JVM unit tests with maximum branch coverage."
